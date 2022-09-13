@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Box from "src/components/Box";
 import _ from "lodash";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const LearnMore = () => {
   const [image, setImage] = React.useState("");
@@ -27,22 +28,35 @@ const LearnMore = () => {
 
   return (
     <Box center height="100vh" width="100vw">
-      <Box
-        position="relative"
-        width={{ mobS: "90vw", deskM: "90rem" }}
-        height="50.67rem"
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{
+          scale: 1,
+          opacity: 1,
+          transition: {
+            duration: 0.4,
+            delay: 0.4,
+            ease: "easeInOut",
+          },
+        }}
       >
-        {image && (
-          <Image
-            src={image}
-            alt="gif"
-            layout="fill"
-            objectFit="contain"
-            placeholder="blur"
-            blurDataURL={placeholder}
-          />
-        )}
-      </Box>
+        <Box
+          position="relative"
+          width={{ mobS: "90vw", deskM: "90rem" }}
+          height="50.67rem"
+        >
+          {image && (
+            <Image
+              src={image}
+              alt="gif"
+              layout="fill"
+              objectFit="contain"
+              placeholder="blur"
+              blurDataURL={placeholder}
+            />
+          )}
+        </Box>
+      </motion.div>
     </Box>
   );
 };
