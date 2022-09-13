@@ -35,7 +35,6 @@ input[type='number'] {
 a,
 a:visited {
 	text-decoration: none;
-	color: inherit;
 }
 
 svg {

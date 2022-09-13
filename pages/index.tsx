@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Box from "src/components/Box";
 import Text from "src/components/Text";
 import theme from "src/styleguide/theme";
@@ -10,19 +11,23 @@ const Home = () => {
       width="100vw"
       color="simply-black"
       column
-      center
+      justifyContent="center"
     >
       <Box
         mx="auto"
-        width="58rem"
+        width={{ mobS: "30.72rem", tabS: "50rem", deskM: "58rem" }}
         alignSelf={{ mobS: "flex-start", deskM: "center" }}
         column
         center
       >
-        <Text as="h1" mb="mxl" textAlign="center">
+        <Text as="h1" mb={{ mobS: "mm", deskM: "mxl" }} textAlign="center">
           {"Don't be a victm of FOMO, take control."}
         </Text>
-        <Text as="b1" textAlign="center" width="51.67rem">
+        <Text
+          as="b1"
+          textAlign="center"
+          width={{ mobS: "30.72rem", tabS: "51rem", deskM: "51.67rem" }}
+        >
           Saw a cool NFT project on Twitter but it sold out even before you
           connected your wallet? Next time just{" "}
           <span style={{ color: theme.colors["blue-40"] }}>schmint </span>
@@ -32,12 +37,12 @@ const Home = () => {
           <Box
             as="button"
             bg="blue-40"
-            height="5.6rem"
-            px="wxs"
+            height={{ mobS: "4.8rem", deskM: "5.6rem" }}
+            px={{ mobS: "mxxxl", deskM: "wxs" }}
             border="none"
             outline="none"
             borderRadius="64px"
-            mr="mxxxl"
+            mr="mxl"
             cursor="pointer"
             css={`
               &:hover {
@@ -49,9 +54,20 @@ const Home = () => {
               Join Discord
             </Text>
           </Box>
-          <Text as="b1" color="blue-40">
-            Learn More
-          </Text>
+          <Link href="/learn-more" passHref>
+            <Text
+              as="b1"
+              color="blue-40"
+              css={`
+                &:hover {
+                  cursor: pointer;
+                  text-decoration: underline;
+                }
+              `}
+            >
+              Learn More
+            </Text>
+          </Link>
         </Box>
       </Box>
     </Box>

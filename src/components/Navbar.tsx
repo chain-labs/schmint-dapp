@@ -2,7 +2,7 @@ import Image from "next/future/image";
 import Link from "next/link";
 import { ArrowUpRight } from "phosphor-react";
 import React from "react";
-import { TWITTER_URL } from "src/constants";
+import { TWITTER_URL, WAITLIST_URL } from "src/constants";
 import theme from "src/styleguide/theme";
 import Box from "./Box";
 import Text from "./Text";
@@ -10,10 +10,10 @@ import Text from "./Text";
 const Navbar = () => {
   return (
     <Box py="mxl" position="fixed" top="0" width="100vw">
-      <Box width="128rem" mx="auto" between>
+      <Box width={{ mobS: "90vw", deskM: "128rem" }} mx="auto" between>
         <Link href="/" passHref>
           <Image
-            src={"/brand.svg"}
+            src="/brand.svg"
             alt="schmint"
             width={120}
             height={30}
@@ -28,6 +28,7 @@ const Navbar = () => {
             alignItems="center"
             color="simply-black"
             cursor="pointer"
+            display={{ mobS: "none", deskM: "flex" }}
             css={`
               &:hover {
                 color: ${theme.colors["blue-40"]};
@@ -40,15 +41,18 @@ const Navbar = () => {
             <ArrowUpRight size={16} weight="bold" />
           </Box>
           <Box
-            as="button"
+            as="a"
+            href={WAITLIST_URL}
+            target="_blank"
             border="none"
             height="4rem"
             bg="blue-40"
             color="gray-10"
             borderRadius="64px"
             px="mxl"
-            ml="wxs"
+            ml={{ mobS: "0", deskM: "wxs" }}
             cursor="pointer"
+            center
             css={`
               &:hover {
                 background: ${theme.colors["blue-50"]};

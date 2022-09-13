@@ -1,6 +1,4 @@
-const withTM = require("next-transpile-modules")(["gsap"]);
-
-module.exports = withTM({
+module.exports = {
   webpack(config) {
     config.module.rules.push({
       test: /\.(jpg|gif|svg|eot|ttf|woff|woff2)$/,
@@ -11,4 +9,4 @@ module.exports = withTM({
   images: {
     domains: ["ik.imagekit.io"],
   },
-});
+};
