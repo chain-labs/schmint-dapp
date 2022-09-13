@@ -74,13 +74,13 @@ const MyApp = ({ Component, pageProps }) => {
 					"@type": "Organization",
 					"name": "Schmint",
 					"url": "https://schmint.simplrhq.com/",
-      				// "logo": "https://imagekit.io/dashboard/media-library/L1dlYnNpdGVfTWVkaWEvQ2hhaW5fTGFic19CYW5uZXI?sort=DESC_CREATED&view=GRID",
-					"description": "A laboratory empowering the consumers by building truly transparent and decentralized products.",
+      		"logo": "https://ik.imagekit.io/chainlabs/Schmint/brand_ast6C-3H3.svg?ik-sdk-version=javascript-1.4.3&updatedAt=1663072697499",
+					"description": "Don't be a victm of FOMO, take control.Saw a cool NFT project on Twitter but it sold out even before you connected your wallet? Next time just schmint it.",
 					[
 					{
 						"@type": "Decentralized",
-						"name": "Chain Labs",
-						"description": "A laboratory empowering the consumers by building truly transparent and decentralized products.",
+						"name": "Schmint",
+						"description": "Don't be a victm of FOMO, take control.Saw a cool NFT project on Twitter but it sold out even before you connected your wallet? Next time just schmint it.",
 					},
 					]
 
