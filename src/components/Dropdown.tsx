@@ -4,62 +4,78 @@ import Box from './Box';
 import If from './If';
 import LabelledSelectInput from './LabelledSelectInput';
 import Text from './Text';
-import useOuterClick from './useOuterClick';
+import useOuterClick from './useOuterclicks';
 
 interface Props {
 	setValue: (any) => void;
 	value: any;
-	data?: any[];
 	label?: string;
 	placeholder?: string;
-	width?: string;
+	width?: any;
 	disabled?: boolean;
 }
 
-const Dropdown = ({ setValue, value, data, label, placeholder, width, disabled }: Props) => {
+const data = [
+	'Smart Contract Development',
+	'Web 3.0 Integration',
+	'Smart Contract Audit',
+	'Technical Advisory',
+	'Other',
+];
+
+const Dropdown = ({ value, setValue, label, placeholder, width, disabled, ...restProps }: Props) => {
 	const [visible, setVisible] = useState(false);
 	const ref = useOuterClick(() => {
 		setVisible(false);
 	});
 	return (
-		<Box className="dropdown" overflow="visible" ref={ref} width={width ?? '32rem'}>
+		<Box className="dropdown" overflow="visible" ref={ref} mt="mxxl">
 			<LabelledSelectInput
 				label={label}
 				set={setVisible}
 				placeholder={placeholder}
 				visible={visible}
 				value={value}
-				width={width ?? '32rem'}
+				width={width}
 				{...{ disabled }}
 			/>
 			<Box
-				borderRadius="8px"
-				width={width ?? '32rem'}
-				overflow="auto"
 				maxHeight="40rem"
 				position="absolute"
 				onClick={() => setVisible(!visible)}
 				onBlur={() => setVisible(false)}
+				bg="#221042"
+				px="mxs"
+				border={visible ? '1px solid white' : 'none'}
+				width={{ mobS: '38.2rem', tabL: '37.7rem', deskM: '48rem' }}
+				cursor="pointer"
 			>
 				<If
 					condition={visible}
-					then={data.map((item) => (
+					then={data.map((item, index) => (
 						<Box
 							key={item}
-							padding="7px 16px"
-							border={`1px solid ${theme.colors['white-20']}`}
 							backgroundColor="white-00"
-							minWidth="32rem"
+							width={{ mobS: '34.2rem', tabL: '37.7rem', deskM: '48rem' }}
 							css={`
 								&:hover {
 									background-color: ${theme.colors['blue-00']};
 								}
 							`}
+							pt={index === 0 ? 'mxs' : 'ms'}
+							pb="mxxs"
 							onClick={() => setValue(item)}
 						>
-							<Text as="b1" fontFamily="Switzer" fontWeight="medium">
+							<Text as="c1" fontFamily="Inter">
 								{item}
 							</Text>
+							<Box
+								width={{ mobS: '32.4rem', tabL: '36.1rem', deskM: '46.4rem' }}
+								display={index! === data.length - 1 ? 'none' : 'block'}
+								border="none"
+								borderBottom="1px solid white"
+								outline="none"
+							></Box>
 						</Box>
 					))}
 				/>
