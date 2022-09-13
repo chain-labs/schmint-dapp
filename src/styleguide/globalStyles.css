@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://api.fontshare.com/css?f[]=switzer@300,400,500,600,700&display=swap');
+@import url('https://fontlibrary.org//face/open-sauce-one');
+
+
+body,
+html {
+	padding: 0;
+	margin: 0;
+	font-size: 62.5%;
+	font-family: 'Switzer', sans-serif;
+	font-style: normal;
+}
+
+p {
+	font-family: 'OpenSauceOneRegular', sans-serif;
+}
+
+div {
+	font-size: 1.6rem;
+}
+
+* {
+	box-sizing: border-box;
+	scroll-behavior: smooth;
+	margin: 0;
+	padding: 0;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+	-moz-appearance: textfield;
+}
+
+a,
+a:visited {
+	text-decoration: none;
+	color: inherit;
+}
+
+svg {
+	z-index: 2;
+}
+
+
+.hidden-scrollbar::-webkit-scrollbar {
+	background: transparent;
+	width: 10px;
+	padding: 4px;
+}
+
+.hidden-scrollbar::-webkit-scrollbar-thumb {
+	background: #868686;
+	margin-right: 2px;
+	border-radius: 16px;
+}
+
+.tnc-hidden-scrollbar::-webkit-scrollbar {
+	background: transparent;
+	width: 4px;
+	margin-left: 16px;
+}
+
+.tnc-hidden-scrollbar::-webkit-scrollbar-thumb {
+	background: #DCDCE5;
+	border-radius: 16px;
+}
+
+.absolute-center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.spin {	
+	animation: spin 1.5s linear infinite;
+}
+
+a:hover {
+	text-decoration: underline;
+}
