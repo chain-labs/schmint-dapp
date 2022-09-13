@@ -1,4 +1,4 @@
-export const TWITTER_URL = "https://twitter.com/0xChainlabs";
+export const TWITTER_URL = "https://twitter.com/simplrhq";
 export const LINKEDIN_URL = "https://www.linkedin.com/company/0xchainlabs";
 export const GITHUB_URL = "https://github.com/chain-labs";
 export const MEDIUM_URL = "https://blog.chainlabs.in ";

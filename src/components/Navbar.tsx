@@ -24,6 +24,7 @@ const Navbar = () => {
           <Box
             as="a"
             href={TWITTER_URL}
+            target="_blank"
             row
             alignItems="center"
             color="simply-black"
@@ -40,7 +41,7 @@ const Navbar = () => {
             </Text>
             <ArrowUpRight size={16} weight="bold" />
           </Box>
-          <Box
+          {/* <Box
             as="a"
             href={WAITLIST_URL}
             target="_blank"
@@ -60,6 +61,27 @@ const Navbar = () => {
             `}
           >
             <Text as="b2">Enter Waitlist</Text>
+          </Box> */}
+          <Box
+            as="a"
+            href={WAITLIST_URL}
+            target="_blank"
+            ml="wxs"
+            row
+            alignItems="center"
+            color="simply-black"
+            cursor="pointer"
+            display={{ mobS: "none", deskM: "flex" }}
+            css={`
+              &:hover {
+                color: ${theme.colors["blue-40"]};
+              }
+            `}
+          >
+            <Text as="nav" mr="2px">
+              Enter Waitlist
+            </Text>
+            <ArrowUpRight size={16} weight="bold" />
           </Box>
         </Box>
       </Box>
