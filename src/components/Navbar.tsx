@@ -79,7 +79,7 @@ const Navbar = () => {
             `}
           >
             <Text as="nav" mr="2px">
-              Join Waitlist
+              Enter Waitlist
             </Text>
             <ArrowUpRight size={16} weight="bold" />
           </Box>
