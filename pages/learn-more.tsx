@@ -8,11 +8,21 @@ const LearnMore = () => {
   const [placeholder, setPlaceholder] = React.useState("");
 
   useEffect(() => {
-    const randomNumber = (_.random(0, 499) % 3) + 1;
-    const img = `https://ik.imagekit.io/chainlabs/Schmint/gifs/${randomNumber}.gif`;
-    const placeholder = `https://ik.imagekit.io/chainlabs/Schmint/placeholders/${randomNumber}.jpeg`;
-    setImage(img);
-    setPlaceholder(placeholder);
+    const randomize = () => {
+      let randomNumber = _.random(0, 499);
+      randomNumber = randomNumber % 4;
+      randomNumber += 1;
+      const img = `https://ik.imagekit.io/chainlabs/Schmint/gifs/${randomNumber}.gif`;
+      const placeholder = `https://ik.imagekit.io/chainlabs/Schmint/placeholders/${randomNumber}.jpeg`;
+      setImage(img);
+      setPlaceholder(placeholder);
+    };
+
+    randomize();
+
+    return () => {
+      randomize();
+    };
   }, []);
 
   return (
