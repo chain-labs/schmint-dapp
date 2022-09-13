@@ -57,8 +57,8 @@ const Home = () => {
           <Link href="/learn-more" passHref>
             <Text
               as="b1"
-              color="blue-40"
               css={`
+                color: ${theme.colors["blue-40"]};
                 &:hover {
                   cursor: pointer;
                   text-decoration: underline;
