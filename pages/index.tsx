@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Box from "src/components/Box";
 import Text from "src/components/Text";
+import { DISCORD_INVITE } from "src/constants";
 import theme from "src/styleguide/theme";
 
 const Home = () => {
@@ -35,7 +36,10 @@ const Home = () => {
         </Text>
         <Box mt="wxs" row alignItems="center">
           <Box
-            as="button"
+            as="a"
+            href={DISCORD_INVITE}
+            target="_blank"
+            center
             bg="blue-40"
             height={{ mobS: "4.8rem", deskM: "5.6rem" }}
             px={{ mobS: "mxxxl", deskM: "wxs" }}
