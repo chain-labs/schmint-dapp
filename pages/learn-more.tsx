@@ -27,7 +27,7 @@ const LearnMore = () => {
   }, []);
 
   return (
-    <Box center height="100vh" width="100vw">
+    <Box center height="100vh" width="100vw" bg="sky-blue-10">
       <motion.div
         initial={{ scale: 0, opacity: 0 }}
         animate={{

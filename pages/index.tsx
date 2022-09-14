@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Box from "src/components/Box";
 import Text from "src/components/Text";
-import { DISCORD_INVITE } from "src/constants";
+import { DISCORD_INVITE, WAITLIST_URL } from "src/constants";
 import theme from "src/styleguide/theme";
 
 const Home = () => {
@@ -37,7 +37,7 @@ const Home = () => {
         <Box mt="wxs" row alignItems="center">
           <Box
             as="a"
-            href={DISCORD_INVITE}
+            href={WAITLIST_URL}
             target="_blank"
             center
             bg="blue-40"
@@ -55,7 +55,7 @@ const Home = () => {
             `}
           >
             <Text as="b1" color="simply-white">
-              Join Discord
+             Enter Waitlist
             </Text>
           </Box>
           <Link href="/learn-more" passHref>

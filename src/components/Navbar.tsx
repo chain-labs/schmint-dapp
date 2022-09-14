@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, TwitterLogo } from "phosphor-react";
 import React from "react";
-import { TWITTER_URL, WAITLIST_URL } from "src/constants";
+import { DISCORD_INVITE, TWITTER_URL, WAITLIST_URL } from "src/constants";
 import theme from "src/styleguide/theme";
 import Box from "./Box";
 import Text from "./Text";
@@ -58,30 +58,9 @@ const Navbar = () => {
               <ArrowUpRight size={16} weight="bold" />
             </Box>
           </Box>
-          {/* <Box
-            as="a"
-            href={WAITLIST_URL}
-            target="_blank"
-            border="none"
-            height="4rem"
-            bg="blue-40"
-            color="gray-10"
-            borderRadius="64px"
-            px="mxl"
-            ml={{ mobS: "0", deskM: "wxs" }}
-            cursor="pointer"
-            center
-            css={`
-              &:hover {
-                background: ${theme.colors["blue-50"]};
-              }
-            `}
-          >
-            <Text as="b2">Enter Waitlist</Text>
-          </Box> */}
           <Box
             as="a"
-            href={WAITLIST_URL}
+            href={DISCORD_INVITE}
             target="_blank"
             ml={{ mobS: "0", tabS: "wxs" }}
             row
@@ -105,7 +84,7 @@ const Navbar = () => {
             `}
           >
             <Text as="btn2" mr="2px">
-              Enter Waitlist
+              Join Discord
             </Text>
           </Box>
         </Box>
