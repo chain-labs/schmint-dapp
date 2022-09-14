@@ -21,22 +21,30 @@ export const fontSizes = {
 const setEl = (type: string) => {
   switch (type) {
     case "h1":
-      return 'h1';
-    case "h2": return 'h2';
-    case "h3": return 'h3';
-    case "h4": return 'h4';
-    case "h5": return 'h5';
-    case "h6": return 'h6';
-    case "b3": 
+      return "h1";
+    case "h2":
+      return "h2";
+    case "h3":
+      return "h3";
+    case "h4":
+      return "h4";
+    case "h5":
+      return "h5";
+    case "h6":
+      return "h6";
+    case "b3":
     case "b2":
-    case "b1": return "h6";
+    case "b1":
+      return "h6";
     case "btn1":
     case "btn2":
     case "c2":
-    case "c1": return "p";
-    default: return "p";
+    case "c1":
+      return "p";
+    default:
+      return "p";
   }
-}
+};
 
 const fontWeights = {
   "extra-bold": "OpenSauceOneExtraBold",
