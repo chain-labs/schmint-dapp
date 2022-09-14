@@ -22,7 +22,7 @@ const Home = () => {
         center
       >
         <Text as="h1" mb={{ mobS: "mm", deskM: "mxl" }} textAlign="center">
-          {"Don't be a victm of FOMO, take control."}
+          {"Don't be a victim of FOMO, take control."}
         </Text>
         <Text
           as="b1"
