@@ -59,18 +59,18 @@ const Home = () => {
             </Text>
           </Box>
           <Link href="/learn-more" passHref>
-            <Text
-              as="b1"
+            <Box
               css={`
-                color: ${theme.colors["blue-40"]};
+              color: :${theme.colors["blue-40"]};
                 &:hover {
-                  cursor: pointer;
                   text-decoration: underline;
                 }
               `}
             >
-              Learn More
-            </Text>
+              <Text as="b1" color="blue-40" cursor="pointer">
+                Learn More
+              </Text>
+            </Box>
           </Link>
         </Box>
       </Box>
