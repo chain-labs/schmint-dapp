@@ -1,8 +1,8 @@
 {
-  "name": "chainlabs-fe",
+  "name": "schmint-lp",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/WarriorsDAO/chainlabs-fe.git",
+  "repository": "https://github.com/chain-labs/schmint-lp.git",
   "license": "MIT",
   "dependencies": {
     "@iconscout/react-unicons": "^1.1.6",
