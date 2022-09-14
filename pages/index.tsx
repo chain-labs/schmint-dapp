@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Box from "src/components/Box";
 import Text from "src/components/Text";
-import { DISCORD_INVITE, WAITLIST_URL } from "src/constants";
+import { WAITLIST_URL } from "src/constants";
 import theme from "src/styleguide/theme";
 
 const Home = () => {
@@ -55,7 +55,7 @@ const Home = () => {
             `}
           >
             <Text as="b1" color="simply-white">
-             Enter Waitlist
+              Enter Waitlist
             </Text>
           </Box>
           <Link href="/learn-more" passHref>
