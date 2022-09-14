@@ -12,7 +12,7 @@ import { ThemeProvider } from "styled-components";
 import Box from "../src/components/Box";
 import Text from "../src/components/Text";
 import Image from "next/image";
-import { CHAINLABS_URL } from "../src/constants";
+import { SIMPLR_URL } from "../src/constants";
 
 Router.onRouteChangeStart = (url) => {
   NProgress.start();
@@ -106,21 +106,21 @@ const MyApp = ({ Component, pageProps }) => {
         <Navbar />
         <Component {...pageProps} />
         <Box center position="fixed" bottom="0" py="mxl" width="100vw">
-          <Text as="b2" color="simply-gray">
-            A product by
-          </Text>
+          {/* <Text as="b2" color="simply-gray">
+            A product
+          </Text> */}
           <Box
             as="a"
-            href={CHAINLABS_URL}
+            href={SIMPLR_URL}
             target="_blank"
             position="relative"
             height="3.3rem"
             width="11.1rem"
-            ml="mxxs"
+            // ml="mxxs"
           >
             <Image
-              src="https://ik.imagekit.io/chainlabs/Website_Media/Chain_Labs_Logos/Chain-Labs-logo_zULP6k1oE.svg"
-              alt="Chain Labs"
+              src="https://ik.imagekit.io/chainlabs/Schmint/simplr-brand_AziSwlVYT.svg"
+              alt="Simplr"
               layout="fill"
             />
           </Box>
