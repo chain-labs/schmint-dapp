@@ -3,7 +3,8 @@ import { debounce } from "lodash";
 import Head from "next/head";
 import Router from "next/router";
 import NProgress from "nprogress";
-import Navbar from "../src/components/Navbar";
+import Navbar from "../src/components/Navbarnew";
+import Wagmi from "components/Wagmi";
 
 import theme from "styleguide/theme";
 
@@ -13,6 +14,10 @@ import Box from "../src/components/Box";
 import Text from "../src/components/Text";
 import Image from "next/image";
 import { SIMPLR_URL } from "../src/constants";
+import { CHAINLABS_URL } from "../src/constants";
+import ApolloClientProvider from "components/ApolloClient";
+import { wrapper } from "src/redux/store";
+import ModalHandler from "components/ModalHandler";
 
 Router.onRouteChangeStart = (url) => {
   NProgress.start();
@@ -103,31 +108,36 @@ const MyApp = ({ Component, pageProps }) => {
         ></script>
       </Head>
       <ThemeProvider theme={theme}>
-        <Navbar />
-        <Component {...pageProps} />
-        <Box center position="fixed" bottom="0" py="mxl" width="100vw">
-          {/* <Text as="b2" color="simply-gray">
-            A product
-          </Text> */}
-          <Box
-            as="a"
-            href={SIMPLR_URL}
-            target="_blank"
-            position="relative"
-            height="3.3rem"
-            width="11.1rem"
-            // ml="mxxs"
-          >
-            <Image
-              src="https://ik.imagekit.io/chainlabs/Schmint/simplr-brand_AziSwlVYT.svg"
-              alt="Simplr"
-              layout="fill"
-            />
-          </Box>
-        </Box>
+        <Wagmi>
+          <ApolloClientProvider>
+            <Navbar />
+            <Component {...pageProps} />
+            <Box center position="fixed" bottom="0" py="mxl" width="100vw">
+              {/* <Text as="b2" color="simply-gray">
+                A product
+              </Text> */}
+              <Box
+                as="a"
+                href={SIMPLR_URL}
+                target="_blank"
+                position="relative"
+                height="3.3rem"
+                width="11.1rem"
+                // ml="mxxs"
+              >
+                <Image
+                  src="https://ik.imagekit.io/chainlabs/Schmint/simplr-brand_AziSwlVYT.svg"
+                  alt="Simplr"
+                  layout="fill"
+                />        
+              </Box>
+            </Box>
+          <ModalHandler />
+          </ApolloClientProvider>
+        </Wagmi>
       </ThemeProvider>
     </>
   );
 };
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);

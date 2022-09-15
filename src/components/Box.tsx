@@ -30,7 +30,6 @@ import {
 } from "styled-system";
 
 import { allStyledSystemProps } from "styleguide/filterStyledSystemProps";
-import theme from "src/styleguide/theme";
 
 export interface BoxProps
   extends ColorProps,
@@ -113,8 +112,6 @@ export interface BoxProps
   column?: boolean;
   center?: boolean;
   between?: boolean;
-  hover?: string;
-  pointer?: boolean;
   hideScrollBar?: boolean;
   hidden?: boolean;
   truncate?: boolean;
@@ -150,6 +147,7 @@ const customProps = {
   whiteSpace: true,
   WebkitBoxOrient: true,
   WebkitLineClamp: true,
+  color: true,
 };
 
 const customPropsStyleFn = system(customProps as any);
@@ -186,18 +184,6 @@ const Box = styled.div.withConfig({
       display: flex;
       justify-content: space-between;
       align-items: center;
-    `};
-  ${(props) =>
-    props.hover &&
-    css`
-      &:hover {
-        background: ${theme.colors[props.hover]};
-      }
-    `};
-  ${(props) =>
-    props.pointer &&
-    css`
-      cursor: pointer;
     `};
   ${color};
   ${flexbox};
