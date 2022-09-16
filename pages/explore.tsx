@@ -1,8 +1,9 @@
 import React from 'react';
 import Box from 'src/components/Box';
+import ExploreComp from 'src/containers/Explore';
 
 const Explore = () => {
-	return <Box height="100vh">Explore</Box>;
+	return <ExploreComp />;
 };
 
 export default Explore;
