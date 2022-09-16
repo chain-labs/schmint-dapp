@@ -4344,7 +4344,10 @@ export const chain = [
 			decimals: 18,
 		},
 		rpc: ['https://rpc.kintsugi.themerge.dev'],
-		faucets: ['http://fauceth.komputing.org?chain=1337702&address=${ADDRESS}', 'https://faucet.kintsugi.themerge.dev'],
+		faucets: [
+			'http://fauceth.komputing.org?chain=1337702&address=${ADDRESS}',
+			'https://faucet.kintsugi.themerge.dev',
+		],
 		infoURL: 'https://kintsugi.themerge.dev/',
 	},
 	{

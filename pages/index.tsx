@@ -69,16 +69,16 @@ const Home = () => {
                   text-decoration: underline;
                 }
               `}
-            >
-              <Text as="b1" color="blue-40" cursor="pointer">
-                Learn More
-              </Text>
-            </Box>
-          </Link>
-        </Box>
-      </Box>
-    </Box>
-  );
+						>
+							<Text as="b1" color="blue-40" cursor="pointer">
+								Learn More
+							</Text>
+						</Box>
+					</Link>
+				</Box>
+			</Box>
+		</Box>
+	);
 };
 
 export default Home;

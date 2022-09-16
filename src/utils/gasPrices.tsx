@@ -19,9 +19,9 @@ export const getCoinPrice = async (chain: number) => {
 	switch (chain) {
 		case 1:
 		case 4:
-			return (await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')).data[
-				'ethereum'
-			]['usd'].toFixed(2);
+			return (
+				await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
+			).data['ethereum']['usd'].toFixed(2);
 		case 137:
 		case 80001:
 			return (

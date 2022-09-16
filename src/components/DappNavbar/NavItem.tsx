@@ -13,6 +13,7 @@ const NavItem = ({ url, text }) => {
 			as="a"
 			href={url}
 			target="_blank"
+			color="simply-black"
 			css={`
 				&:hover {
 					color: ${theme.colors['simply-blue']};
