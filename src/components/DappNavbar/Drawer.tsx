@@ -1,8 +1,8 @@
 import { motion, useAnimationControls } from 'framer-motion';
-import { ArrowLeft, ArrowUpRight, CaretDown } from 'phosphor-react';
+import { ArrowLeft, ArrowUpRight } from 'phosphor-react';
 import { useEffect, useState } from 'react';
 import theme from 'src/styleguide/theme';
-import { FAQ_URL, DOCS_URL, HOW_TO_CREATE_URL, HOW_TO_MANAGE_URL } from 'src/utils/constants';
+import { FAQ_URL, DOCS_URL } from 'src/utils/constants';
 import Box from 'components/Box';
 import Text from 'components/Text';
 
@@ -87,64 +87,6 @@ const Drawer = ({ drawerOpen, setDrawerOpen }) => {
 						</Text>
 						<ArrowUpRight color={theme.colors['gray-80']} size={24} />
 					</Box>
-					<Box
-						row
-						mb="mm"
-						onClick={() => {
-							setExpandable(!expandable);
-						}}
-						alignItems="center"
-					>
-						<Text as="nav" color="gray-80" mr="0.2rem">
-							How to
-						</Text>
-
-						<motion.div
-							initial="closed"
-							variants={{
-								closed: {
-									rotate: '0deg',
-									transformOrigin: '50% 50%',
-									transition: { duration: 0.3, ease: 'easeInOut' },
-								},
-								open: {
-									rotate: '180deg',
-									transition: { duration: 0.3, ease: 'easeInOut' },
-								},
-							}}
-							animate={controls}
-							style={{ height: '24px' }}
-						>
-							<CaretDown color={theme.colors['gray-80']} size={24} />
-						</motion.div>
-					</Box>
-					<motion.div
-						initial="closed"
-						variants={{
-							closed: {
-								clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)',
-								transition: { duration: 0.4, ease: 'easeInOut' },
-							},
-							open: {
-								clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-								transition: { duration: 0.4, ease: 'easeInOut' },
-							},
-						}}
-						animate={controls}
-					>
-						<Box borderLeft="1px solid white" className="expandable">
-							<Box as="a" href={HOW_TO_CREATE_URL} target="_blank">
-								<Text as="b1" color="gray-80" ml="mxl" mb="mm">
-									Create Collection
-								</Text>
-							</Box>
-							<Box as="a" href={HOW_TO_MANAGE_URL} target="_blank">
-								<Text as="b1" color="gray-80" ml="mxl">
-									Manage Collection
-								</Text>
-							</Box>
-						</Box>
-					</motion.div>
 				</Box>
 			</motion.div>
 		</Box>

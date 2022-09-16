@@ -15,6 +15,7 @@ const TooltipPortal = () => {
 				}
 			`}
 		>
+			{/* @ts-expect-error - react-tooltip types are wrong */}
 			<ReactTooltip
 				className="tooltip"
 				place="bottom"
