@@ -18,7 +18,11 @@ const MenuItem = ({ Icon, text, route }) => {
 				py="ms"
 				cursor="pointer"
 			>
-				<Icon color={theme.colors[router.pathname === route ? 'blue-40' : 'gray-40']} size={24} />
+				<Icon
+					color={theme.colors[router.pathname === route ? 'blue-40' : 'gray-40']}
+					size={24}
+					weight={route !== '/my-assets' ? 'fill' : 'regular'}
+				/>
 				<Text as="h6" ml="ms">
 					{text}
 				</Text>
