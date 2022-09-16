@@ -15,6 +15,7 @@ export default function useOuterClick(callback) {
 		function handleClick(e) {
 			// @ts-expect-error ts-migrate(2339) FIXME: Property 'current' does not exist on type 'RefObject<HTMLElement>'.
 			if (innerRef.current && callbackRef.current && !innerRef?.current?.contains(e.target))
+				// @ts-expect-error ts-migrate(2339) FIXME: Property 'current' does not exist on type 'RefObject<HTMLElement>'.
 				callbackRef?.current(e);
 		}
 	}, []); // no dependencies -> stable click listener
