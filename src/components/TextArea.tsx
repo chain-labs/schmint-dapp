@@ -1,35 +1,35 @@
-import styled from "styled-components";
-import Box from "./Box";
+import styled from 'styled-components';
+import Box from './Box';
 
 const TextArea = ({
-  value,
-  setValue,
-  width,
-  height,
+	value,
+	setValue,
+	width,
+	height,
 }: {
-  value: string;
-  setValue: (string) => void;
-  width?: string;
-  height?: string;
+	value: string;
+	setValue: (string) => void;
+	width?: string;
+	height?: string;
 }) => {
-  return (
-    <TextAreaElement
-      as="textarea"
-      value={value}
-      width={width}
-      height={height}
-      onChange={(e) => setValue(e.target.value)}
-    />
-  );
+	return (
+		<TextAreaElement
+			as="textarea"
+			value={value}
+			width={width}
+			height={height}
+			onChange={(e) => setValue(e.target.value)}
+		/>
+	);
 };
 
 export default TextArea;
 
 const TextAreaElement = styled(Box)(
-  (props) => `
-        width: ${props.width ?? "320px"};
-        height: ${props.height ?? "90px"};
-        background: ${props.theme.colors["white-00"]};
+	(props) => `
+        width: ${props.width ?? '320px'};
+        height: ${props.height ?? '90px'};
+        background: ${props.theme.colors['white-00']};
         box-shadow: inset 0px 2px 2px -1px rgba(74, 74, 104, 0.1);
         border-radius: 8px;
         border: none;

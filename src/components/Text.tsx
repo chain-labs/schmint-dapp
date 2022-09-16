@@ -19,31 +19,31 @@ export const fontSizes = {
 };
 
 const setEl = (type: string) => {
-  switch (type) {
-    case "h1":
-      return "h1";
-    case "h2":
-      return "h2";
-    case "h3":
-      return "h3";
-    case "h4":
-      return "h4";
-    case "h5":
-      return "h5";
-    case "h6":
-      return "h6";
-    case "b3":
-    case "b2":
-    case "b1":
-      return "h6";
-    case "btn1":
-    case "btn2":
-    case "c2":
-    case "c1":
-      return "p";
-    default:
-      return "p";
-  }
+	switch (type) {
+		case 'h1':
+			return 'h1';
+		case 'h2':
+			return 'h2';
+		case 'h3':
+			return 'h3';
+		case 'h4':
+			return 'h4';
+		case 'h5':
+			return 'h5';
+		case 'h6':
+			return 'h6';
+		case 'b3':
+		case 'b2':
+		case 'b1':
+			return 'h6';
+		case 'btn1':
+		case 'btn2':
+		case 'c2':
+		case 'c1':
+			return 'p';
+		default:
+			return 'p';
+	}
 };
 
 const fontWeights = {
@@ -135,24 +135,24 @@ const Text = ({ as = 'b1', color, children, ...restProps }: TextProps): JSX.Elem
 	const lh = restProps.lineHeight ?? lineHeights(as);
 	const cs = restProps.letterSpacing ?? charSpacing[as];
 
-  return (
-    <Box
-      as={setEl(as)}
-      className={restProps.className}
-      margin={0}
-      padding={0}
-      color={color as string}
-      fontSize={fs}
-      letterSpacing={cs}
-      lineHeight={lh}
-      fontFamily={fontW[as]}
-      fontStyle="normal"
-      fontWeight="400"
-      {...restProps}
-    >
-      {children}
-    </Box>
-  );
+	return (
+		<Box
+			as={setEl(as)}
+			className={restProps.className}
+			margin={0}
+			padding={0}
+			color={color as string}
+			fontSize={fs}
+			letterSpacing={cs}
+			lineHeight={lh}
+			fontFamily={fontW[as]}
+			fontStyle="normal"
+			fontWeight="400"
+			{...restProps}
+		>
+			{children}
+		</Box>
+	);
 };
 
 export default Text;

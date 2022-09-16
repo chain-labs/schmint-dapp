@@ -184,12 +184,12 @@ export const InputElement = styled(Box)(
 			: 'inset 0px 2px 2px -1px rgba(74, 74, 104, 0.1)'
 	};
     ${
-			props.value && !props.disableValidation
-				? props.validation !== 'invalid'
-					? `box-shadow: 0 0 0 4px ${theme.colors['green-50']}33`
-					: `box-shadow: 0px 0px 0px 4px ${props.theme.colors['red-50']}33;`
-				: ''
-		};
+		props.value && !props.disableValidation
+			? props.validation !== 'invalid'
+				? `box-shadow: 0 0 0 4px ${theme.colors['green-50']}33`
+				: `box-shadow: 0px 0px 0px 4px ${props.theme.colors['red-50']}33;`
+			: ''
+	};
 
 
 	&::placeholder {
