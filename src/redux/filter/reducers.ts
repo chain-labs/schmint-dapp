@@ -1,33 +1,50 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import { addFilter, removeFilter, addSearch } from './actions';
+import {  removeFilter, addSearch, filterAlphabetical, filterNetwork, filterPrice } from './actions';
 import { FilterState } from './types';
 
 const initialState: FilterState = {
-	filterValue: {
-		isAZ: false,
-		isZA: false,
-		isEthereum: false,
-		isPolygon:false,
-		isHighToLow:false,
-		isLowToHigh:false
-	},
-	searchValue: '',
-	clearAll: false
+	alphabetical:{
+        isAZ:false,
+        isZA:false
+    },
+    network:{
+        isEthereum: false,
+        isPolygon:false,
+    },
+    price:{
+        isLowToHigh: false,
+        isHighToLow: false,
+        isFree: false
+    },
+	search:'',
+	clearAll:false
 };
 
 export const filterReducer = createReducer(initialState, (builder) => {
 	builder
-		.addCase(addFilter, (state, action) => {
-			state.filterValue = action.payload
+		.addCase(filterAlphabetical, (state, action) => {
+			state.alphabetical = action.payload
+			const newState = { ...state };
+			return newState;
+		})
+		.addCase(filterNetwork, (state, action) => {
+			state.alphabetical = action.payload
+			const newState = { ...state };
+			return newState;
+		})
+		.addCase(filterPrice, (state, action) => {
+			state.alphabetical = action.payload
 			const newState = { ...state };
 			return newState;
 		})
 		.addCase(addSearch, (state,action) => {
-			state.searchValue=action.payload
+			state.search=action.payload
 		})
 		.addCase(removeFilter, (state) => {
 			state.clearAll= true
-			state.filterValue=null
+			state.alphabetical=null
+			state.network=null
+			state.price=null
 		});
 });

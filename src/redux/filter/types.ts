@@ -1,8 +1,17 @@
-export interface FilterState  {
-	filterValue: {
-        isAZ:boolean,
-        isZA:boolean
-    }
-	searchValue?:string
-	clearAll?:boolean
-};
+export interface FilterState {
+	alphabetical: {
+		isAZ: boolean;
+		isZA: boolean;
+	};
+	network: {
+		isEthereum: boolean;
+		isPolygon: boolean;
+	};
+	price: {
+		isLowToHigh: boolean;
+		isHighToLow: boolean;
+		isFree: boolean;
+	};
+	search?: string;
+	clearAll?: boolean;
+}

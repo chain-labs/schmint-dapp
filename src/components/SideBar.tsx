@@ -1,10 +1,8 @@
-import React from 'react'
-import Box from './Box'
+import React from 'react';
+import Box from './Box';
 
 const SideBar = () => {
-  return (
-    <Box></Box>
-  )
-}
+	return <Box></Box>;
+};
 
-export default SideBar
+export default SideBar;

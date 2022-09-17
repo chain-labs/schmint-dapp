@@ -1,13 +1,13 @@
-import React from 'react'
-import Box from 'src/components/Box'
-import SideBar from 'src/components/SideBar'
+import React from 'react';
+import Box from 'src/components/Box';
+import SideBar from 'src/components/SideBar';
 
 const Explore = () => {
-  return (
-    <Box>
-        <SideBar/>
-    </Box>
-  )
-}
+	return (
+		<Box>
+			<SideBar />
+		</Box>
+	);
+};
 
-export default Explore
+export default Explore;

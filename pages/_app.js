@@ -16,7 +16,6 @@ import Layout from 'components/Layout';
 
 import '@rainbow-me/rainbowkit/styles.css';
 
-
 Router.onRouteChangeStart = (url) => {
 	NProgress.start();
 };
