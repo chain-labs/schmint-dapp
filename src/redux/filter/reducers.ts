@@ -29,12 +29,12 @@ export const filterReducer = createReducer(initialState, (builder) => {
 			return newState;
 		})
 		.addCase(filterNetwork, (state, action) => {
-			state.alphabetical = action.payload
+			state.network = action.payload
 			const newState = { ...state };
 			return newState;
 		})
 		.addCase(filterPrice, (state, action) => {
-			state.alphabetical = action.payload
+			state.price = action.payload
 			const newState = { ...state };
 			return newState;
 		})
