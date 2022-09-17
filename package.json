@@ -10,6 +10,7 @@
     "@svgr/webpack": "^5.5.0",
     "@types/styled-components": "^5.1.14",
     "@types/styled-system": "^5.1.13",
+    "@zootools/waitlist-js": "^0.2.1",
     "akar-icons": "^1.9.18",
     "dotenv": "^10.0.0",
     "firebase": "^8.3.2",
