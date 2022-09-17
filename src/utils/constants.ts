@@ -13,4 +13,8 @@ export const TEST_NETWORK = toBoolean(process.env.NEXT_PUBLIC_TEST_NETWORK);
 
 export const testNetworks = [3, 4, 5, 42, 80001];
 
+export const FAQ_URL = 'https://stonly.com/guide/en/simplr-collection-faqs-56DsboQUsp/Steps/1700349';
+
+export const DOCS_URL = 'https://docs.simplrcollection.com';
+
 export const SUBGRAPH_ENDPOINT = process.env.NEXT_PUBLIC_SUBGRAPH_ENDPOINT;
