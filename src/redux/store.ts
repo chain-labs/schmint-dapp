@@ -1,17 +1,22 @@
-import { configureStore, Action, ThunkAction } from '@reduxjs/toolkit';
-import { createWrapper } from 'next-redux-wrapper';
-import { userReducer } from './user/reducers';
-import { modalReducer } from './modal/reducers';
+import { configureStore, Action, ThunkAction } from "@reduxjs/toolkit";
+import { createWrapper } from "next-redux-wrapper";
+import { userReducer } from "./user/reducers";
+import { modalReducer } from "./modal/reducers";
+import { filterReducer } from "./filter/reducers";
+import { schedulerReducer } from "./scheduler/reducers";
 
 const makeStore = () =>
-	configureStore({
-		reducer: {
-			user: userReducer,
-			modal: modalReducer,
-		},
-		middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
-		devTools: true,
-	});
+  configureStore({
+    reducer: {
+      user: userReducer,
+      modal: modalReducer,
+      filter: filterReducer,
+      scheduler: schedulerReducer
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({ serializableCheck: false }),
+    devTools: true,
+  });
 
 export type AppStore = ReturnType<typeof makeStore>;
 
