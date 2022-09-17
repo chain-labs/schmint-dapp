@@ -4,16 +4,15 @@ import Head from 'next/head';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import Wagmi from 'components/Wagmi';
-
 import theme from 'styleguide/theme';
-
-import 'styleguide/globalStyles.css';
 import { ThemeProvider } from 'styled-components';
 import ApolloClientProvider from 'components/ApolloClient';
 import { wrapper } from 'src/redux/store';
 import ModalHandler from 'components/ModalHandler';
 import Layout from 'components/Layout';
+import If from 'components/If';
 
+import 'styleguide/globalStyles.css';
 import '@rainbow-me/rainbowkit/styles.css';
 
 Router.onRouteChangeStart = (url) => {
@@ -80,29 +79,34 @@ const MyApp = ({ Component, pageProps }) => {
 					"@type": "Organization",
 					"name": "Schmint",
 					"url": "https://schmint.simplrhq.com/",
-      				"logo": "https://ik.imagekit.io/chainlabs/Schmint/brand_ast6C-3H3.svg?ik-sdk-version=javascript-1.4.3&updatedAt=1663072697499",
+					"logo": "https://ik.imagekit.io/chainlabs/Schmint/brand_ast6C-3H3.svg?ik-sdk-version=javascript-1.4.3&updatedAt=1663072697499",
 					"description": "Don't be a victm of FOMO, take control.Saw a cool NFT project on Twitter but it sold out even before you connected your wallet? Next time just schmint it.",
 					[
-					{
-						"@type": "Decentralized",
-						"name": "Schmint",
-						"description": "Don't be a victm of FOMO, take control.Saw a cool NFT project on Twitter but it sold out even before you connected your wallet? Next time just schmint it.",
-					},
+						{
+							"@type": "Decentralized",
+							"name": "Schmint",
+							"description": "Don't be a victm of FOMO, take control.Saw a cool NFT project on Twitter but it sold out even before you connected your wallet? Next time just schmint it.",
+						},
 					]
-
-}
-
-`}</script>
-				<script
-					type="text/javascript"
-					dangerouslySetInnerHTML={{
-						__html: `(function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-          })(window, document, "clarity", "script", "dn44p6y6mg");`,
-					}}
-				></script>
+					
+				}
+				
+				`}</script>
+				<If
+					condition={process.env.NODE_ENV === 'production'}
+					then={
+						<script
+							type="text/javascript"
+							dangerouslySetInnerHTML={{
+								__html: `(function(c,l,a,r,i,t,y){
+							c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+							t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+							y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+						})(window, document, "clarity", "script", "dn44p6y6mg");`,
+							}}
+						></script>
+					}
+				/>
 			</Head>
 			<ThemeProvider theme={theme}>
 				<Wagmi>
