@@ -1,10 +1,14 @@
 import Link from 'next/link';
 import Box from 'src/components/Box';
 import Text from 'src/components/Text';
-import { WAITLIST_URL } from 'src/constants';
 import theme from 'src/styleguide/theme';
+import waitlist from '@zootools/waitlist-js';
 
 const Home = () => {
+	const clickPopup = (e) => {
+		e.preventDefault();
+		waitlist.openPopup('RYToOH09W9KwlCVvC9p3');
+	};
 	return (
 		<Box bg="sky-blue-10" height="100vh" width="100vw" color="simply-black" column justifyContent="center">
 			<Box
@@ -24,9 +28,7 @@ const Home = () => {
 				</Text>
 				<Box mt="wxs" row alignItems="center">
 					<Box
-						as="a"
-						href={WAITLIST_URL}
-						target="_blank"
+						onClick={clickPopup}
 						center
 						bg="blue-40"
 						height={{ mobS: '4.8rem', deskM: '5.6rem' }}
