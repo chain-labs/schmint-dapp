@@ -9,4 +9,12 @@ module.exports = {
 	images: {
 		domains: ['ik.imagekit.io'],
 	},
+	async rewrites() {
+		return [
+			{
+				source: '/api/projects',
+				destination: 'https://chain-labs.github.io/schmint-projects/projects.json',
+			},
+		];
+	},
 };

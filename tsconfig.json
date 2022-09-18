@@ -8,7 +8,8 @@
 			"components/*": ["./src/components/*"],
 			"svgs/*": ["./src/svgs/*"],
 			"styleguide/*": ["./src/styleguide/*"],
-			"images/*": ["./public/static/images/*"]
+			"images/*": ["./public/static/images/*"],
+			"public/*": ["./public/*"]
 		},
 		"target": "ESNext",
 		"lib": ["dom", "dom.iterable", "esnext"],
