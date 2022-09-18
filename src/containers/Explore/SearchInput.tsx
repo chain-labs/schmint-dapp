@@ -2,10 +2,21 @@ import { MagnifyingGlass } from 'phosphor-react';
 import React from 'react';
 import Box from 'src/components/Box';
 import Text from 'src/components/Text';
+import { addSearch, searchCountSelector } from 'src/redux/filter';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import theme from 'src/styleguide/theme';
 
 const SearchInput = () => {
 	const [search, setSearch] = React.useState('');
+	const dispatch = useAppDispatch();
+	const count = useAppSelector(searchCountSelector);
+
+	const handleChange = (e) => {
+		e.preventDefault();
+		setSearch(e.target.value);
+		dispatch(addSearch({ query: e.target.value, count }));
+	};
+
 	return (
 		<Box>
 			<Box
@@ -30,7 +41,7 @@ const SearchInput = () => {
 					width="90%"
 					ml="mxs"
 					value={search}
-					onChange={(e) => setSearch(e.target.value)}
+					onChange={handleChange}
 					placeholder="Search Projects"
 					fontFamily="OpenSauceOneRegular"
 					fontSize="16px"
@@ -44,7 +55,7 @@ const SearchInput = () => {
 			<Box mt="mxs" row alignItems="center" opacity={search ? 1 : 0}>
 				<Text as="c1">{`"${search}"`}</Text>
 				<Text as="c1" color="blue-40" ml="mm">
-					2 results found
+					{`${count === 0 ? 'No' : count} result${count > 1 || count === 0 ? 's' : ''} found`}
 				</Text>
 			</Box>
 		</Box>
