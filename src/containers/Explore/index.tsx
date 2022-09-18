@@ -4,6 +4,7 @@ import Box from 'src/components/Box';
 import Text from 'src/components/Text';
 import theme from 'src/styleguide/theme';
 import Filters from './Filters';
+import CollectionsList from './CollectionsList';
 import SearchInput from './SearchInput';
 
 const ExploreComp = () => {
@@ -24,6 +25,7 @@ const ExploreComp = () => {
 			</Box>
 			<SearchInput />
 			<Filters />
+			<CollectionsList />
 		</Box>
 	);
 };
