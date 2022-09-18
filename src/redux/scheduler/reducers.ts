@@ -1,12 +1,13 @@
 import { createReducer } from '@reduxjs/toolkit';
 
 import { addSchmint, removeSchmint, setScheduler } from './actions';
+import { SchmintState } from './types';
 
 export type SchedulerState = {
 	owner: string;
 	balance: string;
 	paused: boolean;
-	schmints: [{}];
+	schmints: SchmintState[];
 	schedulerAddress: string;
 };
 
@@ -14,7 +15,7 @@ const initialState: SchedulerState = {
 	owner: '',
 	balance: '',
 	paused: false,
-	schmints: [{}],
+	schmints: [],
 	schedulerAddress: '',
 };
 

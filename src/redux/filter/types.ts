@@ -1,17 +1,28 @@
 export interface FilterState {
-	alphabetical: {
-		isAZ: boolean;
-		isZA: boolean;
-	};
-	network: {
-		isEthereum: boolean;
-		isPolygon: boolean;
-	};
-	price: {
-		isLowToHigh: boolean;
-		isHighToLow: boolean;
-		isFree: boolean;
-	};
-	search?: string;
+	alphabetical?: IFilterAlphabetical;
+	network?: IFilterNetwork;
+	price?: IFilterPrice;
+	search?: ISearch;
 	clearAll?: boolean;
+}
+
+export interface IFilterAlphabetical {
+	isAZ: boolean;
+	isZA: boolean;
+}
+
+export interface IFilterNetwork {
+	isEthereum: boolean;
+	isPolygon: boolean;
+}
+
+export interface IFilterPrice {
+	isLowToHigh: boolean;
+	isHighToLow: boolean;
+	isFree: boolean;
+}
+
+export interface ISearch {
+	query?: string;
+	count?: number;
 }
