@@ -1,48 +1,16 @@
-import React, { useEffect } from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import Text from 'src/components/Text';
+import { filterAlphabetical, filterNetwork, filterPrice, filterSelector, removeFilter } from 'src/redux/filter';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import theme from 'src/styleguide/theme';
 
-const initialState = {
-	alphabetic: {
-		'a-z': false,
-		'z-a': false,
-	},
-	network: {
-		ethereum: false,
-		polygon: false,
-	},
-	price: {
-		free: false,
-		'low-to-high': false,
-		'high-to-low': false,
-	},
-	clear: true,
-};
-
 const Filters = () => {
-	const [filterState, setFilterState] = React.useState(initialState);
+	const filter = useAppSelector(filterSelector);
 
-	useEffect(() => {
-		const checkClear = () => {
-			const { alphabetic, network, price } = filterState;
-			if (!alphabetic['a-z'] && !alphabetic['z-a']) {
-				if (!network.ethereum && !network.polygon) {
-					if (!price.free && !price['low-to-high'] && !price['high-to-low']) {
-						return true;
-					}
-				}
-			}
-			return false;
-		};
-		const clear = checkClear();
-		if (clear !== filterState.clear) {
-			setFilterState({ ...filterState, clear });
-		}
-	}, [filterState]);
+	const dispatch = useAppDispatch();
 
-	const { alphabetic, network, price, clear } = filterState;
+	const { alphabetical, network, price, clearAll } = filter;
 	return (
 		<Box mt="mxxxl">
 			<Box row alignItems="center" mb="mm">
@@ -50,9 +18,9 @@ const Filters = () => {
 					Filters
 				</Text>
 				<If
-					condition={!clear}
+					condition={!clearAll}
 					then={
-						<Text as="c1" color="blue-40" cursor="pointer" onClick={() => setFilterState(initialState)}>
+						<Text as="c1" color="blue-40" cursor="pointer" onClick={() => dispatch(removeFilter())}>
 							Clear all
 						</Text>
 					}
@@ -61,73 +29,44 @@ const Filters = () => {
 			<Box row alignItems="center" justifyContent="space-between">
 				<FilterItem
 					label="A-Z"
-					active={alphabetic['a-z']}
-					onClick={() => {
-						setFilterState({
-							...filterState,
-							alphabetic: { 'a-z': !alphabetic['a-z'], 'z-a': false },
-						});
-					}}
+					active={alphabetical.isAZ}
+					onClick={() => dispatch(filterAlphabetical({ isAZ: !alphabetical.isAZ, isZA: false }))}
 				/>
 				<FilterItem
 					label="Z-A"
-					active={alphabetic['z-a']}
-					onClick={() => {
-						setFilterState({
-							...filterState,
-							alphabetic: { 'a-z': false, 'z-a': !alphabetic['z-a'] },
-						});
-					}}
+					active={alphabetical.isZA}
+					onClick={() => dispatch(filterAlphabetical({ isAZ: false, isZA: !alphabetical.isZA }))}
 				/>
 				<FilterItem
 					label="Ethereum"
-					active={network.ethereum}
-					onClick={() => {
-						setFilterState({
-							...filterState,
-							network: { ...network, ethereum: !network.ethereum },
-						});
-					}}
+					active={network.isEthereum}
+					onClick={() => dispatch(filterNetwork({ ...network, isEthereum: !network.isEthereum }))}
 				/>
 				<FilterItem
 					label="Polygon"
-					active={network.polygon}
-					onClick={() => {
-						setFilterState({
-							...filterState,
-							network: { ...network, polygon: !network.polygon },
-						});
-					}}
+					active={network.isPolygon}
+					onClick={() => dispatch(filterNetwork({ ...network, isPolygon: !network.isPolygon }))}
 				/>
 				<FilterItem
 					label="Price: Free"
-					active={price.free}
-					onClick={() => {
-						setFilterState({
-							...filterState,
-							price: { free: !price.free, 'low-to-high': false, 'high-to-low': false },
-						});
-					}}
+					active={price.isFree}
+					onClick={() =>
+						dispatch(filterPrice({ isFree: !price.isFree, isLowToHigh: false, isHighToLow: false }))
+					}
 				/>
 				<FilterItem
 					label="Price: Low to High"
-					active={price['low-to-high']}
-					onClick={() => {
-						setFilterState({
-							...filterState,
-							price: { free: false, 'low-to-high': !price['low-to-high'], 'high-to-low': false },
-						});
-					}}
+					active={price.isLowToHigh}
+					onClick={() =>
+						dispatch(filterPrice({ isFree: false, isLowToHigh: !price.isLowToHigh, isHighToLow: false }))
+					}
 				/>
 				<FilterItem
 					label="Price: High to Low"
-					active={price['high-to-low']}
-					onClick={() => {
-						setFilterState({
-							...filterState,
-							price: { free: false, 'low-to-high': false, 'high-to-low': !price['high-to-low'] },
-						});
-					}}
+					active={price.isHighToLow}
+					onClick={() =>
+						dispatch(filterPrice({ isFree: false, isLowToHigh: false, isHighToLow: !price.isHighToLow }))
+					}
 				/>
 			</Box>
 		</Box>
