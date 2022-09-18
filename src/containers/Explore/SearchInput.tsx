@@ -2,14 +2,14 @@ import { MagnifyingGlass } from 'phosphor-react';
 import React from 'react';
 import Box from 'src/components/Box';
 import Text from 'src/components/Text';
-import { addSearch, searchCountSelector } from 'src/redux/filter';
+import { addSearch, searchSelector } from 'src/redux/filter';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import theme from 'src/styleguide/theme';
 
 const SearchInput = () => {
-	const [search, setSearch] = React.useState('');
+	const { query, count } = useAppSelector(searchSelector);
+	const [search, setSearch] = React.useState(query);
 	const dispatch = useAppDispatch();
-	const count = useAppSelector(searchCountSelector);
 
 	const handleChange = (e) => {
 		e.preventDefault();

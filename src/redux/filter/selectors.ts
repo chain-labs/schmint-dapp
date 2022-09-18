@@ -5,6 +5,6 @@ export const selectFilter = (state: AppState) => state.filter;
 
 export const filterSelector = createSelector(selectFilter, (state) => state);
 
-export const selectSearchCount = (state: AppState) => state.filter.search.count;
+export const selectSearch = (state: AppState) => state.filter.search;
 
-export const searchCountSelector = createSelector(selectSearchCount, (state) => state);
+export const searchSelector = createSelector(selectSearch, (state) => state);
