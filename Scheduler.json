@@ -1,36 +1,32 @@
 {
-    "1":{
-        "owner":"0x0b563F844fFAb97E54150cd7D2Aa4aFbCD6B69Ca",
-        "balance":"",
-        "paused":"false",
-        "schmints":
-        [
-            {
-                "name":"Hi",
-                "mint":"yes"
-            },
-            {
-                "name":"Hi",
-                "mint":"yes"
-            }
-        ]
-        
-    },
-    "2":{
-        "owner":"0x5F5A30564388e7277818c15DB0d511AAbbD0eC80",
-        "balance":"",
-        "paused":"false",
-        "schmints":
-        [
-            {
-                "name":"Hi",
-                "mint":"yes"
-            },
-            {
-                "name":"Hi",
-                "mint":"yes"
-            }
-        ]
-
-    }
+	"1": {
+		"owner": "0x0b563F844fFAb97E54150cd7D2Aa4aFbCD6B69Ca",
+		"balance": "",
+		"paused": "false",
+		"schmints": [
+			{
+				"name": "Hi",
+				"mint": "yes"
+			},
+			{
+				"name": "Hi",
+				"mint": "yes"
+			}
+		]
+	},
+	"2": {
+		"owner": "0x5F5A30564388e7277818c15DB0d511AAbbD0eC80",
+		"balance": "",
+		"paused": "false",
+		"schmints": [
+			{
+				"name": "Hi",
+				"mint": "yes"
+			},
+			{
+				"name": "Hi",
+				"mint": "yes"
+			}
+		]
+	}
 }
