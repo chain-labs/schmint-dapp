@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { debounce } from 'lodash';
 import Head from 'next/head';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import NProgress from 'nprogress';
 import Wagmi from 'components/Wagmi';
 import theme from 'styleguide/theme';
@@ -25,6 +25,7 @@ Router.onRouteChangeError = () => NProgress.done();
 NProgress.configure({ showSpinner: false });
 
 const MyApp = ({ Component, pageProps }) => {
+	const [hostname, setHostname] = useState('');
 	useEffect(() => {
 		// Set a custom CSS Property for Height
 		// See https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
@@ -49,6 +50,13 @@ const MyApp = ({ Component, pageProps }) => {
 			};
 		}
 	});
+
+	const router = useRouter();
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			setHostname(window.location.hostname);
+		}
+	}, []);
 
 	return (
 		<>
@@ -93,9 +101,7 @@ const MyApp = ({ Component, pageProps }) => {
 				
 				`}</script>
 				<If
-					condition={
-						process.env.NODE_ENV === 'production' && window.location.hostname === 'schmint.simplrhq.com'
-					}
+					condition={process.env.NODE_ENV === 'production' && hostname === 'schmint.simplrhq.com'}
 					then={
 						<script
 							type="text/javascript"
