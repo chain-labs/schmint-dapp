@@ -6,6 +6,7 @@ import Box from '../Box';
 const TooltipPortal = () => {
 	return (
 		<Box
+			as="div"
 			css={`
 				.tooltip {
 					opacity: 1 !important;

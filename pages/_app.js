@@ -93,7 +93,9 @@ const MyApp = ({ Component, pageProps }) => {
 				
 				`}</script>
 				<If
-					condition={process.env.NODE_ENV === 'production'}
+					condition={
+						process.env.NODE_ENV === 'production' && window.location.hostname === 'schmint.simplrhq.com'
+					}
 					then={
 						<script
 							type="text/javascript"

@@ -101,12 +101,14 @@ const CollectionsList = () => {
 	return (
 		<Box mt="mxl">
 			<If
+				key="collection-list"
 				condition={filter.clearAll && filter.search.query === ''}
 				then={collections.map((collection, idx) => (
 					<CollectionTile {...{ collection, idx }} />
 				))}
 				else={
 					<If
+						key="filtered-collection-list"
 						condition={filteredCollections.length === 0}
 						then={<EmptyResultComponent />}
 						else={filteredCollections.map((collection, idx) => (

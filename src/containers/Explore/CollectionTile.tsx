@@ -5,6 +5,7 @@ import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import Text from 'src/components/Text';
 import theme from 'src/styleguide/theme';
+import { ICollection } from './projectsStore';
 
 const getPriceUnit = (collection) => {
 	if (collection.price) {
@@ -18,10 +19,10 @@ const getPriceUnit = (collection) => {
 	return '';
 };
 
-const CollectionTile = ({ idx, collection }) => {
+const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollection }) => {
 	return (
 		<Box
-			key={`col-${idx}`}
+			key={`col-${idx}-${collection.title}`}
 			borderRadius="8px"
 			bg="sky-blue-10"
 			border={`1px solid ${theme.colors['sky-blue-20']}`}
