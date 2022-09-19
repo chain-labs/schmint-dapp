@@ -21,7 +21,7 @@ const getPriceUnit = (collection) => {
 const CollectionTile = ({ idx, collection }) => {
 	return (
 		<Box
-			key={`''${idx}`}
+			key={`col-${idx}`}
 			borderRadius="8px"
 			bg="sky-blue-10"
 			border={`1px solid ${theme.colors['sky-blue-20']}`}

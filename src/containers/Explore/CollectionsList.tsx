@@ -24,7 +24,6 @@ const CollectionsList = () => {
 			const { alphabetical, network, price, search } = filter;
 
 			let filteredCollection = [...collections].sort((a, b) => a.startTimestamp - b.startTimestamp);
-			console.log({ filteredCollection });
 
 			if (search.query !== '') {
 				filteredCollection = filteredCollection

@@ -84,7 +84,7 @@ const Banners = ({ setNetworkProps, networkProps }) => {
 					<Text as="c1" color="simply-blue" mr="mxxs">
 						{`${networkProps?.currency}:`}
 					</Text>
-					<Text as="c1" mr="2px" data-tip="Source: coingecko.com" data-offset="{'left': 10, 'top': 2}">
+					<Text as="c1" mr="2px" data-tip="Source: coingecko.com" data-offset="{'left': 20, 'top': 2}">
 						{`$${coinPrice}`}
 					</Text>
 				</Box>
