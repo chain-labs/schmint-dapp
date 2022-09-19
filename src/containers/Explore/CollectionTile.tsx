@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import Image from 'next/image';
 import { ArrowUpRight } from 'phosphor-react';
 import React from 'react';
 import Box from 'src/components/Box';
@@ -30,10 +31,16 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 			mb="mm"
 			row
 			between
+			css={`
+				transition: all 0.2s ease-in-out;
+				&:hover {
+					box-shadow: ${theme.shadows['shadow-400']};
+				}
+			`}
 		>
 			<Box row alignItems="center">
 				<Box
-					width="15.2rem"
+					width="19.2rem"
 					height="10.8rem"
 					borderRadius="4px"
 					as="img"
@@ -45,13 +52,30 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 						{collection.title}
 					</Text>
 					<Text as="b3" mb="0.2rem">
-						{`Minting Starts: ${format(collection.startTimestamp * 1000, 'LLL d yyyy, hh:mm a, OOOO')}`}
+						{'Minting Starts: '}
+						<span style={{ color: theme.colors['gray-50'] }}>
+							{format(collection.startTimestamp * 1000, 'LLL d yyyy, hh:mm a, OOOO')}
+						</span>
 					</Text>
+					<Box row alignItems="center" mb="0.2rem">
+						<Text as="b3">{'Blockchain: '}</Text>
+						<Text as="b3" ml="mxxs" color="gray-50">
+							{collection.network.name}
+						</Text>
+						<Box position="relative" height="1.6rem" width="1.6rem" ml="mxxs">
+							<Image
+								src={`/static/images/svgs/${
+									collection.network.name === 'Ethereum' ? 'eth' : 'polygon-color'
+								}.svg`}
+								layout="fill"
+							/>
+						</Box>
+					</Box>
 					<Text as="b3" mb="0.2rem">
-						{`Blockchain: ${collection.network.name}`}
-					</Text>
-					<Text as="b3">
-						{`Price: ${collection.price > 0 ? collection.price : 'Free'} ${getPriceUnit(collection)}`}
+						{'Price: '}
+						<span style={{ color: theme.colors['gray-50'] }}>
+							{collection.price > 0 ? `${collection.price} ${getPriceUnit(collection)}` : 'Free'}
+						</span>
 					</Text>
 				</Box>
 			</Box>

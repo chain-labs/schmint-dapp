@@ -9,11 +9,26 @@ import DappNavbar from 'components/DappNavbar';
 import { userSelector } from 'src/redux/user';
 import { useAppSelector } from 'src/redux/hooks';
 import { indexAddress } from './utils';
+import React, { useEffect } from 'react';
 
 const Layout = ({ children }) => {
 	const router = useRouter();
 	const user = useAppSelector(userSelector);
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
+
+	const [windowHeight, setWindowHeight] = React.useState(0);
+
+	useEffect(() => {
+		setWindowHeight(window.innerHeight);
+		window.addEventListener('resize', () => {
+			setWindowHeight(window.innerHeight);
+		});
+	}, []);
+
+	const getSidebarHeight = () => {
+		const height = windowHeight;
+		return (height - 115 - 24) / 10;
+	};
 
 	const setLayoutStripBg = () => {
 		if (!user.exists) {
@@ -58,9 +73,9 @@ const Layout = ({ children }) => {
 				<Box
 					position="fixed"
 					left="24px"
-					top="112px"
+					top="115px"
 					borderRadius="8px"
-					height="80vh"
+					height={`${getSidebarHeight()}rem`}
 					bg="sky-blue-10"
 					width="26.8rem"
 					border="1px solid"

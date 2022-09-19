@@ -9,7 +9,7 @@ import SearchInput from './SearchInput';
 
 const ExploreComp = () => {
 	return (
-		<Box pl="mxl" pt="wxs" width="81.7rem">
+		<Box pl="mxl" pt="wxs" width="81.7rem" pb="21rem">
 			<Box row alignItems="center" justifyContent="space-between" mb="mxl">
 				<Box row alignItems="center">
 					<Binoculars size={40} color={theme.colors['blue-40']} weight="fill" />
@@ -17,7 +17,7 @@ const ExploreComp = () => {
 						Explore
 					</Text>
 				</Box>
-				<Box alignSelf="flex-end">
+				<Box alignSelf="flex-end" cursor="pointer">
 					<Text as="btn2" color="simply-blue">
 						Submit a project
 					</Text>

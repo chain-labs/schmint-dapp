@@ -79,12 +79,17 @@ const FilterItem = ({ label, active, onClick }) => {
 	return (
 		<Box
 			borderRadius="64px"
-			bg={`sky-blue-${active ? 30 : 10}`}
+			bg={`sky-blue-${active ? 40 : 10}`}
 			border={`1px solid ${theme.colors['blue-10']}`}
 			px="mm"
 			py="mxs"
 			onClick={onClick}
 			cursor="pointer"
+			css={`
+				&:hover {
+					background-color: ${theme.colors[active ? 'sky-blue-40' : 'blue-20']};
+				}
+			`}
 		>
 			<Text as="b3">{label}</Text>
 		</Box>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const getGasPrice = async (chain: number) => {
-	if (chain === 1 || chain === 4) {
+	if (chain === 1 || chain === 5 || chain === 4) {
 		const price = await axios.get(
 			`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=27SDJN5Q4N5VDWKF1XMPJRDH36B1HEJ7X3`
 		);
@@ -19,6 +19,7 @@ export const getCoinPrice = async (chain: number) => {
 	switch (chain) {
 		case 1:
 		case 4:
+		case 5:
 			return (
 				await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
 			).data['ethereum']['usd'].toFixed(2);
@@ -34,6 +35,7 @@ export const getGasSource = (chain: number) => {
 	switch (chain) {
 		case 1:
 		case 4:
+		case 5:
 			return 'etherscan.io';
 		case 137:
 		case 80001:

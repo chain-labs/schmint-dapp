@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { debounce } from 'lodash';
 import Head from 'next/head';
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
 import NProgress from 'nprogress';
 import Wagmi from 'components/Wagmi';
 import theme from 'styleguide/theme';
@@ -31,7 +31,7 @@ const MyApp = ({ Component, pageProps }) => {
 		// See https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
 
 		// First we get the viewport height and we multiple it by 1% to get a value for a vh unit
-		if (process.browser) {
+		if (typeof window !== 'undefined') {
 			const vh = window.innerHeight * 0.01;
 			// Then we set the value in the --vh custom property to the root of the document
 			document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -44,14 +44,13 @@ const MyApp = ({ Component, pageProps }) => {
 
 			window.addEventListener('resize', handleResize);
 			return () => {
-				if (process.browser) {
+				if (typeof window !== 'undefined') {
 					window.removeEventListener('resize', handleResize);
 				}
 			};
 		}
 	});
 
-	const router = useRouter();
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			setHostname(window.location.hostname);
