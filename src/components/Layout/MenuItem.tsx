@@ -29,7 +29,7 @@ const MenuItem = ({ Icon, text, route }) => {
 					size={24}
 					weight={route !== '/my-assets' ? 'fill' : 'regular'}
 				/>
-				<Text as="h6" ml="ms">
+				<Text as="h6" ml="ms" color={theme.colors[active ? 'simplr-black' : 'gray-40']}>
 					{text}
 				</Text>
 			</Box>
