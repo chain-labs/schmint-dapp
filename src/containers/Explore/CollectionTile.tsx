@@ -95,7 +95,7 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 						css={`
 							&:hover {
 								color: ${theme.colors['simply-white']};
-								background-color: ${theme.colors['gray-50']};
+								background-color: ${theme.colors['simply-black']};
 							}
 						`}
 					>
