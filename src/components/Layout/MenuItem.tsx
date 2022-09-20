@@ -20,14 +20,14 @@ const MenuItem = ({ Icon, text, route }) => {
 				cursor="pointer"
 				css={`
 					&:hover {
-						background-color: ${theme.colors[active ? 'sky-blue-40' : 'blue-20']};
+						background-color: ${theme.colors[active ? 'sky-blue-40' : 'sky-blue-20']};
 					}
 				`}
 			>
 				<Icon
 					color={theme.colors[active ? 'blue-40' : 'gray-40']}
 					size={24}
-					weight={active ? 'fill' : 'regular'}
+					weight={route !== '/my-assets' ? 'fill' : 'regular'}
 				/>
 				<Text as="h6" ml="ms">
 					{text}

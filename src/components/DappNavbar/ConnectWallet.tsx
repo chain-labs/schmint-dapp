@@ -13,6 +13,7 @@ import Text from '../Text';
 import ButtonComp from '../Button';
 
 export const condenseAddress = (address) => {
+	if (!address) return null;
 	return `${address.slice(0, 6)}...${address.slice(-4)}`;
 };
 

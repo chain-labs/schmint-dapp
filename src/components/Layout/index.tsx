@@ -32,7 +32,7 @@ const Layout = ({ children }) => {
 
 	const setLayoutStripBg = () => {
 		if (!user.exists) {
-			return 'yellow-30';
+			return 'gray-20';
 		} else {
 			const index = indexAddress(user.address);
 			switch (index) {

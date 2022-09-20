@@ -15,7 +15,7 @@ import If from 'components/If';
 import 'styleguide/globalStyles.css';
 import '@rainbow-me/rainbowkit/styles.css';
 
-Router.onRouteChangeStart = (url) => {
+Router.onRouteChangeStart = () => {
 	NProgress.start();
 };
 

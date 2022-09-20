@@ -87,7 +87,7 @@ const FilterItem = ({ label, active, onClick }) => {
 			cursor="pointer"
 			css={`
 				&:hover {
-					background-color: ${theme.colors[active ? 'sky-blue-40' : 'blue-20']};
+					background-color: ${theme.colors[active ? 'sky-blue-40' : 'sky-blue-20']};
 				}
 			`}
 		>
