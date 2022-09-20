@@ -13,6 +13,7 @@ import Text from '../Text';
 import ButtonComp from '../Button';
 
 export const condenseAddress = (address) => {
+	if (!address) return null;
 	return `${address.slice(0, 6)}...${address.slice(-4)}`;
 };
 
@@ -73,7 +74,7 @@ const ConnectWallet = ({ networkProps }) => {
 						>
 							<Box position="relative" height="2.4rem" width="2.4rem" center>
 								<If
-									condition={chain?.id === 1 || chain?.id === 5}
+									condition={chain?.id === 1 || chain?.id === 5 || chain?.id === 4}
 									then={<Image src="/static/images/svgs/eth.svg" layout="fill" />}
 									else={
 										<Box color={chain?.id === 137 ? 'simply-white' : 'simply-purple'} center>

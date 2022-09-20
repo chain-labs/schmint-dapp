@@ -37,7 +37,7 @@ const Avatar = () => {
 			</Box>
 			<Box row alignItems="center">
 				<Text as="h6" mr="mxxs">
-					{data ?? condenseAddress(user.address)}
+					{data ?? condenseAddress(user.address) ?? 'Not Connected'}
 				</Text>
 				<If
 					condition={user.exists}

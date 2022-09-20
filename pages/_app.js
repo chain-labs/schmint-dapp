@@ -1,22 +1,21 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { debounce } from 'lodash';
 import Head from 'next/head';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import Wagmi from 'components/Wagmi';
-
 import theme from 'styleguide/theme';
-
-import 'styleguide/globalStyles.css';
 import { ThemeProvider } from 'styled-components';
 import ApolloClientProvider from 'components/ApolloClient';
 import { wrapper } from 'src/redux/store';
 import ModalHandler from 'components/ModalHandler';
 import Layout from 'components/Layout';
+import If from 'components/If';
 
+import 'styleguide/globalStyles.css';
 import '@rainbow-me/rainbowkit/styles.css';
 
-Router.onRouteChangeStart = (url) => {
+Router.onRouteChangeStart = () => {
 	NProgress.start();
 };
 
@@ -26,12 +25,13 @@ Router.onRouteChangeError = () => NProgress.done();
 NProgress.configure({ showSpinner: false });
 
 const MyApp = ({ Component, pageProps }) => {
+	const [hostname, setHostname] = useState('');
 	useEffect(() => {
 		// Set a custom CSS Property for Height
 		// See https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
 
 		// First we get the viewport height and we multiple it by 1% to get a value for a vh unit
-		if (process.browser) {
+		if (typeof window !== 'undefined') {
 			const vh = window.innerHeight * 0.01;
 			// Then we set the value in the --vh custom property to the root of the document
 			document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -44,12 +44,18 @@ const MyApp = ({ Component, pageProps }) => {
 
 			window.addEventListener('resize', handleResize);
 			return () => {
-				if (process.browser) {
+				if (typeof window !== 'undefined') {
 					window.removeEventListener('resize', handleResize);
 				}
 			};
 		}
 	});
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			setHostname(window.location.hostname);
+		}
+	}, []);
 
 	return (
 		<>
@@ -80,29 +86,34 @@ const MyApp = ({ Component, pageProps }) => {
 					"@type": "Organization",
 					"name": "Schmint",
 					"url": "https://schmint.simplrhq.com/",
-      				"logo": "https://ik.imagekit.io/chainlabs/Schmint/brand_ast6C-3H3.svg?ik-sdk-version=javascript-1.4.3&updatedAt=1663072697499",
+					"logo": "https://ik.imagekit.io/chainlabs/Schmint/brand_ast6C-3H3.svg?ik-sdk-version=javascript-1.4.3&updatedAt=1663072697499",
 					"description": "Don't be a victm of FOMO, take control.Saw a cool NFT project on Twitter but it sold out even before you connected your wallet? Next time just schmint it.",
 					[
-					{
-						"@type": "Decentralized",
-						"name": "Schmint",
-						"description": "Don't be a victm of FOMO, take control.Saw a cool NFT project on Twitter but it sold out even before you connected your wallet? Next time just schmint it.",
-					},
+						{
+							"@type": "Decentralized",
+							"name": "Schmint",
+							"description": "Don't be a victm of FOMO, take control.Saw a cool NFT project on Twitter but it sold out even before you connected your wallet? Next time just schmint it.",
+						},
 					]
-
-}
-
-`}</script>
-				<script
-					type="text/javascript"
-					dangerouslySetInnerHTML={{
-						__html: `(function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-          })(window, document, "clarity", "script", "dn44p6y6mg");`,
-					}}
-				></script>
+					
+				}
+				
+				`}</script>
+				<If
+					condition={process.env.NODE_ENV === 'production' && hostname === 'schmint.simplrhq.com'}
+					then={
+						<script
+							type="text/javascript"
+							dangerouslySetInnerHTML={{
+								__html: `(function(c,l,a,r,i,t,y){
+							c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+							t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+							y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+						})(window, document, "clarity", "script", "dn44p6y6mg");`,
+							}}
+						></script>
+					}
+				/>
 			</Head>
 			<ThemeProvider theme={theme}>
 				<Wagmi>

@@ -37,7 +37,6 @@ const HomeNavbar = () => {
 						`}
 					>
 						<Box display={{ mobS: 'block', tabS: 'none' }} mr="mxs">
-							{/* @ts-expect-error unknown file type */}
 							<TwitterFill size={25} color={theme.colors['blue-40']} />
 						</Box>
 						<Text as="nav" mr="2px" display={{ mobS: 'none', tabS: 'block' }} row alignItems="center">

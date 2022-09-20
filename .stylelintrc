@@ -1,7 +1,13 @@
 {
-	"processors": ["stylelint-processor-styled-components"],
-	"extends": ["stylelint-config-recommended"],
-	"plugins": ["stylelint-prettier"],
+	"processors": [
+		"stylelint-processor-styled-components"
+	],
+	"extends": [
+		"stylelint-config-recommended"
+	],
+	"plugins": [
+		"stylelint-prettier"
+	],
 	"rules": {
 		"prettier/prettier": true,
 		"indentation": [
@@ -18,7 +24,11 @@
 		"selector-pseudo-class-no-unknown": [
 			true,
 			{
-				"ignorePseudoClasses": ["global", "local", "export"]
+				"ignorePseudoClasses": [
+					"global",
+					"local",
+					"export"
+				]
 			}
 		]
 	}

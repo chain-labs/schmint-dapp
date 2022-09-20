@@ -6,6 +6,7 @@ import Box from '../Box';
 const TooltipPortal = () => {
 	return (
 		<Box
+			as="div"
 			css={`
 				.tooltip {
 					opacity: 1 !important;
@@ -15,15 +16,16 @@ const TooltipPortal = () => {
 				}
 			`}
 		>
-			{/* @ts-expect-error - react-tooltip types are wrong */}
-			<ReactTooltip
-				className="tooltip"
-				place="bottom"
-				arrowColor="transparent"
-				backgroundColor={theme.colors['blue-10']}
-				textColor={theme.colors['simply-black']}
-				effect="solid"
-			/>
+			<React.Fragment>
+				<ReactTooltip
+					className="tooltip"
+					place="bottom"
+					arrowColor="transparent"
+					backgroundColor={theme.colors['blue-10']}
+					textColor={theme.colors['simply-black']}
+					effect="solid"
+				/>
+			</React.Fragment>
 		</Box>
 	);
 };

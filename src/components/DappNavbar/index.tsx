@@ -43,8 +43,6 @@ const DappNavbar = () => {
 			window?.ethereum?.on('chainChanged', (chain) => {
 				const chainId = parseInt(chain);
 				switchNetwork(chainId);
-
-				// setNetworkProps(getNavProps(chainId));
 			});
 		}
 	}, [account]);

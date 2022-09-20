@@ -19,7 +19,7 @@ const fontColor = (bg) => {
 };
 
 const borderColor = (bg) => {
-	return bg === 'tertiary' ? `1px solid #4743C5` : 'none';
+	return bg === 'tertiary' ? `1px solid ${theme.colors['gray-40']}` : 'none';
 };
 
 export interface ButtonProps extends BoxProps {
