@@ -1,7 +1,8 @@
 import React from 'react';
+import WalletCompenent from 'src/containers/Wallet';
 
 const Wallet = () => {
-	return <div>Wallet</div>;
+	return <WalletCompenent />;
 };
 
 export default Wallet;
