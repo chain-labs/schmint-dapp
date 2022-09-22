@@ -90,7 +90,6 @@ const TextInput = ({
 				value={value}
 				onChange={handleChange}
 				onWheel={(e) => {
-					// @ts-expect-error ts-migrate(2339) FIXME: Property 'target' does not exist on type 'WheelEvent'.  TS2339
 					if (type === 'number') e.target.blur();
 				}}
 				validation={validity}
@@ -133,7 +132,7 @@ const TextInput = ({
 			<If
 				condition={type === 'number' && !!unit}
 				then={
-					<Text ml="-9%" as="h5" color={validity === 'invalid' ? 'red-50' : 'disable-black'}>
+					<Text ml="-9%" as="b2" color={validity === 'invalid' ? 'red-50' : 'gray-30'}>
 						{unit}
 					</Text>
 				}
