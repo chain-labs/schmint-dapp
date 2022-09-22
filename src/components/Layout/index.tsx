@@ -66,7 +66,7 @@ const Layout = ({ children }) => {
 		);
 	}
 	return (
-		<Box>
+		<Box overflowX="hidden">
 			<DappNavbar />
 			<Box minHeight="16.8rem" bg={setLayoutStripBg()} width="100vw"></Box>
 			<Box row>
