@@ -1,55 +1,62 @@
-import React from 'react';
+import { GlobeSimple } from 'phosphor-react';
+import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import Text from 'src/components/Text';
 import theme from 'src/styleguide/theme';
+import ReadMore from './components/ReadMore';
+import Social from './components/Social';
 
-const ContractDetails = () => {
+const ContractDetails = ({ project }) => {
 	return (
-		<Box
-			width="45.7rem"
-			px="mm"
-			backgroundColor="#F7FAFF"
-			my="4rem"
-			row
-			justifyContent="space-around"
-			border={`1px solid ${theme.colors['blue-20']} `}
-			borderRadius="8px"
-			p="mm"
-		>
-			<Box column>
-				<Text as="b2" fontWeight="bold" color="#000000">
-					Blockchain
-				</Text>
-				<Text as="b3" color="gray-50">
-					Blockchain
+		<Box center column>
+			<Box
+				width="45.7rem"
+				px="mm"
+				backgroundColor="#F7FAFF"
+				my="mm"
+				row
+				justifyContent="space-around"
+				border={`1px solid ${theme.colors['blue-20']} `}
+				borderRadius="8px"
+				p="mm"
+			>
+				<ContractItem text="Blockchain" subText={project?.network?.name} />
+				<ContractItem text="Price" subText={project.price} />
+				<ContractItem text="Supply" subText={project.supply} />
+				<ContractItem text="Token Standard" subText="ERC21A" />
+			</Box>
+			<ReadMore mainText={project?.description} />
+			<Box mb="mm">
+				<Text as="b2" center>
+					<Box as="span" mr="mxs" center>
+						<GlobeSimple size={24} />
+					</Box>
+					Website:
+					<Box as="span" color="simply-blue" ml="mxs">
+						{project?.website_url}
+					</Box>
 				</Text>
 			</Box>
-			<Box column>
-				<Text as="b2" fontWeight="bold" color="#000000">
-					Blockchain
-				</Text>
-				<Text as="b3" color="gray-50">
-					Ethereum
-				</Text>
-			</Box>
-			<Box column>
-				<Text as="b2" fontWeight="bold" color="#000000">
-					Price
-				</Text>
-				<Text as="b3" color="gray-50">
-					Blockchain
-				</Text>
-			</Box>
-			<Box column>
-				<Text as="b2" fontWeight="bold" color="#000000">
-					Blockchain
-				</Text>
-				<Text as="b3" color="gray-50">
-					Blockchain
-				</Text>
+			<Box border={`1px solid ${theme.colors['gray-20']}`} borderRadius="4px" row>
+				<Social border status="discord" />
+				<Social border status="twitter" />
+				<Social status="etherscan" />
 			</Box>
 		</Box>
 	);
 };
 
 export default ContractDetails;
+
+const ContractItem = ({ text, subText }) => {
+	return (
+		<Box column>
+			<Text as="b2" fontWeight="medium" color="#000000">
+				{text}
+			</Text>
+			<Text as="b3" color="gray-50">
+				{subText}
+			</Text>
+		</Box>
+	);
+};

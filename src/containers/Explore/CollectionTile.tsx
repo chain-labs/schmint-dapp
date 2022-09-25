@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowUpRight } from 'phosphor-react';
 import React from 'react';
 import Box from 'src/components/Box';
@@ -80,9 +81,11 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 				</Box>
 			</Box>
 			<Box column>
-				<ButtonComp bg="primary" color="white" width="11rem" height="3.6rem" borderRadius="64px" mb="ms">
-					<Text as="btn2">View</Text>
-				</ButtonComp>
+				<Link href={`/project-page/${idx}`}>
+					<ButtonComp bg="primary" color="white" width="11rem" height="3.6rem" borderRadius="64px" mb="ms">
+						<Text as="btn2">View</Text>
+					</ButtonComp>
+				</Link>
 				<a href={collection.website_url} target="_blank" rel="noreferrer">
 					<ButtonComp
 						bg="tertiary"
