@@ -1,7 +1,7 @@
 import Box from 'components/Box';
 import theme from 'src/styleguide/theme';
 import styled from 'styled-components';
-import { Prohibit, Check, WarningCircle, MagnifyingGlass } from 'phosphor-react';
+import { Prohibit, Check, WarningCircle, MagnifyingGlass, Plus, Minus } from 'phosphor-react';
 import If from './If';
 import { useEffect, useState } from 'react';
 import Text from './Text';
@@ -23,6 +23,7 @@ interface Props {
 	max?: string;
 	disableValidation?: boolean;
 	fontSize?: string;
+	inputType?: string;
 }
 
 const TextInput = ({
@@ -40,6 +41,7 @@ const TextInput = ({
 	max,
 	disableValidation,
 	fontSize,
+	inputType,
 }: Props) => {
 	const [validity, setValidity] = useState<'clear' | 'valid' | 'invalid'>('clear');
 	const [searchIcon, setSearchIcon] = useState<boolean>(true);
@@ -80,7 +82,16 @@ const TextInput = ({
 			overflow="visible"
 			color="disable-black"
 			cursor={disabled ? 'not-allowed' : 'auto'}
+			width={inputType ? '40%' : '100%'}
 		>
+			<If
+				condition={inputType === 'number'}
+				then={
+					<Box ml="2rem" mt="0.2rem" position="absolute" color="blue-40" cursor="pointer">
+						<Minus size={24} onClick={() => setValue(value - 1)} />
+					</Box>
+				}
+			/>
 			<InputElement
 				as="input"
 				{...{ disabled, required, type, step, disableValidation, fontSize }}
@@ -94,11 +105,21 @@ const TextInput = ({
 				}}
 				validation={validity}
 				onBlur={handleValidity}
-				color={disabled ? 'disable-black' : 'simply-black'}
+				color={disabled ? 'disable-black' : 'blue-40'}
 				width={width ?? '32rem'}
 				min={min}
 				max={max}
+				inputType={inputType}
 			></InputElement>
+
+			<If
+				condition={inputType === 'number'}
+				then={
+					<Box ml="-3.8rem" mt="0.2rem" color="blue-40" onClick={() => setValue(value + 1)} cursor="pointer">
+						<Plus size={24} />
+					</Box>
+				}
+			/>
 			<If
 				condition={disabled && !disableValidation}
 				then={
@@ -107,7 +128,10 @@ const TextInput = ({
 					</Box>
 				}
 			/>
-			{type === 'text' || type === 'email' || type === 'url' || (type === 'number' && !unit) ? (
+			{type === 'text' ||
+			type === 'email' ||
+			type === 'url' ||
+			(type === 'number' && !unit && inputType !== 'number') ? (
 				<Box overflow="visible">
 					<If
 						condition={validity === 'valid'}
@@ -159,11 +183,13 @@ interface InputProps {
 	type?: string;
 	disableValidation?: boolean;
 	fontSize?: string;
+	inputType?: string;
 }
 
 export const InputElement = styled(Box)(
 	(props: InputProps) => `
-	padding: ${`${props.theme.space.ms} ${props.theme.space.mm}`};
+	
+	padding: ${`${props.theme.space.ms} 95px`};
 	font-size: ${props.fontSize ?? '1.6rem'};
 	font-family: 'Switzer', sans-serif;
 	border-radius: 8px;
@@ -220,3 +246,9 @@ export const InputElement = styled(Box)(
 	
 `
 );
+
+// padding: ${
+// 	props.inputType ===
+// 		? `${props.theme.space.mxxl} ${props.theme.space.mxl}`
+// 		: `${props.theme.space.ms} ${props.theme.space.mm}`
+// }
