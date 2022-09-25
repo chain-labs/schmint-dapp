@@ -189,7 +189,8 @@ interface InputProps {
 export const InputElement = styled(Box)(
 	(props: InputProps) => `
 	
-	padding: ${`${props.theme.space.ms} 95px`};
+	padding: ${`${props.theme.space.ms} ${props.theme.space.mm}`};
+	padding-left: ${props.inputType === 'number' ? '95px' : `${props.theme.space.mm}`};
 	font-size: ${props.fontSize ?? '1.6rem'};
 	font-family: 'Switzer', sans-serif;
 	border-radius: 8px;
