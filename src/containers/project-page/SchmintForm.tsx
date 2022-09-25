@@ -52,12 +52,6 @@ const SchmintForm = ({ project }) => {
 							value=""
 							detailText="This contract allows upto 5 NFTs per wallet"
 						/>
-						<InputBox
-							label="Maximum Gas Limit"
-							placeholder="5"
-							value=""
-							detailText="This contract allows upto 5 NFTs per wallet"
-						/>
 					</Box>
 				}
 			/>

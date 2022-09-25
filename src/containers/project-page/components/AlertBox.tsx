@@ -10,11 +10,11 @@ const AlertBox = () => {
 	return (
 		<Box width="100%" px="2.9rem" backgroundColor="#FFF6D9" py="ms" mt="mm">
 			{step === 0 ? (
-				<Text textAlign="center" as="b2" fontWeight="bold">
+				<Text textAlign="center" as="b2" fontWeight="medium">
 					Before you proceed...
 				</Text>
 			) : (
-				<Text textAlign="center" as="b2" fontWeight="bold">
+				<Text textAlign="center" as="b2" fontWeight="medium">
 					Hmm... you don’t seem to have enough funds
 				</Text>
 			)}
