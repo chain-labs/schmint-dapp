@@ -12,9 +12,10 @@ interface props {
 	required?: boolean;
 	detailText?: string;
 	unit?: string;
+	inputType?: string;
 }
 
-const InputBox = ({ label, placeholder, value, setValue, required, detailText, unit }: props) => {
+const InputBox = ({ label, placeholder, value, setValue, required, detailText, unit, inputType }: props) => {
 	return (
 		<Box mt="2rem">
 			<Text as="b2">
@@ -37,6 +38,7 @@ const InputBox = ({ label, placeholder, value, setValue, required, detailText, u
 					width="100%"
 					unit={unit}
 					setValue={setValue}
+					inputType={inputType}
 				/>
 				<Text as="b3" mt="mxs">
 					{detailText}
