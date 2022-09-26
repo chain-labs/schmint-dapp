@@ -11,10 +11,10 @@ import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { indexAddress } from './utils';
 import React, { useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
-import { GET_USER_SCHEDULER } from 'graphql/userScheduler';
-import If from '../If';
-import Loader from '../Loader';
+import { GET_USER_SCHEDULER } from 'graphql/UserScheduler';
+import Loader from 'components/Loader';
 import { setScheduler } from 'src/redux/scheduler';
+import If from 'components/If';
 
 const Layout = ({ children }) => {
 	const router = useRouter();
@@ -35,7 +35,7 @@ const Layout = ({ children }) => {
 			} else {
 				setUserHasScheduler(false);
 				if (router.pathname === '/my-assets') {
-					router.replace('/explore');
+					router.replace('/explore', undefined, { shallow: true });
 				}
 			}
 		}

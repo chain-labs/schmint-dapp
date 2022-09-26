@@ -17,7 +17,6 @@ const MyAssetsComponent = () => {
 	const { chain } = useNetwork();
 	const user = useAppSelector(userSelector);
 	const scheduler = useAppSelector(schedulerSelector);
-	const router = useRouter();
 
 	if (user.exists && scheduler.owner) {
 		return (
@@ -58,7 +57,6 @@ const MyAssetsComponent = () => {
 			</Box>
 		);
 	} else {
-		router.replace('/explore');
 		return <></>;
 	}
 };

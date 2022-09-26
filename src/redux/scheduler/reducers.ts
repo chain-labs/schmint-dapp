@@ -9,6 +9,7 @@ const initialState: SchedulerState = {
 	paused: false,
 	schmints: [],
 	schedulerAddress: '',
+	avatar: '',
 };
 
 export const schedulerReducer = createReducer(initialState, (builder) => {
