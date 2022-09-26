@@ -4,7 +4,7 @@ import Lottie from 'react-lottie';
 import Box from './Box';
 import Text from './Text';
 
-const Loader = ({ msg, minHeight }) => {
+const Loader = ({ msg, minHeight }: { msg: string; minHeight?: string }) => {
 	const defaultOptions = {
 		loop: true,
 		autoplay: true,
