@@ -4,6 +4,7 @@ export interface SchedulerState {
 	paused?: boolean;
 	schmints?: SchmintState[];
 	schedulerAddress?: string;
+	avatar?: string;
 }
 
 export interface SchmintState {
