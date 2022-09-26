@@ -13,8 +13,6 @@ import { getAbi } from 'src/utils/contracts';
 import { useContractRead, useNetwork } from 'wagmi';
 import { getGnosisSafeUrl } from './utils';
 
-const PLACEHOLDER_AVATAR = '0x6447eAF782AAcC791483c1fbA3C8C22f22C3281D';
-
 const MyAssetsComponent = () => {
 	const { chain } = useNetwork();
 	const user = useAppSelector(userSelector);
