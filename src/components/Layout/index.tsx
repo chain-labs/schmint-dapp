@@ -7,16 +7,39 @@ import MenuItems from './MenuItems';
 import HomeNavbar from 'components/HomeNavbar';
 import DappNavbar from 'components/DappNavbar';
 import { userSelector } from 'src/redux/user';
-import { useAppSelector } from 'src/redux/hooks';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { indexAddress } from './utils';
 import React, { useEffect } from 'react';
+import { useLazyQuery } from '@apollo/client';
+import { GET_USER_SCHEDULER } from 'graphql/userScheduler';
+import If from '../If';
+import Loader from '../Loader';
+import { setScheduler } from 'src/redux/scheduler';
 
 const Layout = ({ children }) => {
 	const router = useRouter();
 	const user = useAppSelector(userSelector);
+	const [userHasScheduler, setUserHasScheduler] = React.useState(false);
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
+	const [loadScheduler, { called, loading, data }] = useLazyQuery(GET_USER_SCHEDULER);
+	const dispatch = useAppDispatch();
 
 	const [windowHeight, setWindowHeight] = React.useState(0);
+
+	useEffect(() => {
+		if (called && !loading) {
+			const scheduler = data?.schedulers?.[0];
+			if (scheduler?.owner?.toLowerCase() === user.address.toLowerCase()) {
+				setUserHasScheduler(true);
+				dispatch(setScheduler({ owner: scheduler.owner, schedulerAddress: scheduler.id }));
+			} else {
+				setUserHasScheduler(false);
+				if (router.pathname === '/my-assets') {
+					router.replace('/explore');
+				}
+			}
+		}
+	}, [called, loading]);
 
 	useEffect(() => {
 		setWindowHeight(window.innerHeight);
@@ -24,6 +47,16 @@ const Layout = ({ children }) => {
 			setWindowHeight(window.innerHeight);
 		});
 	}, []);
+
+	useEffect(() => {
+		if (user.address) {
+			loadScheduler({
+				variables: {
+					id: user.address.toLowerCase(),
+				},
+			});
+		}
+	}, [user.address]);
 
 	const getSidebarHeight = () => {
 		const height = windowHeight;
@@ -85,10 +118,16 @@ const Layout = ({ children }) => {
 					px="mxl"
 				>
 					<Avatar />
-					<MenuItems />
+					<MenuItems userHasScheduler={userHasScheduler} />
 				</Box>
 				<Box width="29.2rem"></Box>
-				<Box flex={1}>{children}</Box>
+				<Box flex={1}>
+					<If
+						condition={!user.exists || (called && !loading)}
+						then={children}
+						else={<Loader msg="Loading..." minHeight={`${windowHeight - 167}px`} />}
+					/>
+				</Box>
 			</Box>
 		</Box>
 	);
