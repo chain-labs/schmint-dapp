@@ -101,6 +101,7 @@ const TextInput = ({
 				value={value}
 				onChange={handleChange}
 				onWheel={(e) => {
+					// @ts-expect-error ts-migrate(2339) FIXME: Property 'target' does not exist on type 'WheelEvent'.  TS2339
 					if (type === 'number') e.target.blur();
 				}}
 				validation={validity}
