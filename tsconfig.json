@@ -20,6 +20,9 @@
       "styleguide/*": [
         "./src/styleguide/*"
       ],
+      "graphql/*": [
+        "./src/graphql/*"
+      ],
       "images/*": [
         "./public/static/images/*"
       ],
