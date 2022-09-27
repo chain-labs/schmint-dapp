@@ -2,8 +2,7 @@ import { Binoculars, SketchLogo, StarFour, Wallet } from 'phosphor-react';
 import React from 'react';
 import { useAppSelector } from 'src/redux/hooks';
 import { userSelector } from 'src/redux/user';
-import Box from '../Box';
-import If from '../If';
+import Box from 'components/Box';
 import MenuItem from './MenuItem';
 
 const MenuItems = ({ userHasScheduler }) => {
