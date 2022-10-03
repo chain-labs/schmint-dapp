@@ -12,7 +12,7 @@ import AlertBox from './components/AlertBox';
 import CostComp from './components/CostComp';
 import InputBox from './components/InputBox';
 
-const SchmintForm = ({ project }) => {
+const SchmintForm = ({ collection }) => {
 	const [showOptions, setShowOptions] = useState(false);
 	const [nft, setNft] = useState(0);
 	return (
@@ -65,7 +65,7 @@ const SchmintForm = ({ project }) => {
 				/>
 			</Box>
 			<Box borderTop={`1px solid ${theme.colors['gray-30']}`} width="100%" mt="mxxxl" />
-			<CostComp project={project} nft={nft} showTotalAmount showCostText />
+			<CostComp collection={collection} nft={nft} showTotalAmount showCostText />
 			<AlertBottomBox showOptions={showOptions} />
 			<Box center column mt="mxxxl">
 				<ButtonComp bg="primary" color="white" width="23.4rem" height="4.8rem" borderRadius="64px">

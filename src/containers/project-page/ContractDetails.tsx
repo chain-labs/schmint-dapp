@@ -7,11 +7,11 @@ import ReadMore from './components/ReadMore';
 import Social from './components/Social';
 
 interface props {
-	project: any;
+	collection?: any;
 	showDetails?: boolean;
 }
 
-const ContractDetails = ({ project, showDetails }: props) => {
+const ContractDetails = ({ collection, showDetails }: props) => {
 	return (
 		<Box center column>
 			<Box
@@ -25,14 +25,14 @@ const ContractDetails = ({ project, showDetails }: props) => {
 				borderRadius="8px"
 				p="mm"
 			>
-				<ContractItem text="Blockchain" subText={project?.network?.name} />
-				<ContractItem text="Price" subText={project.price} />
-				<ContractItem text="Supply" subText={project.supply} />
+				<ContractItem text="Blockchain" subText={collection?.network?.name} />
+				<ContractItem text="Price" subText={collection?.price} />
+				<ContractItem text="Supply" subText={collection?.supply} />
 				<ContractItem text="Token Standard" subText="ERC21A" />
 			</Box>
 			{showDetails ? (
 				<Box>
-					<ReadMore mainText={project?.description} />
+					<ReadMore mainText={collection?.description} />
 					<Box mb="mm">
 						<Text as="b2" center>
 							<Box as="span" mr="mxs" center>
@@ -40,14 +40,16 @@ const ContractDetails = ({ project, showDetails }: props) => {
 							</Box>
 							Website:
 							<Box as="span" color="simply-blue" ml="mxs">
-								{project?.website_url}
+								{collection?.website_url}
 							</Box>
 						</Text>
 					</Box>
-					<Box border={`1px solid ${theme.colors['gray-20']}`} borderRadius="4px" row>
-						<Social border status="discord" />
-						<Social border status="twitter" />
-						<Social status="etherscan" />
+					<Box center>
+						<Box border={`1px solid ${theme.colors['gray-20']}`} borderRadius="4px" row maxWidth="40%">
+							<Social border status="discord" />
+							<Social border status="twitter" />
+							<Social status="etherscan" />
+						</Box>
 					</Box>
 				</Box>
 			) : (

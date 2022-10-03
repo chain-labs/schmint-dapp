@@ -7,15 +7,15 @@ import Text from '../Text';
 import theme from 'src/styleguide/theme';
 
 interface props {
-	project: any;
+	collection: any;
 	updateDetails?: boolean;
 	setStep?: (step: number) => void;
 }
 
-const UpdateModal = ({ project, updateDetails, setStep }: props) => {
+const UpdateModal = ({ collection, updateDetails, setStep }: props) => {
 	useEffect(() => {
-		console.log(project);
-	}, [project]);
+		console.log(collection);
+	}, [collection]);
 
 	return (
 		<Modal visible>
@@ -30,9 +30,9 @@ const UpdateModal = ({ project, updateDetails, setStep }: props) => {
 				borderRadius="8px"
 			>
 				<Text as="h5">Schmint update</Text>
-				<CostComp project={project} nft={2} />
+				<CostComp collection={collection} nft={2} />
 				<Text as="b3" color="gray-50" mt="mxxxl" ml="mxxs">
-					Note: The transaction will take place as soon as the project sale goes live.
+					Note: The transaction will take place as soon as the collection sale goes live.
 				</Text>
 				<Text as="c1" mt="mxxxl" ml="mxxs" color="gray-50">
 					<Box as="span" color="red-40">
