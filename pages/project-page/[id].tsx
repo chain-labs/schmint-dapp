@@ -7,23 +7,30 @@ import projects from '../../Projects.json';
 const ProjectPage = () => {
 	const router = useRouter();
 	const { id } = router.query;
-	const [data, setData] = useState({});
+	const [collections, setCollections] = useState([]);
+	const [collection, setCollection] = useState({});
 
-	const getProject = async () => {
-		projects.map(async (project) => {
-			if (project.id === id) {
-				await setData(project);
+	const getAllCollections = async () => {
+		const data = await fetch('https://chain-labs.github.io/schmint-projects/projects.json');
+		const res = await data.json();
+		setCollections(res);
+	};
+
+	const getCollection = async () => {
+		collections.map(async (collection) => {
+			if (collection.id === id) {
+				await setCollection(collection);
 			}
 		});
 	};
 
 	useEffect(() => {
-		getProject();
-		console.log(data);
+		getAllCollections();
+		getCollection();
 		// console.log(projects);
-	}, [id, projects]);
+	}, [id, collections]);
 
-	return <Box>{data ? <Projectpage project={data} /> : ''};</Box>;
+	return <Box>{collection ? <Projectpage collection={collection} /> : ''};</Box>;
 };
 
 export default ProjectPage;
