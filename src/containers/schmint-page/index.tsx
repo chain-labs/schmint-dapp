@@ -24,7 +24,7 @@ const SchmintPage = () => {
 		getData();
 	}, []);
 	if (step === 0) {
-		return <Box>{project ? <UpdateModal collection={}={project[0]} setStep={setStep} /> : ''}</Box>;
+		return <Box>{project ? <UpdateModal collection={project[0]} setStep={setStep} /> : ''}</Box>;
 	}
 	if (step === 1) {
 		return (
