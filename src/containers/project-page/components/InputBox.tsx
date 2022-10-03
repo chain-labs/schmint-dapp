@@ -13,9 +13,26 @@ interface props {
 	detailText?: string;
 	unit?: string;
 	inputType?: string;
+	max?: string;
+	min?: string;
+	errorText?: string;
+	disabled?: boolean;
 }
 
-const InputBox = ({ label, placeholder, value, setValue, required, detailText, unit, inputType }: props) => {
+const InputBox = ({
+	label,
+	placeholder,
+	value,
+	setValue,
+	required,
+	detailText,
+	unit,
+	inputType,
+	max,
+	min,
+	errorText,
+	disabled,
+}: props) => {
 	return (
 		<Box mt="2rem">
 			<Text as="b2">
@@ -39,11 +56,23 @@ const InputBox = ({ label, placeholder, value, setValue, required, detailText, u
 					unit={unit}
 					setValue={setValue}
 					inputType={inputType}
+					max={max}
+					min={min}
+					disabled={disabled || value > max || value < min}
+					valueDisable={disabled}
 				/>
 				<Text as="b3" mt="mxs">
 					{detailText}
 				</Text>
 			</Box>
+			<If
+				condition={value > max || value < min}
+				then={
+					<Text as="b3" mt="mxs" color="red-40">
+						{errorText}
+					</Text>
+				}
+			/>
 		</Box>
 	);
 };
