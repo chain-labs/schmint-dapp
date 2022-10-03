@@ -35,6 +35,7 @@ const CostComp = ({ collection, nft, showTotalAmount, showCostText }: props) => 
 					subText={0.001}
 					unit={collection?.network?.name?.slice(0, 3).toUpperCase()}
 					width="100%"
+					strikeThrough
 				/>
 				<CostItem
 					text="Estimated gas cost?"
@@ -79,14 +80,28 @@ interface cost {
 	width?: string;
 	unit?: string;
 	fontSize?: any;
+	strikeThrough?: boolean;
 }
 
-const CostItem = ({ text, subText, width, unit, textColor, fontSize }: cost) => {
+const CostItem = ({ text, subText, width, unit, textColor, fontSize, strikeThrough }: cost) => {
 	return (
 		<Box between pt="mxs" width={width}>
 			<Text as={fontSize ? fontSize : 'b3'}>{text}</Text>
 			<Text as={fontSize ? fontSize : 'b3'} color={textColor ? textColor : `${theme.colors['gray-60']}`}>
-				{subText}
+				{strikeThrough ? (
+					<Box
+						as="span"
+						mr="mxs"
+						css={`
+							text-decoration: line-through;
+						`}
+					>
+						{subText}
+					</Box>
+				) : (
+					''
+				)}
+				{strikeThrough ? '0.000' : subText}
 				{'  '}
 				{unit}
 			</Text>
