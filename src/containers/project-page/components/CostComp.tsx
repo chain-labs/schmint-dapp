@@ -5,13 +5,13 @@ import Text from 'src/components/Text';
 import theme from 'src/styleguide/theme';
 
 interface props {
-	project: any;
+	collection: any;
 	nft: number;
 	showTotalAmount?: boolean;
 	showCostText?: boolean;
 }
 
-const CostComp = ({ project, nft, showTotalAmount, showCostText }: props) => {
+const CostComp = ({ collection, nft, showTotalAmount, showCostText }: props) => {
 	return (
 		<Box>
 			{showCostText ? (
@@ -25,21 +25,21 @@ const CostComp = ({ project, nft, showTotalAmount, showCostText }: props) => {
 			<Box backgroundColor={`${theme.colors['sky-blue-20']}`} px="mm" pb="mxs" mt="mm">
 				<CostItem
 					text={`NFT x${nft}`}
-					subText={project?.price * nft}
-					unit={project?.network?.name?.slice(0, 3).toUpperCase()}
+					subText={collection?.price * nft}
+					unit={collection?.network?.name?.slice(0, 3).toUpperCase()}
 					width="100%"
 				/>
 
 				<CostItem
 					text="Schmint Fees"
 					subText={0.001}
-					unit={project?.network?.name?.slice(0, 3).toUpperCase()}
+					unit={collection?.network?.name?.slice(0, 3).toUpperCase()}
 					width="100%"
 				/>
 				<CostItem
 					text="Estimated gas cost?"
 					subText={0.001}
-					unit={project?.network?.name?.slice(0, 3).toUpperCase()}
+					unit={collection?.network?.name?.slice(0, 3).toUpperCase()}
 					width="100%"
 				/>
 			</Box>
@@ -49,8 +49,8 @@ const CostComp = ({ project, nft, showTotalAmount, showCostText }: props) => {
 					<Box column justifyContent="flex-end" alignItems="flex-end" pt="mxs" width="100%">
 						<CostItem
 							text="Total:"
-							subText={project?.price * nft + 0.001 + 0.001}
-							unit={project?.network?.name?.slice(0, 3).toUpperCase()}
+							subText={collection?.price * nft + 0.001 + 0.001}
+							unit={collection?.network?.name?.slice(0, 3).toUpperCase()}
 							width="50%"
 							textColor="blue-40"
 							fontSize="b2"
@@ -58,7 +58,7 @@ const CostComp = ({ project, nft, showTotalAmount, showCostText }: props) => {
 						<CostItem
 							text="Gnosis Safe Balance:"
 							subText={0.001}
-							unit={project?.network?.name?.slice(0, 3).toUpperCase()}
+							unit={collection?.network?.name?.slice(0, 3).toUpperCase()}
 							width="50%"
 							textColor="blue-40"
 							fontSize="b2"

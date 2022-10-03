@@ -24,7 +24,7 @@ const SchmintPage = () => {
 		getData();
 	}, []);
 	if (step === 0) {
-		return <Box>{project ? <UpdateModal project={project[0]} setStep={setStep} /> : ''}</Box>;
+		return <Box>{project ? <UpdateModal collection={}={project[0]} setStep={setStep} /> : ''}</Box>;
 	}
 	if (step === 1) {
 		return (
@@ -44,10 +44,10 @@ const SchmintPage = () => {
 		<Box>
 			{project ? (
 				<Box center column>
-					<Banner project={project} />
-					<ContractDetails project={project} />
+					<Banner collection={project} />
+					<ContractDetails collection={project} />
 					<Box borderTop={`1px solid ${theme.colors['gray-20']}`} width="100%" my="wxs" />
-					<SchmintForm project={project} />
+					<SchmintForm collection={project} />
 				</Box>
 			) : (
 				<Box>Hi</Box>

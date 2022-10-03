@@ -7,22 +7,13 @@ import ReactReadMoreReadLess from 'react-read-more-read-less';
 import ReadMore from './components/ReadMore';
 import theme from 'src/styleguide/theme';
 
-const Projectpage = ({ project }) => {
-	// const getData = async () => {
-	// 	const data = await fetch('https://chain-labs.github.io/schmint-projects/projects.json');
-	// 	return await data.json();
-	// };
-
-	// useEffect(() => {
-	// 	getData().then((res) => console.log(res));
-	// }, []);
-
+const Projectpage = ({ collection }) => {
 	return (
 		<Box center column>
-			<Banner project={project} />
-			<ContractDetails project={project} showDetails />
+			<Banner collection={collection} />
+			<ContractDetails collection={collection} showDetails />
 			<Box borderTop={`1px solid ${theme.colors['gray-20']}`} width="100%" my="wxs" />
-			<SchmintForm project={project} />
+			<SchmintForm collection={collection} />
 		</Box>
 	);
 };
