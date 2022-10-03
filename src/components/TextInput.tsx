@@ -24,6 +24,7 @@ interface Props {
 	disableValidation?: boolean;
 	fontSize?: string;
 	inputType?: string;
+	valueDisable?: boolean;
 }
 
 const TextInput = ({
@@ -42,14 +43,19 @@ const TextInput = ({
 	disableValidation,
 	fontSize,
 	inputType,
+	valueDisable,
 }: Props) => {
 	const [validity, setValidity] = useState<'clear' | 'valid' | 'invalid'>('clear');
 	const [searchIcon, setSearchIcon] = useState<boolean>(true);
 
 	const handleChange = (e) => {
 		e.preventDefault();
-		if (type === 'number') {
-			setValue(parseFloat(e.target.value));
+		if (type === 'number' || inputType === 'number') {
+			if (e.target.value > max || e.target.value < min) {
+				setValidity('invalid');
+			} else {
+				setValue(parseFloat(e.target.value));
+			}
 		} else {
 			setValue(e.target.value);
 		}
@@ -87,7 +93,14 @@ const TextInput = ({
 			<If
 				condition={inputType === 'number'}
 				then={
-					<Box ml="2rem" mt="0.2rem" position="absolute" color="blue-40" cursor="pointer">
+					<Box
+						ml="2rem"
+						mt="0.2rem"
+						position="absolute"
+						color={value < min ? 'disable-black' : 'blue-40'}
+						onClick={value < min ? () => setValue(value) : () => setValue(value - 1)}
+						cursor={value < min ? 'not-allowed' : 'pointer'}
+					>
 						<Minus size={24} onClick={() => setValue(value - 1)} />
 					</Box>
 				}
@@ -111,18 +124,26 @@ const TextInput = ({
 				min={min}
 				max={max}
 				inputType={inputType}
+				// backgroundColor={valueDisable ? 'disable-gray' : 'white'}
 			></InputElement>
 
 			<If
 				condition={inputType === 'number'}
 				then={
-					<Box ml="-3.8rem" mt="0.2rem" color="blue-40" onClick={() => setValue(value + 1)} cursor="pointer">
+					<Box
+						ml="-3.8rem"
+						mt="0.2rem"
+						// color="blue-40"
+						onClick={value > max ? () => setValue(value) : () => setValue(value + 1)}
+						cursor={value > max ? 'not-allowed' : 'pointer'}
+						color={value > max ? 'disable-black' : 'blue-40'}
+					>
 						<Plus size={24} />
 					</Box>
 				}
 			/>
 			<If
-				condition={disabled && !disableValidation}
+				condition={disabled && !disableValidation && inputType !== 'number'}
 				then={
 					<Box ml="-3.2rem" mt="0.2rem">
 						<Prohibit size={24} color="#8c8ca1" />
@@ -157,7 +178,7 @@ const TextInput = ({
 			<If
 				condition={type === 'number' && !!unit}
 				then={
-					<Text ml="-9%" as="b2" color={validity === 'invalid' ? 'red-50' : 'gray-30'}>
+					<Text ml="-11%" as="b2" color={validity === 'invalid' ? 'red-50' : 'gray-30'}>
 						{unit}
 					</Text>
 				}

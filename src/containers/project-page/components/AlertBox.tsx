@@ -1,55 +1,11 @@
 import React, { useState } from 'react';
 import Box from 'src/components/Box';
-import ButtonComp from 'src/components/Button';
-import If from 'src/components/If';
-import Text from 'src/components/Text';
-import InputBox from './InputBox';
 
-const AlertBox = () => {
-	const [step, setStep] = useState(2);
+const AlertBox = ({ children, color }) => {
+	const [step, setStep] = useState(1);
 	return (
-		<Box width="100%" px="2.9rem" backgroundColor="#FFF6D9" py="ms" mt="mm">
-			{step === 0 ? (
-				<Text textAlign="center" as="b2" fontWeight="medium">
-					Before you proceed...
-				</Text>
-			) : (
-				<Text textAlign="center" as="b2" fontWeight="medium">
-					Hmm... you don’t seem to have enough funds
-				</Text>
-			)}
-			{step === 0 ? (
-				<Text textAlign="center" as="b3" mt="mxs">
-					The transaction will take place as soon as the sale goes live. We recommend having a little more
-					than minimum funds in your Gnosis Safe to prevent your transaction from failing.
-				</Text>
-			) : (
-				<Text textAlign="center" as="b3" mt="mxs">
-					Please load up your Gnosis Safe with sufficient funds to prevent your transaction from failing.
-				</Text>
-			)}
-			<If
-				condition={step === 1}
-				then={
-					<Box center mt="mxs">
-						<ButtonComp
-							backgroundColor="white"
-							color="black"
-							width="15.8rem"
-							height="4rem"
-							borderRadius="27px"
-						>
-							<Text as="btn2" fontWeight="bold">
-								Add Funds
-							</Text>
-						</ButtonComp>
-					</Box>
-				}
-			/>
-			<If
-				condition={step === 2}
-				then={<InputBox value="" label="Deposit Funds to the Gnosis Safe" placeholder="0.05" unit="ETH" />}
-			/>
+		<Box width="100%" px="2.9rem" backgroundColor={color} py="ms" mt="mm">
+			{children}
 		</Box>
 	);
 };

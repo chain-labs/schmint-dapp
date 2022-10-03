@@ -7,7 +7,9 @@ import Text from 'src/components/Text';
 import TextInput from 'src/components/TextInput';
 import theme from 'src/styleguide/theme';
 import { fontSize } from 'styled-system';
+import AlertBottomBox from './components/AlertBottomBox';
 import AlertBox from './components/AlertBox';
+import CostComp from './components/CostComp';
 import InputBox from './components/InputBox';
 
 const SchmintForm = ({ project }) => {
@@ -25,6 +27,10 @@ const SchmintForm = ({ project }) => {
 				label="Number"
 				setValue={setNft}
 				inputType="number"
+				max="5"
+				min="0"
+				errorText={nft > 5 ? "Number of NFTs can't be more than 5" : "Number of NFTs can't be less than 0"}
+				disabled
 			/>
 
 			<Text
@@ -42,62 +48,25 @@ const SchmintForm = ({ project }) => {
 					<If condition={showOptions === false} then={<CaretUp size={18} />} else={<CaretDown size={18} />} />
 				</Box>
 			</Text>
-			<If
-				condition={showOptions === true}
-				then={
-					<Box>
-						<InputBox
-							label="Maximum Gas Limit"
-							placeholder="5"
-							value=""
-							detailText="This contract allows upto 5 NFTs per wallet"
-						/>
-					</Box>
-				}
-			/>
+			<Box id="input">
+				<If
+					condition={showOptions === true}
+					then={
+						<Box>
+							<InputBox
+								label="Maximum Gas Limit"
+								placeholder="5"
+								value=""
+								detailText="This contract allows upto 5 NFTs per wallet"
+								unit="GWEI"
+							/>
+						</Box>
+					}
+				/>
+			</Box>
 			<Box borderTop={`1px solid ${theme.colors['gray-30']}`} width="100%" mt="mxxxl" />
-			<Text as="h5" mt="mxxxl">
-				Cost
-			</Text>
-			<Box backgroundColor={`${theme.colors['sky-blue-20']}`} px="mm" pb="mxs" mt="mm">
-				<CostItem
-					text={`NFT x${nft}`}
-					subText={project?.price * nft}
-					unit={project?.network?.name?.slice(0, 3).toUpperCase()}
-					width="100%"
-				/>
-				<CostItem
-					text="Schmint Fees"
-					subText={0.001}
-					unit={project?.network?.name?.slice(0, 3).toUpperCase()}
-					width="100%"
-				/>
-				<CostItem
-					text="Estimated gas cost?"
-					subText={0.001}
-					unit={project?.network?.name?.slice(0, 3).toUpperCase()}
-					width="100%"
-				/>
-			</Box>
-			<Box column justifyContent="flex-end" alignItems="flex-end" pt="mxs" width="100%">
-				<CostItem
-					text="Total:"
-					subText={project?.price * nft + 0.001 + 0.001}
-					unit={project?.network?.name?.slice(0, 3).toUpperCase()}
-					width="50%"
-					textColor="blue-40"
-					fontSize="b2"
-				/>
-				<CostItem
-					text="Gnosis Safe Balance:"
-					subText={0.001}
-					unit={project?.network?.name?.slice(0, 3).toUpperCase()}
-					width="50%"
-					textColor="blue-40"
-					fontSize="b2"
-				/>
-			</Box>
-			<AlertBox />
+			<CostComp project={project} nft={nft} showTotalAmount showCostText />
+			<AlertBottomBox showOptions={showOptions} />
 			<Box center column mt="mxxxl">
 				<ButtonComp bg="primary" color="white" width="23.4rem" height="4.8rem" borderRadius="64px">
 					<Text as="btn1">Create Schmint</Text>

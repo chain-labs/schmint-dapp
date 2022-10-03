@@ -20,11 +20,9 @@ const Projectpage = ({ project }) => {
 	return (
 		<Box center column>
 			<Banner project={project} />
-			{/* <Box width="55.8rem" center column> */}
-			<ContractDetails project={project} />
+			<ContractDetails project={project} showDetails />
 			<Box borderTop={`1px solid ${theme.colors['gray-20']}`} width="100%" my="wxs" />
 			<SchmintForm project={project} />
-			{/* </Box> */}
 		</Box>
 	);
 };
