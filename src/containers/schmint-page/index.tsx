@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
-import Modal from 'src/components/Modal';
-import ReactDom from 'react-dom';
 import UpdateModal from 'src/components/modals/UpdateModal';
 import ConfirmModal from 'src/components/modals/ConfirmModal';
 import StatusModal from 'src/components/modals/StatusModal';
