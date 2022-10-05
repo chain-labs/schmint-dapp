@@ -26,13 +26,7 @@ const MyAssetsComponent = () => {
 		});
 	}, []);
 
-	const { data, isLoading } = useContractRead({
-		addressOrName: scheduler.schedulerAddress,
-		contractInterface: getAbi(chain?.id, 'SCHEDULER'),
-		functionName: 'avatar',
-	});
-
-	if (user.exists && scheduler.owner && !isLoading) {
+	if (user.exists && scheduler.owner) {
 		return (
 			<Box pl="mxl" pt="wxs">
 				<Box row alignItems="center">
@@ -54,7 +48,12 @@ const MyAssetsComponent = () => {
 							"We're currently working to create a simplr way to manage your assets and funds. In the meantime, you can use Gnosis Safe to do the same."
 						}
 					</Text>
-					<Box as="a" borderRadius="64px" href={getGnosisSafeUrl(chain?.id, `${data}`)} target="_blank">
+					<Box
+						as="a"
+						borderRadius="64px"
+						href={getGnosisSafeUrl(chain?.id, `${scheduler.avatar}`)}
+						target="_blank"
+					>
 						<ButtonComp bg="primary" py="ms" px="mxl" borderRadius="64px" row center>
 							<Text as="btn2" mr="mxxs">
 								Open Gnosis Safe

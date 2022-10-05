@@ -8,9 +8,8 @@ import InputBox from './InputBox';
 import scrollIntoView from '../../../utils/scrollIntoView';
 import AlertBox from './AlertBox';
 
-const AlertBottomBox = ({ showOptions }) => {
+const AlertBottomBox = ({ showOptions, funds, setFunds }) => {
 	const [step, setStep] = useState(1);
-	const [funds, setFunds] = useState();
 
 	return (
 		<AlertBox color="yellow-20">
@@ -36,7 +35,17 @@ const AlertBottomBox = ({ showOptions }) => {
 			<If
 				condition={step === 1}
 				then={
-					<Box center mt="mxs" onClick={showOptions ? () => scrollIntoView('input') : () => setStep(2)}>
+					<Box
+						center
+						mt="mxs"
+						onClick={
+							showOptions
+								? () => {
+										scrollIntoView('input');
+								  }
+								: () => setStep(2)
+						}
+					>
 						<ButtonComp
 							backgroundColor="white"
 							color="black"

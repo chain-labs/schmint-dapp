@@ -17,6 +17,7 @@ interface props {
 	min?: string;
 	errorText?: string;
 	disabled?: boolean;
+	ref?: any;
 }
 
 const InputBox = ({
@@ -32,6 +33,7 @@ const InputBox = ({
 	min,
 	errorText,
 	disabled,
+	ref,
 }: props) => {
 	return (
 		<Box mt="2rem">
@@ -48,6 +50,7 @@ const InputBox = ({
 			</Text>
 			<Box mt="mxs">
 				<TextInput
+					ref={ref}
 					value={value}
 					placeholder={placeholder}
 					type="number"

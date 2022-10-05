@@ -25,6 +25,7 @@ interface Props {
 	fontSize?: string;
 	inputType?: string;
 	valueDisable?: boolean;
+	ref?: any;
 }
 
 const TextInput = ({
@@ -44,6 +45,7 @@ const TextInput = ({
 	fontSize,
 	inputType,
 	valueDisable,
+	ref,
 }: Props) => {
 	const [validity, setValidity] = useState<'clear' | 'valid' | 'invalid'>('clear');
 	const [searchIcon, setSearchIcon] = useState<boolean>(true);
@@ -124,6 +126,7 @@ const TextInput = ({
 				min={min}
 				max={max}
 				inputType={inputType}
+				ref={ref}
 				// backgroundColor={valueDisable ? 'disable-gray' : 'white'}
 			></InputElement>
 

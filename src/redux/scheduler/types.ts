@@ -8,12 +8,11 @@ export interface SchedulerState {
 }
 
 export interface SchmintState {
-	id: number;
-	targetAddress: string;
-	input: {
-		projectName: string;
-		mintPrice: string;
-		status: 'SCHEDULED' | 'MINTED' | 'CANCELLED' | 'FAILED';
-		storeInScheduler: boolean;
-	};
+	id?: number;
+	targetAddress?: string;
+	isSchminted?: boolean;
+	isCancelled?: boolean;
+	gasPriceLimit?: number;
+	data?: string;
+	value?: string;
 }
