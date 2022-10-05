@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Box from 'src/components/Box';
 import Banner from './Banner';
 import ContractDetails from './ContractDetails';
 import SchmintForm from './SchmintForm';
-import ReactReadMoreReadLess from 'react-read-more-read-less';
-import ReadMore from './components/ReadMore';
 import theme from 'src/styleguide/theme';
 
 const Projectpage = ({ collection }) => {
