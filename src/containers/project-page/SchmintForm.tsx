@@ -4,13 +4,13 @@ import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import If from 'src/components/If';
 import Text from 'src/components/Text';
-import TextInput from 'src/components/TextInput';
+import TextInput, { InputElement } from 'src/components/TextInput';
 import theme from 'src/styleguide/theme';
-import { fontSize } from 'styled-system';
 import AlertBottomBox from './components/AlertBottomBox';
 import AlertBox from './components/AlertBox';
 import CostComp from './components/CostComp';
 import InputBox from './components/InputBox';
+import InputNumber from './components/InputNumber';
 
 const SchmintForm = ({ collection }) => {
 	const [showOptions, setShowOptions] = useState(false);
@@ -20,19 +20,15 @@ const SchmintForm = ({ collection }) => {
 			<Text textAlign="start" mb="3rem" as="h5">
 				Schmint Details
 			</Text>
-			<InputBox
-				placeholder="5"
+			<InputNumber
 				value={nft}
-				detailText="This contract allows upto 5 NFTs per wallet"
-				label="Number"
 				setValue={setNft}
-				inputType="number"
-				max="5"
-				min="0"
-				errorText={nft > 5 ? "Number of NFTs can't be more than 5" : "Number of NFTs can't be less than 0"}
-				disabled
+				errorText="Value should not be more than 5"
+				max={5}
+				min={0}
+				label="Number of Nfts"
+				detailText="This contract allows upto 5 NFTs per wallet and 5 per transaction."
 			/>
-
 			<Text
 				as="b3"
 				onClick={() => setShowOptions(!showOptions)}
@@ -57,8 +53,15 @@ const SchmintForm = ({ collection }) => {
 								label="Maximum Gas Limit"
 								placeholder="5"
 								value=""
-								detailText="This contract allows upto 5 NFTs per wallet"
+								detailText="Your transaction will not execute if the gas price is more than the set limit."
 								unit="GWEI"
+							/>
+							<InputBox
+								label="Deposit funds to Gnosis Safe"
+								placeholder="20"
+								value=""
+								detailText="Deposit funds to the Gnosis Safe to prevent your Schmint from failing."
+								unit="ETH"
 							/>
 						</Box>
 					}
