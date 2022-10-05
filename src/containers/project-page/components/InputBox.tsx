@@ -61,7 +61,7 @@ const InputBox = ({
 					disabled={disabled || value > max || value < min}
 					valueDisable={disabled}
 				/>
-				<Text as="b3" mt="mxs">
+				<Text as="btn2" mt="mxs" color="gray-40">
 					{detailText}
 				</Text>
 			</Box>

@@ -24,7 +24,7 @@ const Banner = ({ collection }) => {
 			<Box center column>
 				<Text as="h4">{collection?.title}</Text>
 				<Text as="h5" textAlign="center" color="gray-50">
-					({collection?.title?.slice(0, 3).toUpperCase()})
+					({collection?.symbol})
 				</Text>
 			</Box>
 		</Box>

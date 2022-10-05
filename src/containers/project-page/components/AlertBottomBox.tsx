@@ -10,6 +10,7 @@ import AlertBox from './AlertBox';
 
 const AlertBottomBox = ({ showOptions }) => {
 	const [step, setStep] = useState(1);
+	const [funds, setFunds] = useState();
 
 	return (
 		<AlertBox color="yellow-20">
@@ -53,7 +54,15 @@ const AlertBottomBox = ({ showOptions }) => {
 			<Box>
 				<If
 					condition={step === 2}
-					then={<InputBox value="" label="Deposit Funds to the Gnosis Safe" placeholder="0.05" unit="ETH" />}
+					then={
+						<InputBox
+							value={funds}
+							label="Deposit Funds to the Gnosis Safe"
+							placeholder="0.05"
+							unit="ETH"
+							setValue={setFunds}
+						/>
+					}
 				/>
 			</Box>
 		</AlertBox>
