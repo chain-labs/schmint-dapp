@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import Projectpage from 'src/containers/project-page';
-import projects from '../../Projects.json';
 
 const ProjectPage = () => {
 	const router = useRouter();
