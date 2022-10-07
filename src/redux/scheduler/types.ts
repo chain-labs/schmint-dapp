@@ -15,4 +15,5 @@ export interface SchmintState {
 	gasPriceLimit?: number;
 	data?: string;
 	value?: string;
+	status?: string;
 }

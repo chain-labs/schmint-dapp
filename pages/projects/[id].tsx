@@ -26,7 +26,6 @@ const ProjectPage = () => {
 	useEffect(() => {
 		getAllCollections();
 		getCollection();
-		// console.log(projects);
 	}, [id, collections]);
 
 	return <Box>{collection ? <Projectpage collection={collection} /> : ''};</Box>;

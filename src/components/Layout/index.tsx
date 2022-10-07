@@ -21,18 +21,18 @@ const Layout = ({ children }) => {
 	const user = useAppSelector(userSelector);
 	const [userHasScheduler, setUserHasScheduler] = React.useState(false);
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
-	const [loadScheduler, { called, loading, data }] = useLazyQuery(GET_USER_SCHEDULER);
-	const dispatch = useAppDispatch();
-
-	const [windowHeight, setWindowHeight] = React.useState(0);
-
-	useEffect(() => {
-		if (called && !loading) {
+	const [loadScheduler, { called, loading, data }] = useLazyQuery(GET_USER_SCHEDULER, {
+		onCompleted: (data) => {
 			const scheduler = data?.schedulers?.[0];
 			if (scheduler?.owner?.toLowerCase() === user.address.toLowerCase()) {
 				setUserHasScheduler(true);
 				dispatch(
-					setScheduler({ owner: scheduler.owner, schedulerAddress: scheduler.id, avatar: scheduler.safe })
+					setScheduler({
+						owner: scheduler.owner,
+						schedulerAddress: scheduler.id,
+						avatar: scheduler.safe,
+						schmints: scheduler.schmints,
+					})
 				);
 			} else {
 				setUserHasScheduler(false);
@@ -40,8 +40,11 @@ const Layout = ({ children }) => {
 					router.replace('/explore', undefined, { shallow: true });
 				}
 			}
-		}
-	}, [called, loading]);
+		},
+	});
+	const dispatch = useAppDispatch();
+
+	const [windowHeight, setWindowHeight] = React.useState(0);
 
 	useEffect(() => {
 		setWindowHeight(window.innerHeight);

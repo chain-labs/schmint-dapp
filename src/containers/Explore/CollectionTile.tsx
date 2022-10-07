@@ -81,7 +81,7 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 				</Box>
 			</Box>
 			<Box column>
-				<Link href={`/projects/${idx}`} passHref>
+				<Link href={`/projects/${collection?.id}`} passHref>
 					<ButtonComp bg="primary" color="white" width="11rem" height="3.6rem" borderRadius="64px" mb="ms">
 						<Text as="btn2">View</Text>
 					</ButtonComp>

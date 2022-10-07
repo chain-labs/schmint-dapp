@@ -8,9 +8,7 @@ import InputBox from './InputBox';
 import scrollIntoView from '../../../utils/scrollIntoView';
 import AlertBox from './AlertBox';
 
-const AlertBottomBox = ({ showOptions, funds, setFunds }) => {
-	const [step, setStep] = useState(1);
-
+const AlertBottomBox = ({ showOptions, funds, setFunds, step, setStep }) => {
 	return (
 		<AlertBox color="yellow-20">
 			{step === 0 ? (
@@ -28,7 +26,7 @@ const AlertBottomBox = ({ showOptions, funds, setFunds }) => {
 					than minimum funds in your Gnosis Safe to prevent your transaction from failing.
 				</Text>
 			) : (
-				<Text textAlign="center" as="b3" mt="mxs">
+				<Text textAlign="center" as="b3" mt="mxs" color="gray-50">
 					Please load up your Gnosis Safe with sufficient funds to prevent your transaction from failing.
 				</Text>
 			)}

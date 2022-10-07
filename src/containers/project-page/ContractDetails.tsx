@@ -28,7 +28,7 @@ const ContractDetails = ({ collection, showDetails }: props) => {
 				<ContractItem text="Blockchain" subText={collection?.network?.name} />
 				<ContractItem text="Price" subText={collection?.price} />
 				<ContractItem text="Supply" subText={collection?.supply} />
-				<ContractItem text="Token Standard" subText="ERC21A" />
+				<ContractItem text="Token Standard" subText="ERC721A" />
 			</Box>
 			{showDetails ? (
 				<Box>

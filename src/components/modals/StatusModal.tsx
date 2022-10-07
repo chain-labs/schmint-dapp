@@ -1,4 +1,7 @@
-import React from 'react';
+import Image from 'next/image';
+import React, { useEffect } from 'react';
+import { useAppDispatch } from 'src/redux/hooks';
+import { hideModal } from 'src/redux/modal';
 import theme from 'src/styleguide/theme';
 import Box from '../Box';
 import ButtonComp from '../Button';
@@ -6,11 +9,17 @@ import If from '../If';
 import Modal from '../Modal';
 import Text from '../Text';
 
+const WarningIcon = 'https://ik.imagekit.io/chainlabs/Schmint/Warning_RlJNNAnXQ.svg';
+
+const SuccessIcon = 'https://ik.imagekit.io/chainlabs/Schmint/DSC09095-02_Z8hCLrIV2.svg';
+
 interface props {
 	setStep?: (step: number) => void;
 	success?: boolean;
+	type?: 'SCHMINT_UPDATE' | 'SCHMINT_DELETE' | 'FUNDS_ADDED';
 }
-const StatusModal = ({ setStep, success }: props) => {
+const StatusModal = ({ setStep, success, type }: props) => {
+	const dispatch = useAppDispatch();
 	return (
 		<Modal visible>
 			<Box
@@ -24,6 +33,13 @@ const StatusModal = ({ setStep, success }: props) => {
 				borderRadius="8px"
 				column
 			>
+				<Box height="6.4rem" width="6.4rem" position="relative" mx="auto" mb="mm">
+					<If
+						condition={!success}
+						then={<Image src={WarningIcon} layout="fill" objectFit="cover" />}
+						else={<Image height={64} width={64} src={SuccessIcon} />}
+					/>
+				</Box>
 				<Text as="h5" center>
 					{success ? 'Schmint Details Updated.' : 'Transaction Unsuccessful'}
 				</Text>
@@ -49,11 +65,15 @@ const StatusModal = ({ setStep, success }: props) => {
 						condition={!success}
 						then={
 							<ButtonComp
+								bg="secondary"
 								color="gray-60"
 								width="14.5rem"
 								height="4.8rem"
 								borderRadius="64px"
 								border={`1px solid ${theme.colors['gray-60']}`}
+								onClick={() => {
+									dispatch(hideModal());
+								}}
 							>
 								<Text as="btn2">Cancel</Text>
 							</ButtonComp>
