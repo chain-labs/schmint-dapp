@@ -1,6 +1,6 @@
-import { BigNumber, ethers } from 'ethers';
-import { CaretDown, CaretUp, Minus, Plus } from 'phosphor-react';
-import React, { useEffect, useState } from 'react';
+import { ethers } from 'ethers';
+import { CaretDown, CaretUp } from 'phosphor-react';
+import React, { useState } from 'react';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import If from 'src/components/If';
@@ -25,7 +25,6 @@ const SchmintForm = ({ collection }) => {
 	const [nft, setNft] = useState(`${1}`);
 	const [gasPriceLimit, setGasPriceLimit] = useState('');
 	const [funds, setFunds] = useState('');
-	const [gas, setGas] = useState('');
 	const [step, setStep] = useState(0);
 
 	const { data: signer } = useSigner();
@@ -47,8 +46,6 @@ const SchmintForm = ({ collection }) => {
 		addressOrName: getContractAddress(chain?.id, 'SCHEDULER_FACTORY'),
 		contractInterface: getAbi(chain?.id, 'SCHEDULER_FACTORY'),
 	});
-
-	const fundsRef = React.useRef();
 
 	const dispatch = useAppDispatch();
 
@@ -84,8 +81,6 @@ const SchmintForm = ({ collection }) => {
 
 				const fundsToBeAdded = ethers.utils.parseEther(`${funds.length !== 0 ? funds : 0}`);
 
-				console.log({ fundsToBeAdded });
-
 				const tx = await SchedulerFactoryInstance?.connect(signer)?.deployScheduler(userInput, schmintInput, {
 					value: fundsToBeAdded,
 				});
@@ -120,8 +115,11 @@ const SchmintForm = ({ collection }) => {
 						gasPriceLimit: gasPriceLimit ? ethers.utils.parseUnits(gasPriceLimit, 'gwei') : 0,
 					},
 				];
+
+				const fundsToBeAdded = ethers.utils.parseEther(`${funds.length !== 0 ? funds : 0}`);
+
 				const tx = await SchedulerInstance?.connect(signer)?.createSchmint(schmintInput, {
-					value: ethers.utils.parseEther(`${funds.length !== 0 ? funds : 0}`),
+					value: fundsToBeAdded,
 				});
 
 				const receipt = await tx?.wait();
@@ -273,28 +271,6 @@ const SchmintForm = ({ collection }) => {
 					}
 				/>
 			</Box>
-		</Box>
-	);
-};
-
-interface cost {
-	textColor?: string;
-	text?: string;
-	subText?: number;
-	width?: string;
-	unit?: string;
-	fontSize?: any;
-}
-
-const CostItem = ({ text, subText, width, unit, textColor, fontSize }: cost) => {
-	return (
-		<Box between pt="mxs" width={width}>
-			<Text as={fontSize ? fontSize : 'b3'}>{text}</Text>
-			<Text as={fontSize ? fontSize : 'b3'} color={textColor ? textColor : `${theme.colors['gray-60']}`}>
-				{subText}
-				{'  '}
-				{unit}
-			</Text>
 		</Box>
 	);
 };

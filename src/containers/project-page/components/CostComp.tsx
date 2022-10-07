@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import { userAgent } from 'next/server';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
@@ -19,10 +18,11 @@ interface props {
 	step?: number;
 }
 
-const CostComp = ({ collection, nft, showTotalAmount, showCostText, step, setStep }: props) => {
+const CostComp = ({ collection, nft, showTotalAmount, step, setStep }: props) => {
 	const scheduler = useAppSelector(schedulerSelector);
 	const user = useAppSelector(userSelector);
 	const { chain } = useNetwork();
+	const [estimatedGas, setEstimatedGas] = useState(0.001);
 	const { data: balance, isLoading } = useBalance({
 		addressOrName: scheduler.avatar,
 		chainId: chain?.id,
@@ -30,7 +30,6 @@ const CostComp = ({ collection, nft, showTotalAmount, showCostText, step, setSte
 	});
 
 	useEffect(() => {
-		console.log({ balance });
 		if (balance) {
 			const unexecutedSchmint = scheduler.schmints.filter((schmint) => schmint.status === 'CREATED');
 			let balanceUsed = 0;
@@ -55,11 +54,17 @@ const CostComp = ({ collection, nft, showTotalAmount, showCostText, step, setSte
 				<CostItem
 					text={`NFT x${nft}`}
 					subText={parseFloat((collection?.price * nft).toFixed(3))}
-					unit={balance?.symbol}
+					unit={chain?.nativeCurrency.symbol}
 					width="100%"
 				/>
-				<CostItem text="Schmint Fees" subText={0.001} unit={balance?.symbol} width="100%" strikeThrough />
-				<CostItem text="Estimated gas cost" subText={0.001} unit={balance?.symbol} width="100%" />
+				<CostItem
+					text="Schmint Fees"
+					subText={estimatedGas}
+					unit={chain?.nativeCurrency.symbol}
+					width="100%"
+					strikeThrough
+				/>
+				<CostItem text="Estimated gas cost" subText={0.001} unit={chain?.nativeCurrency.symbol} width="100%" />
 			</Box>
 			<If
 				condition={showTotalAmount}
@@ -67,8 +72,8 @@ const CostComp = ({ collection, nft, showTotalAmount, showCostText, step, setSte
 					<Box column justifyContent="flex-end" alignItems="flex-end" pt="mxs" width="100%">
 						<CostItem
 							text="Total:"
-							subText={parseFloat((collection?.price * nft).toFixed(3))}
-							unit={balance?.symbol}
+							subText={parseFloat((collection?.price * nft + estimatedGas).toFixed(3))}
+							unit={chain?.nativeCurrency.symbol}
 							width="50%"
 							textColor="blue-40"
 							fontSize="b2"
@@ -79,7 +84,7 @@ const CostComp = ({ collection, nft, showTotalAmount, showCostText, step, setSte
 								<CostItem
 									text="Gnosis Safe Balance:"
 									subText={parseFloat(balance?.formatted.slice(0, 5))}
-									unit={balance?.symbol}
+									unit={chain?.nativeCurrency.symbol}
 									width="50%"
 									textColor="blue-40"
 									fontSize="b2"
