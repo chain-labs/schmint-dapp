@@ -60,6 +60,7 @@ const CostComp = ({ collection, nft, showTotalAmount, showCostText, step, setSte
 				/>
 				<CostItem text="Schmint Fees" subText={0.001} unit={balance?.symbol} width="100%" strikeThrough />
 				<CostItem text="Estimated gas cost" subText={0.001} unit={balance?.symbol} width="100%" />
+
 			</Box>
 			<If
 				condition={showTotalAmount}
