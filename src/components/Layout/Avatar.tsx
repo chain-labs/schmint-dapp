@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import { Copy, Plus } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 import { useAppSelector } from 'src/redux/hooks';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { userSelector } from 'src/redux/user';
@@ -17,7 +16,6 @@ const Avatar = () => {
 	const [userNo, setUserNo] = useState(0);
 	const user = useAppSelector(userSelector);
 	const scheduler = useAppSelector(schedulerSelector);
-	const { data } = useEnsName({ address: user?.address });
 	const { chain } = useNetwork();
 	const { data: balance } = useBalance({ addressOrName: scheduler.avatar, chainId: chain?.id, watch: true });
 

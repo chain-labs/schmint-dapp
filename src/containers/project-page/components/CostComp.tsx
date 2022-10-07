@@ -1,5 +1,7 @@
 import { ethers } from 'ethers';
+import { Question } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
+import ReactTooltip from 'react-tooltip';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import Text from 'src/components/Text';
@@ -8,6 +10,7 @@ import { schedulerSelector } from 'src/redux/scheduler';
 import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
 import { useBalance, useNetwork } from 'wagmi';
+import { ESTIMATED_GAS_COST_TOOLTIP } from './copy-constants';
 
 interface props {
 	collection: any;
@@ -64,7 +67,13 @@ const CostComp = ({ collection, nft, showTotalAmount, step, setStep }: props) =>
 					width="100%"
 					strikeThrough
 				/>
-				<CostItem text="Estimated gas cost" subText={0.001} unit={chain?.nativeCurrency.symbol} width="100%" />
+				<CostItem
+					text="Estimated gas cost"
+					tooltip={ESTIMATED_GAS_COST_TOOLTIP}
+					subText={0.001}
+					unit={chain?.nativeCurrency.symbol}
+					width="100%"
+				/>
 			</Box>
 			<If
 				condition={showTotalAmount}
@@ -108,12 +117,50 @@ interface cost {
 	unit?: string;
 	fontSize?: any;
 	strikeThrough?: boolean;
+	tooltip?: string;
 }
 
-const CostItem = ({ text, subText, width, unit, textColor, fontSize, strikeThrough }: cost) => {
+const CostItem = ({ text, subText, width, unit, textColor, fontSize, strikeThrough, tooltip }: cost) => {
 	return (
 		<Box between pt="mxs" width={width}>
-			<Text as={fontSize ? fontSize : 'b3'}>{text}</Text>
+			<Box
+				row
+				alignItems="center"
+				css={`
+					#cost-tooltip {
+						opacity: 1 !important;
+						box-shadow: 0px 2px 4px -2px rgba(24, 39, 75, 0.12), 0px 4px 4px -2px rgba(24, 39, 75, 0.08);
+						border-radius: 4px;
+						padding: 8px;
+						width: 280px;
+					}
+				`}
+			>
+				<Text as={fontSize ? fontSize : 'b3'} mr="mxxs">
+					{text}
+				</Text>
+				<If
+					condition={!!tooltip}
+					then={
+						<Question
+							weight="fill"
+							size={16}
+							data-tip={tooltip}
+							data-for="cost-tooltip"
+							data-offset="{'left': -150, 'top': 120}"
+							style={{ cursor: 'pointer' }}
+						/>
+					}
+				/>
+				<ReactTooltip
+					id="cost-tooltip"
+					place="bottom"
+					arrowColor="transparent"
+					backgroundColor={theme.colors['blue-10']}
+					textColor={theme.colors['simply-black']}
+					effect="solid"
+				/>
+			</Box>
 			<Text as={fontSize ? fontSize : 'b3'} color={textColor ? textColor : `${theme.colors['gray-60']}`}>
 				{strikeThrough ? (
 					<Box
