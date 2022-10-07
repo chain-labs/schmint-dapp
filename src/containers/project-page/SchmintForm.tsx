@@ -185,7 +185,7 @@ const SchmintForm = ({ collection }) => {
 					then={
 						<Box>
 							<InputBox
-								label="Maximum Gas Limit"
+								label="Maximum Gas Price Limit"
 								placeholder="5"
 								value={gasPriceLimit}
 								setValue={setGasPriceLimit}

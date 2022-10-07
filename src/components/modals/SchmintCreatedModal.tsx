@@ -6,11 +6,13 @@ import Box from '../Box';
 import ButtonComp from '../Button';
 import Modal from '../Modal';
 import Text from '../Text';
+import Confetti from 'react-confetti';
 
 const SchmintCreatedModal = () => {
 	const dispatch = useAppDispatch();
 	return (
 		<Modal visible>
+			<Confetti initialVelocityY={-10} />
 			<Box
 				bg="sky-blue-10"
 				p="mm"
