@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAppDispatch } from 'src/redux/hooks';
 import { hideModal } from 'src/redux/modal';
 import Box from '../Box';
@@ -10,6 +10,14 @@ import Confetti from 'react-confetti';
 
 const SchmintCreatedModal = () => {
 	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		return () => {
+			if (typeof window !== 'undefined') {
+				window.scrollTo(0, 0);
+			}
+		};
+	}, []);
 	return (
 		<Modal visible>
 			<Confetti initialVelocityY={-10} />

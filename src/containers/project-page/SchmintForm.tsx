@@ -82,8 +82,12 @@ const SchmintForm = ({ collection }) => {
 					},
 				];
 
+				const fundsToBeAdded = ethers.utils.parseEther(`${funds.length !== 0 ? funds : 0}`);
+
+				console.log({ fundsToBeAdded });
+
 				const tx = await SchedulerFactoryInstance?.connect(signer)?.deployScheduler(userInput, schmintInput, {
-					value: ethers.utils.parseEther(`${funds.length !== 0 ? funds : 0}`),
+					value: fundsToBeAdded,
 				});
 
 				const receipt = await tx.wait();

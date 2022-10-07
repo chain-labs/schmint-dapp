@@ -26,6 +26,7 @@ const CostComp = ({ collection, nft, showTotalAmount, showCostText, step, setSte
 	const { data: balance, isLoading } = useBalance({
 		addressOrName: scheduler.avatar,
 		chainId: chain?.id,
+		watch: true,
 	});
 
 	useEffect(() => {

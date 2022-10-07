@@ -59,10 +59,10 @@ const InputNumber = ({ value, setValue, detailText, errorText, max, min, label, 
 					mt="0.2rem"
 					position="absolute"
 					color={parseInt(value) <= min ? 'disable-black' : 'blue-40'}
-					onClick={parseInt(value) <= min ? () => setValue(min) : () => setValue(value - 1)}
+					onClick={parseInt(value) <= min ? () => setValue(min) : () => setValue(parseInt(value) - 1)}
 					cursor={parseInt(value) <= min ? 'not-allowed' : 'pointer'}
 				>
-					<Minus size={24} onClick={() => setValue(value - 1)} />
+					<Minus size={24} />
 				</Box>
 				<InputElement
 					as="input"
@@ -88,7 +88,7 @@ const InputNumber = ({ value, setValue, detailText, errorText, max, min, label, 
 				<Box
 					ml="-4.8rem"
 					mt="0.2rem"
-					onClick={parseInt(value) >= max ? () => setValue(max) : () => setValue(value + 1)}
+					onClick={parseInt(value) >= max ? () => setValue(max) : () => setValue(parseInt(value) + 1)}
 					cursor={parseInt(value) >= max ? 'not-allowed' : 'pointer'}
 					color={parseInt(value) >= max ? 'disable-black' : 'blue-40'}
 				>
