@@ -98,7 +98,6 @@ const TextInput = ({
 					<Box
 						ml="2rem"
 						mt="0.2rem"
-						
 						position="absolute"
 						color={value < min ? 'disable-black' : 'blue-40'}
 						onClick={value < min ? () => setValue(value) : () => setValue(value - 1)}
