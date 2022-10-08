@@ -14,7 +14,7 @@ const ConfirmModal = ({ setStep, step }: props) => {
 		<Modal visible>
 			<Box
 				width="33.2rem"
-				p="1.6rem"
+				p="mm"
 				position="absolute"
 				backgroundColor="white"
 				top="50%"
@@ -24,8 +24,11 @@ const ConfirmModal = ({ setStep, step }: props) => {
 				column
 				border={`1px solid ${theme.colors['blue-20']}`}
 			>
-				<Loader msg="Confirming Transaction" />
-				<Text textAlign="center" as="b2" mt="mxxs">
+				<Loader minHeight="100%" />
+				<Text textAlign="center" as="h5" mt="mm">
+					Confirming Transaction
+				</Text>
+				<Text textAlign="center" as="b2" mt="mxs" color="gray-50">
 					Please validate the transaction from your connected wallet.
 				</Text>
 			</Box>

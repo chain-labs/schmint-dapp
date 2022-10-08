@@ -8,10 +8,7 @@ import InputBox from './InputBox';
 import scrollIntoView from '../../../utils/scrollIntoView';
 import AlertBox from './AlertBox';
 
-const AlertBottomBox = ({ showOptions }) => {
-	const [step, setStep] = useState(1);
-	const [funds, setFunds] = useState();
-
+const AlertBottomBox = ({ showOptions, funds, setFunds, step, setStep, price, nft, estimatedGas }) => {
 	return (
 		<AlertBox color="yellow-20">
 			{step === 0 ? (
@@ -29,14 +26,24 @@ const AlertBottomBox = ({ showOptions }) => {
 					than minimum funds in your Gnosis Safe to prevent your transaction from failing.
 				</Text>
 			) : (
-				<Text textAlign="center" as="b3" mt="mxs">
+				<Text textAlign="center" as="b3" mt="mxs" color="gray-50">
 					Please load up your Gnosis Safe with sufficient funds to prevent your transaction from failing.
 				</Text>
 			)}
 			<If
 				condition={step === 1}
 				then={
-					<Box center mt="mxs" onClick={showOptions ? () => scrollIntoView('input') : () => setStep(2)}>
+					<Box
+						center
+						mt="mxs"
+						onClick={
+							showOptions
+								? () => {
+										scrollIntoView('input');
+								  }
+								: () => setStep(2)
+						}
+					>
 						<ButtonComp
 							backgroundColor="white"
 							color="black"
@@ -59,6 +66,8 @@ const AlertBottomBox = ({ showOptions }) => {
 							value={funds}
 							label="Deposit Funds to the Gnosis Safe"
 							placeholder="0.05"
+							min={(price * parseInt(nft) + estimatedGas).toFixed(3)}
+							step={'0.001'}
 							unit="ETH"
 							setValue={setFunds}
 						/>

@@ -11,35 +11,40 @@ import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { indexAddress } from './utils';
 import React, { useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
-import { GET_USER_SCHEDULER } from 'graphql/UserScheduler';
 import Loader from 'components/Loader';
 import { setScheduler } from 'src/redux/scheduler';
 import If from 'components/If';
+import { GET_USER_SCHEDULER } from 'src/graphql/query/GetUserScheduler';
 
 const Layout = ({ children }) => {
 	const router = useRouter();
 	const user = useAppSelector(userSelector);
 	const [userHasScheduler, setUserHasScheduler] = React.useState(false);
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
-	const [loadScheduler, { called, loading, data }] = useLazyQuery(GET_USER_SCHEDULER);
-	const dispatch = useAppDispatch();
-
-	const [windowHeight, setWindowHeight] = React.useState(0);
-
-	useEffect(() => {
-		if (called && !loading) {
+	const [loadScheduler, { called, loading, data }] = useLazyQuery(GET_USER_SCHEDULER, {
+		onCompleted: (data) => {
 			const scheduler = data?.schedulers?.[0];
 			if (scheduler?.owner?.toLowerCase() === user.address.toLowerCase()) {
 				setUserHasScheduler(true);
-				dispatch(setScheduler({ owner: scheduler.owner, schedulerAddress: scheduler.id }));
+				dispatch(
+					setScheduler({
+						owner: scheduler.owner,
+						schedulerAddress: scheduler.id,
+						avatar: scheduler.safe,
+						schmints: scheduler.schmints,
+					})
+				);
 			} else {
 				setUserHasScheduler(false);
 				if (router.pathname === '/my-assets') {
 					router.replace('/explore', undefined, { shallow: true });
 				}
 			}
-		}
-	}, [called, loading]);
+		},
+	});
+	const dispatch = useAppDispatch();
+
+	const [windowHeight, setWindowHeight] = React.useState(0);
 
 	useEffect(() => {
 		setWindowHeight(window.innerHeight);

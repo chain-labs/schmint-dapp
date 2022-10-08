@@ -3,8 +3,9 @@ import animationData from '../lottie/loading.json';
 import Lottie from 'react-lottie';
 import Box from './Box';
 import Text from './Text';
+import If from './If';
 
-const Loader = ({ msg, minHeight }: { msg: string; minHeight?: string }) => {
+const Loader = ({ msg, minHeight }: { msg?: string; minHeight?: string }) => {
 	const defaultOptions = {
 		loop: true,
 		autoplay: true,
@@ -16,9 +17,14 @@ const Loader = ({ msg, minHeight }: { msg: string; minHeight?: string }) => {
 	return (
 		<Box minHeight={minHeight ?? '100vh'} column justifyContent="center">
 			<Lottie options={defaultOptions} height={64} width={64} />
-			<Text as="h5" mt="mxl" textAlign="center">
-				{msg}
-			</Text>
+			<If
+				condition={!!msg}
+				then={
+					<Text as="h5" mt="mxl" textAlign="center">
+						{msg}
+					</Text>
+				}
+			/>
 		</Box>
 	);
 };

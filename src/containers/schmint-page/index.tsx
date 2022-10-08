@@ -8,6 +8,7 @@ import Banner from '../project-page/Banner';
 import SchmintForm from '../project-page/SchmintForm';
 import theme from 'src/styleguide/theme';
 import If from 'src/components/If';
+import SchmintEditableForm from './SchmintEditableForm';
 
 const SchmintPage = () => {
 	const [project, setProject] = useState([]);
@@ -45,7 +46,7 @@ const SchmintPage = () => {
 					<Banner collection={project} />
 					<ContractDetails collection={project} />
 					<Box borderTop={`1px solid ${theme.colors['gray-20']}`} width="100%" my="wxs" />
-					<SchmintForm collection={project} />
+					<SchmintEditableForm collection={project} />
 				</Box>
 			) : (
 				<Box>Hi</Box>

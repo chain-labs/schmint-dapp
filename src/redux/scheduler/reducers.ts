@@ -20,7 +20,7 @@ export const schedulerReducer = createReducer(initialState, (builder) => {
 			return newState;
 		})
 		.addCase(addSchmint, (state, action) => {
-			state.schmints.push(action.payload);
+			state.schmints = [...state.schmints, ...action.payload];
 			return state;
 		})
 		.addCase(removeSchmint, (state, action) => {
