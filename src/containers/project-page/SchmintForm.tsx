@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { CaretDown, CaretUp } from 'phosphor-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import If from 'src/components/If';
@@ -12,7 +12,8 @@ import { schedulerSelector } from 'src/redux/scheduler';
 import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
 import { getAbi, getContractAddress } from 'src/utils/contracts';
-import { useContract, useNetwork, useProvider, useSigner } from 'wagmi';
+import { getCoinPrice } from 'src/utils/gasPrices';
+import { useContract, useFeeData, useNetwork, useProvider, useSigner } from 'wagmi';
 import AlertBottomBox from './components/AlertBottomBox';
 import CostComp from './components/CostComp';
 import InputBox from './components/InputBox';
@@ -26,9 +27,16 @@ const SchmintForm = ({ collection }) => {
 	const [gasPriceLimit, setGasPriceLimit] = useState('');
 	const [funds, setFunds] = useState('');
 	const [step, setStep] = useState(0);
+	const [estimatedGas, setEstimatedGas] = useState(0.001);
+	const [txGas, setTxGas] = useState<string>('');
+	const [txPrice, setTxPrice] = useState<string>('');
 
 	const { data: signer } = useSigner();
 	const provider = useProvider();
+	const { data: gasFee } = useFeeData({
+		formatUnits: 'gwei',
+		watch: true,
+	});
 
 	const { chain } = useNetwork();
 	const user = useAppSelector(userSelector);
@@ -145,6 +153,95 @@ const SchmintForm = ({ collection }) => {
 		}
 	};
 
+	const getEstimatedGas = async () => {
+		try {
+			let buyTx;
+
+			if (!scheduler.schedulerAddress) {
+				const userInput = [user.address, ethers.constants.AddressZero];
+				switch (getABIType(collection.abi)) {
+					case 1: {
+						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
+							user.address,
+							nft,
+							{
+								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+							}
+						);
+					}
+				}
+				const schmintInput = [
+					{
+						target: buyTx.to,
+						data: buyTx.data,
+						value: buyTx.value,
+						gasPriceLimit: gasPriceLimit ? ethers.utils.parseUnits(gasPriceLimit, 'gwei') : 0,
+					},
+				];
+
+				const fundsToBeAdded = ethers.utils.parseEther(`${funds.length !== 0 ? funds : 0}`);
+
+				const tx = await SchedulerFactoryInstance?.connect(signer)?.estimateGas?.deployScheduler(
+					userInput,
+					schmintInput,
+					{
+						value: fundsToBeAdded,
+					}
+				);
+				const totalEstimatedGasPrice = ethers.utils.formatEther(gasFee?.maxFeePerGas.mul(tx));
+				getCoinPrice(chain?.id).then((price) => {
+					setTxPrice(price);
+				});
+				setTxGas(totalEstimatedGasPrice);
+			} else {
+				switch (getABIType(collection.abi)) {
+					case 1: {
+						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
+							scheduler.avatar,
+							nft,
+							{
+								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+							}
+						);
+					}
+				}
+				const schmintInput = [
+					{
+						target: buyTx.to,
+						data: buyTx.data,
+						value: buyTx.value,
+						gasPriceLimit: gasPriceLimit ? ethers.utils.parseUnits(gasPriceLimit, 'gwei') : 0,
+					},
+				];
+
+				const fundsToBeAdded = ethers.utils.parseEther(`${funds.length !== 0 ? funds : 0}`);
+
+				const tx = await SchedulerInstance?.connect(signer)?.estimateGas?.createSchmint(schmintInput, {
+					value: fundsToBeAdded,
+				});
+
+				const totalEstimatedGasPrice = ethers.utils.formatEther(gasFee?.maxFeePerGas.mul(tx));
+				getCoinPrice(chain?.id).then((price) => {
+					setTxPrice(price);
+				});
+				setTxGas(totalEstimatedGasPrice);
+			}
+		} catch (err) {
+			console.log({ err });
+		}
+	};
+
+	useEffect(() => {
+		const total = (collection?.price * parseInt(nft) + estimatedGas).toFixed(3);
+		setFunds(total);
+	}, [nft]);
+
+	useEffect(() => {
+		if (user.exists) {
+			getEstimatedGas();
+		}
+	}, [nft, gasPriceLimit, funds, user, gasFee]);
+
 	return (
 		<Box width="54.8rem" px="mxl">
 			<Text textAlign="start" mb="3rem" as="h5">
@@ -163,7 +260,7 @@ const SchmintForm = ({ collection }) => {
 				max={collection.maxPurchase}
 				min={1}
 				label="Number of NFTs"
-				detailText={`This contract allows upto ${collection.maxPurchase} NFTs per wallet and 5 per transaction.`}
+				detailText={`This contract allows upto ${collection.maxWallet} NFTs per wallet and ${collection.maxPurchase} per transaction.`}
 				required
 			/>
 			<Text
@@ -178,7 +275,7 @@ const SchmintForm = ({ collection }) => {
 			>
 				Show advanced options
 				<Box as="span" ml="0.5rem" center>
-					<If condition={showOptions === false} then={<CaretUp size={18} />} else={<CaretDown size={18} />} />
+					<If condition={showOptions === false} then={<CaretDown size={18} />} else={<CaretUp size={18} />} />
 				</Box>
 			</Text>
 			<Box id="input">
@@ -198,6 +295,8 @@ const SchmintForm = ({ collection }) => {
 								label="Deposit funds to Gnosis Safe"
 								placeholder="20"
 								value={funds}
+								min={(collection?.price * parseInt(nft) + estimatedGas).toFixed(3)}
+								step={'0.001'}
 								setValue={setFunds}
 								detailText="Deposit funds to the Gnosis Safe to prevent your Schmint from failing."
 								unit="ETH"
@@ -223,6 +322,9 @@ const SchmintForm = ({ collection }) => {
 									setFunds={setFunds}
 									step={step}
 									setStep={setStep}
+									price={collection.price}
+									nft={nft}
+									estimatedGas={estimatedGas}
 								/>
 							}
 						/>
@@ -233,6 +335,7 @@ const SchmintForm = ({ collection }) => {
 							showCostText
 							step={step}
 							setStep={setStep}
+							estimatedGas={estimatedGas}
 						/>
 						<If
 							condition={step === 0}
@@ -243,6 +346,9 @@ const SchmintForm = ({ collection }) => {
 									setFunds={setFunds}
 									step={step}
 									setStep={setStep}
+									price={collection?.price}
+									nft={nft}
+									estimatedGas={estimatedGas}
 								/>
 							}
 						/>
@@ -258,15 +364,27 @@ const SchmintForm = ({ collection }) => {
 					borderRadius="64px"
 					disable={!user.exists}
 					onClick={handleCreateSchmint}
+					mb="mm"
 				>
 					<Text as="btn1">Create Schmint</Text>
 				</ButtonComp>
 				<If
 					condition={scheduler.avatar === ''}
 					then={
-						<Text as="b3" mt="mm" textAlign="center" color={`${theme.colors['gray-40']}`}>
+						<Text as="b3" textAlign="center" color={`${theme.colors['gray-40']}`}>
 							Clicking “Create Schmint” will also create a create for you a pesonal scheduler which will
 							be used to store the schmint.
+						</Text>
+					}
+				/>
+				<If
+					condition={gasFee && user.exists}
+					then={
+						<Text as="c1" color="red-40" mt="mxxs">
+							EST. TRANSACTION COST:{' '}
+							<span style={{ color: theme.colors['gray-40'] }}>{`${parseFloat(txGas).toFixed(6)} ${
+								chain?.nativeCurrency?.symbol
+							} or ${(parseFloat(txPrice) * parseFloat(txGas)).toFixed(2)} USD`}</span>
 						</Text>
 					}
 				/>

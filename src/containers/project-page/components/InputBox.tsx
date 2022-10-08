@@ -18,6 +18,7 @@ interface props {
 	errorText?: string;
 	disabled?: boolean;
 	ref?: any;
+	step?: string;
 }
 
 const InputBox = ({
@@ -34,6 +35,7 @@ const InputBox = ({
 	errorText,
 	disabled,
 	ref,
+	step,
 }: props) => {
 	return (
 		<Box mt="2rem">
@@ -61,7 +63,8 @@ const InputBox = ({
 					inputType={inputType}
 					max={max}
 					min={min}
-					disabled={disabled || value > max || value < min}
+					step={step}
+					disabled={disabled}
 					valueDisable={disabled}
 				/>
 				<Text as="btn2" mt="mxs" color="gray-40">

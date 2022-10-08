@@ -8,7 +8,7 @@ import InputBox from './InputBox';
 import scrollIntoView from '../../../utils/scrollIntoView';
 import AlertBox from './AlertBox';
 
-const AlertBottomBox = ({ showOptions, funds, setFunds, step, setStep }) => {
+const AlertBottomBox = ({ showOptions, funds, setFunds, step, setStep, price, nft, estimatedGas }) => {
 	return (
 		<AlertBox color="yellow-20">
 			{step === 0 ? (
@@ -66,6 +66,8 @@ const AlertBottomBox = ({ showOptions, funds, setFunds, step, setStep }) => {
 							value={funds}
 							label="Deposit Funds to the Gnosis Safe"
 							placeholder="0.05"
+							min={(price * parseInt(nft) + estimatedGas).toFixed(3)}
+							step={'0.001'}
 							unit="ETH"
 							setValue={setFunds}
 						/>

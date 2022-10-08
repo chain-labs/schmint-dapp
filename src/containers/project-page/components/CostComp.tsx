@@ -19,13 +19,13 @@ interface props {
 	showCostText?: boolean;
 	setStep?: (number) => void;
 	step?: number;
+	estimatedGas?: number;
 }
 
-const CostComp = ({ collection, nft, showTotalAmount, step, setStep }: props) => {
+const CostComp = ({ collection, nft, showTotalAmount, step, setStep, estimatedGas }: props) => {
 	const scheduler = useAppSelector(schedulerSelector);
 	const user = useAppSelector(userSelector);
 	const { chain } = useNetwork();
-	const [estimatedGas, setEstimatedGas] = useState(0.001);
 	const { data: balance, isLoading } = useBalance({
 		addressOrName: scheduler.avatar,
 		chainId: chain?.id,

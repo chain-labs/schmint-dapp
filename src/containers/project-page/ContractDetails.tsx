@@ -1,6 +1,7 @@
 import { GlobeSimple } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
+import If from 'src/components/If';
 import Text from 'src/components/Text';
 import theme from 'src/styleguide/theme';
 import ReadMore from './components/ReadMore';
@@ -28,7 +29,7 @@ const ContractDetails = ({ collection, showDetails }: props) => {
 				<ContractItem text="Blockchain" subText={collection?.network?.name} />
 				<ContractItem text="Price" subText={collection?.price} />
 				<ContractItem text="Supply" subText={collection?.supply} />
-				<ContractItem text="Token Standard" subText="ERC721A" />
+				<ContractItem text="Token Standard" subText={collection.tokenStandard} />
 			</Box>
 			{showDetails ? (
 				<Box>
@@ -44,13 +45,32 @@ const ContractDetails = ({ collection, showDetails }: props) => {
 							</Box>
 						</Text>
 					</Box>
-					<Box center>
-						<Box border={`1px solid ${theme.colors['gray-20']}`} borderRadius="4px" row maxWidth="40%">
-							<Social border status="discord" />
-							<Social border status="twitter" />
-							<Social status="etherscan" />
-						</Box>
-					</Box>
+					<If
+						condition={collection?.socials}
+						then={
+							<Box center>
+								<Box
+									border={`1px solid ${theme.colors['gray-20']}`}
+									borderRadius="4px"
+									row
+									maxWidth="40%"
+								>
+									<If
+										condition={collection?.socials?.discord}
+										then={<Social border status="discord" />}
+									/>
+									<If
+										condition={collection?.socials?.twitter}
+										then={<Social border status="twitter" />}
+									/>
+									<If
+										condition={collection?.socials?.etherscan}
+										then={<Social border status="etherscan" />}
+									/>
+								</Box>
+							</Box>
+						}
+					/>
 				</Box>
 			) : (
 				''

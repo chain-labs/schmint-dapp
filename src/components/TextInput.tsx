@@ -125,6 +125,7 @@ const TextInput = ({
 				width={width ?? '32rem'}
 				min={min}
 				max={max}
+				step={step}
 				inputType={inputType}
 				ref={ref}
 				// backgroundColor={valueDisable ? 'disable-gray' : 'white'}
