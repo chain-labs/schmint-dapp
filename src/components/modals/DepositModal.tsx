@@ -110,7 +110,6 @@ const DepositModal = () => {
 						bg="primary"
 						px="wxs"
 						py="ms"
-						onClick={() => dispatch(hideModal())}
 						ml="mm"
 						disable={!funds || funds <= 0}
 						onClick={handleDeposit}
