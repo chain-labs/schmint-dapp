@@ -312,7 +312,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 								step={'0.001'}
 								setValue={setFunds}
 								detailText="Deposit funds to the Gnosis Safe to prevent your Schmint from failing."
-								unit="ETH"
+								unit={chain?.nativeCurrency?.symbol}
 							/>
 						</Box>
 					}

@@ -91,6 +91,7 @@ const TextInput = ({
 			color="disable-black"
 			cursor={disabled ? 'not-allowed' : 'auto'}
 			width={inputType ? '40%' : '100%'}
+			position="relative"
 		>
 			<If
 				condition={inputType === 'number'}
@@ -182,7 +183,12 @@ const TextInput = ({
 			<If
 				condition={type === 'number' && !!unit}
 				then={
-					<Text ml="-11%" as="b2" color={validity === 'invalid' ? 'red-50' : 'gray-30'}>
+					<Text
+						position="absolute"
+						right="2rem"
+						as="b2"
+						color={validity === 'invalid' ? 'red-50' : 'gray-30'}
+					>
 						{unit}
 					</Text>
 				}
@@ -226,7 +232,7 @@ export const InputElement = styled(Box)(
 	outline: none;
 
 	&::placeholder {
-		${props.disabled || props.type === 'search' ? `color: #8c8ca1` : `color: ${theme.colors['gray-00']}`};
+		${props.disabled || props.type === 'search' ? `color: #8c8ca1` : `color: ${theme.colors['gray-30']}`};
 	}
 
 	cursor: ${props.disabled ? 'not-allowed' : ''}

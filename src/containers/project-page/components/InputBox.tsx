@@ -19,6 +19,7 @@ interface props {
 	disabled?: boolean;
 	ref?: any;
 	step?: string;
+	width?: string;
 }
 
 const InputBox = ({
@@ -36,9 +37,10 @@ const InputBox = ({
 	disabled,
 	ref,
 	step,
+	width,
 }: props) => {
 	return (
-		<Box mt="2rem">
+		<Box mt={label ? '2rem' : '0'}>
 			<Text as="b2">
 				{label}
 				<If
@@ -57,7 +59,7 @@ const InputBox = ({
 					placeholder={placeholder}
 					type="number"
 					required={required}
-					width="100%"
+					width={width ?? '100%'}
 					unit={unit}
 					setValue={setValue}
 					inputType={inputType}

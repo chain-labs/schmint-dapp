@@ -16,10 +16,12 @@ const SuccessIcon = 'https://ik.imagekit.io/chainlabs/Schmint/DSC09095-02_Z8hCLr
 interface props {
 	setStep?: (step: number) => void;
 	success?: boolean;
-	type?: 'SCHMINT_UPDATE' | 'SCHMINT_DELETE' | 'FUNDS_ADDED';
+	msg?: string;
+	gas?: string;
 }
-const StatusModal = ({ setStep, success, type }: props) => {
+const StatusModal = ({ setStep, success, msg, gas }: props) => {
 	const dispatch = useAppDispatch();
+
 	return (
 		<Modal visible>
 			<Box
@@ -44,9 +46,7 @@ const StatusModal = ({ setStep, success, type }: props) => {
 					{success ? 'Schmint Details Updated.' : 'Transaction Unsuccessful'}
 				</Text>
 				<Text textAlign="center" as="b2" mt="mxs">
-					{success
-						? 'Successfully updated the Schmint Details.'
-						: 'The transaction could not be validated or was cancelled from the wallet.'}
+					{success ? msg : 'The transaction could not be validated or was cancelled from the wallet.'}
 				</Text>
 
 				{success ? (
@@ -54,7 +54,7 @@ const StatusModal = ({ setStep, success, type }: props) => {
 						<Box as="span" color="red-40">
 							FINAL TRANSACTION COST :
 						</Box>{' '}
-						0.0001 ETH or 1 USD.
+						{gas}
 					</Text>
 				) : (
 					''
@@ -86,7 +86,8 @@ const StatusModal = ({ setStep, success, type }: props) => {
 						width="14.5rem"
 						height="4.8rem"
 						borderRadius="64px"
-						onClick={() => setStep(1)}
+						onClick={() => dispatch(hideModal())}
+						mx="auto"
 					>
 						{success ? 'OK' : 'Retry'}
 					</ButtonComp>

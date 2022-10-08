@@ -49,7 +49,7 @@ const ButtonComp = ({ bg, disable, height, children, ...restProps }: ButtonProps
 			//@ts-expect-error-button
 			color={fontColor(bg)}
 			border={!disable ? bColor : '1px solid rgba(140, 140, 161, 0.2)'}
-			borderRadius="8px"
+			borderRadius="64px"
 			height={height}
 			cursor={!disable ? 'pointer' : 'not-allowed'}
 			disabled={!disable ? false : true}

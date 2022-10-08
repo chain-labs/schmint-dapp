@@ -1,7 +1,10 @@
 import Image from 'next/image';
 import { Copy, Plus } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
-import { useAppSelector } from 'src/redux/hooks';
+import toast from 'react-hot-toast';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { showModal } from 'src/redux/modal';
+import { MODALS_LIST } from 'src/redux/modal/types';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
@@ -13,6 +16,7 @@ import Text from '../Text';
 import { indexAddress } from './utils';
 
 const Avatar = () => {
+	const dispatch = useAppDispatch();
 	const [userNo, setUserNo] = useState(0);
 	const user = useAppSelector(userSelector);
 	const scheduler = useAppSelector(schedulerSelector);
@@ -31,6 +35,12 @@ const Avatar = () => {
 			setUserNo(0);
 		}
 	}, [user.address]);
+
+	const handleDepositFunds = (e) => {
+		e.preventDefault();
+
+		dispatch(showModal({ type: MODALS_LIST.DEPOSIT_MODAL, props: {} }));
+	};
 
 	return (
 		<Box column center mt="wm">
@@ -52,7 +62,16 @@ const Avatar = () => {
 									else={
 										<React.Fragment>
 											<Text as="c1">{condenseAddress(scheduler.schedulerAddress)}</Text>
-											<Box ml="mxs" alignItems="center" row>
+											<Box
+												ml="mxs"
+												alignItems="center"
+												row
+												cursor="pointer"
+												onClick={() => {
+													navigator.clipboard?.writeText(user.address);
+													toast.success('Copied');
+												}}
+											>
 												<Copy color={theme.colors['blue-40']} size={16} />
 											</Box>
 										</React.Fragment>
@@ -76,7 +95,13 @@ const Avatar = () => {
 													{balance?.symbol}
 												</Text>
 											</Box>
-											<Box ml="mxs" alignItems="center" row>
+											<Box
+												ml="mxs"
+												alignItems="center"
+												row
+												cursor="pointer"
+												onClick={handleDepositFunds}
+											>
 												<Plus color={theme.colors['blue-40']} size={16} />
 											</Box>
 										</React.Fragment>
