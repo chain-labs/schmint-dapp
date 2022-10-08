@@ -11,7 +11,13 @@ export const color = {
 export const hoverColor = {
 	primary: 'blue-60',
 	secondary: 'blue-10',
-	tertiary: 'blue-00',
+	tertiary: 'simply-black',
+};
+
+export const hoverTextColor = {
+	primary: 'gray-10',
+	secondary: 'gray-10',
+	tertiary: 'gray-10',
 };
 
 const fontColor = (bg) => {
@@ -52,6 +58,7 @@ const ButtonComp = ({ bg, disable, height, children, ...restProps }: ButtonProps
 				`
 				&:hover {
 					background-color: ${theme.colors[`${hColor}`]};
+					color: ${theme.colors[`${hoverTextColor[bg]}`]};
 				}
 			`
 			}

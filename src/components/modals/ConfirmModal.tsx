@@ -6,10 +6,9 @@ import Modal from '../Modal';
 import Text from '../Text';
 
 interface props {
-	step?: number;
-	setStep?: (step: number) => void;
+	msg?: string;
 }
-const ConfirmModal = ({ setStep, step }: props) => {
+const ConfirmModal = ({ msg }: props) => {
 	return (
 		<Modal visible>
 			<Box
@@ -29,7 +28,7 @@ const ConfirmModal = ({ setStep, step }: props) => {
 					Confirming Transaction
 				</Text>
 				<Text textAlign="center" as="b2" mt="mxs" color="gray-50">
-					Please validate the transaction from your connected wallet.
+					{msg ?? 'Please validate the transaction from your connected wallet.'}
 				</Text>
 			</Box>
 		</Modal>

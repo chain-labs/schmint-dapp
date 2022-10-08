@@ -21,7 +21,7 @@ import InputNumber from './components/InputNumber';
 import useScheduler from './useScheduler';
 import { getABIType } from './utils';
 
-const SchmintForm = ({ collection }) => {
+const SchmintForm = ({ collection, setSchmintCreated }) => {
 	const [showOptions, setShowOptions] = useState(false);
 	const [nft, setNft] = useState(`${1}`);
 	const [gasPriceLimit, setGasPriceLimit] = useState('');
@@ -101,6 +101,9 @@ const SchmintForm = ({ collection }) => {
 					return;
 				} else {
 					console.log({ event });
+					setSchmintCreated(true);
+					setNft(`${1}`);
+					setGasPriceLimit('');
 					dispatch(replaceModal({ type: MODALS_LIST.SCHMINT_SUCCESFUL, props: {} }));
 				}
 			} else {
@@ -130,6 +133,13 @@ const SchmintForm = ({ collection }) => {
 					value: fundsToBeAdded,
 				});
 
+				dispatch(
+					replaceModal({
+						type: MODALS_LIST.CONFIRM_TRANSACTION,
+						props: { msg: 'Waiting for transaction to succeed.' },
+					})
+				);
+
 				const receipt = await tx?.wait();
 
 				const event = receipt?.events && receipt.events.filter((event) => event.event === 'SchmintCreated');
@@ -138,6 +148,9 @@ const SchmintForm = ({ collection }) => {
 					return;
 				} else {
 					console.log({ event });
+					setSchmintCreated(true);
+					setNft(`${1}`);
+					setGasPriceLimit('');
 					dispatch(replaceModal({ type: MODALS_LIST.SCHMINT_SUCCESFUL, props: {} }));
 				}
 			}
