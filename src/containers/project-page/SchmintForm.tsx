@@ -375,5 +375,4 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 		</Box>
 	);
 };
-
 export default SchmintForm;

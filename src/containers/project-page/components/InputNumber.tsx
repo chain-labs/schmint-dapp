@@ -63,7 +63,6 @@ const InputNumber = ({ value, setValue, detailText, errorText, max, min, label, 
 					cursor={parseInt(value) <= min ? 'not-allowed' : 'pointer'}
 				>
 					<Minus size={24} />
-
 				</Box>
 				<InputElement
 					as="input"
