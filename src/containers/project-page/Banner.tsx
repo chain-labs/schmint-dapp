@@ -7,7 +7,7 @@ const Banner = ({ collection }) => {
 	return (
 		<Box width="100%">
 			<Box>
-				<Box width="100%" height="26.4rem" as="img" src={collection?.banner} objectFit="cover" />
+				<Box width="100%" height="26.4rem" as="img" src={collection?.banner} objectFit="cover" bg="red" />
 			</Box>
 			<Box center>
 				<Box
@@ -20,6 +20,7 @@ const Banner = ({ collection }) => {
 					as="img"
 					src={collection?.logo}
 					objectFit="cover"
+					bg="simply-white"
 				/>
 			</Box>
 			<Box center column>

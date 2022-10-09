@@ -7,21 +7,11 @@ import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import Text from 'src/components/Text';
 import theme from 'src/styleguide/theme';
+import { useNetwork } from 'wagmi';
 import { ICollection } from './projectsStore';
 
-const getPriceUnit = (collection) => {
-	if (collection.price) {
-		switch (collection.network.name) {
-			case 'Ethereum':
-				return 'ETH';
-			case 'Polygon':
-				return 'MATIC';
-		}
-	}
-	return '';
-};
-
 const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollection }) => {
+	const { chain } = useNetwork();
 	return (
 		<Box
 			key={`col-${idx}-${collection.title}`}
@@ -66,7 +56,9 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 						<Box position="relative" height="1.6rem" width="1.6rem" ml="mxxs">
 							<Image
 								src={`/static/images/svgs/${
-									collection.network.name === 'Ethereum' ? 'eth' : 'polygon-color'
+									collection.network.name === 'Ethereum' || collection.network.name === 'Goerli'
+										? 'eth'
+										: 'polygon-color'
 								}.svg`}
 								layout="fill"
 							/>
@@ -75,7 +67,7 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 					<Text as="b3" mb="0.2rem">
 						{'Price: '}
 						<span style={{ color: theme.colors['gray-50'] }}>
-							{collection.price > 0 ? `${collection.price} ${getPriceUnit(collection)}` : 'Free'}
+							{collection.price > 0 ? `${collection.price} ${chain?.nativeCurrency?.symbol}` : 'Free'}
 						</span>
 					</Text>
 				</Box>

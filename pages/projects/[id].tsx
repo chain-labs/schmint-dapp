@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import { ICollection } from 'src/containers/Explore/projectsStore';
 import Projectpage from 'src/containers/project-page';
+import { PROJECTS_DIR } from 'src/utils/constants';
 import { useNetwork, useSwitchNetwork } from 'wagmi';
 
 const ProjectPage = () => {
@@ -14,7 +15,7 @@ const ProjectPage = () => {
 	const { switchNetwork } = useSwitchNetwork();
 
 	const getAllCollections = async () => {
-		const data = await fetch('https://chain-labs.github.io/schmint-projects/projects.json');
+		const data = await fetch(PROJECTS_DIR);
 		const res = await data.json();
 		setCollections(res);
 	};
@@ -28,9 +29,12 @@ const ProjectPage = () => {
 	};
 
 	useEffect(() => {
-		getAllCollections();
 		getCollection();
 	}, [id, collections]);
+
+	useEffect(() => {
+		getAllCollections();
+	}, []);
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
