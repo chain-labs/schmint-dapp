@@ -8,7 +8,7 @@ import { MODALS_LIST } from 'src/redux/modal/types';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
-import { useBalance, useEnsName, useNetwork } from 'wagmi';
+import { useBalance, useNetwork } from 'wagmi';
 import Box from '../Box';
 import { condenseAddress } from '../DappNavbar/ConnectWallet';
 import If from '../If';
