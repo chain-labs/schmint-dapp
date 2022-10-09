@@ -14,12 +14,12 @@ const WarningIcon = 'https://ik.imagekit.io/chainlabs/Schmint/Warning_RlJNNAnXQ.
 const SuccessIcon = 'https://ik.imagekit.io/chainlabs/Schmint/DSC09095-02_Z8hCLrIV2.svg';
 
 interface props {
-	setStep?: (step: number) => void;
+	btnText: string;
 	success?: boolean;
-	msg?: string;
+	msg: string;
 	gas?: string;
 }
-const StatusModal = ({ setStep, success, msg, gas }: props) => {
+const StatusModal = ({ btnText, success, msg, gas }: props) => {
 	const dispatch = useAppDispatch();
 
 	return (
@@ -89,7 +89,7 @@ const StatusModal = ({ setStep, success, msg, gas }: props) => {
 						onClick={() => dispatch(hideModal())}
 						mx="auto"
 					>
-						{success ? 'OK' : 'Retry'}
+						{success ? btnText : 'Retry'}
 					</ButtonComp>
 				</Box>
 			</Box>

@@ -9,50 +9,83 @@ import SchmintForm from '../project-page/SchmintForm';
 import theme from 'src/styleguide/theme';
 import If from 'src/components/If';
 import SchmintEditableForm from './SchmintEditableForm';
+import useScheduler from '../project-page/useScheduler';
+import { useAppSelector } from 'src/redux/hooks';
+import { schedulerSelector } from 'src/redux/scheduler';
+import { ethers } from 'ethers';
+import InputDataDecoder from 'ethereum-input-data-decoder';
+import AlertBox from './AlertBox';
 
-const SchmintPage = () => {
-	const [project, setProject] = useState([]);
-	const [step, setStep] = useState(-1);
-	const getData = async () => {
-		const data = await fetch('https://chain-labs.github.io/schmint-projects/projects.json');
-		const res = await data.json();
-		setProject(res[0]);
-	};
+const SchmintPage = ({ collection, schmint }) => {
+	const scheduler = useAppSelector(schedulerSelector);
+	const [actionRequired, setActionRequired] = useState(false);
+	const [abi, setABI] = useState();
+	const [currPrice, setCurrPrice] = useState(collection?.price);
+	const [quantity, setQuantity] = useState<number>(0);
+	const [status, setStatus] = useState('');
 
 	useEffect(() => {
-		getData();
-	}, []);
-	if (step === 0) {
-		return <Box>{project ? <UpdateModal collection={project[0]} setStep={setStep} /> : ''}</Box>;
-	}
-	if (step === 1) {
+		if (collection?.abi) {
+			setABI(collection.abi);
+		}
+		console.log(scheduler.schedulerAddress);
+	}, [scheduler?.schedulerAddress, collection]);
+
+	useEffect(() => {
+		if (schmint.isCancelled) {
+			setStatus('0');
+		}
+		if (schmint.isSchminted) {
+			setStatus('1');
+		}
+		if (actionRequired) {
+			setStatus('-1');
+		}
+	}, [schmint]);
+
+	useEffect(() => {
+		if (scheduler?.schedulerAddress && abi) {
+			const value = parseFloat(ethers.utils.formatUnits(schmint?.value, 'ether'));
+			const data = schmint?.data;
+			const decoder = new InputDataDecoder(abi);
+			const res = decoder.decodeData(data);
+			const quantity = parseInt(res.inputs[1]);
+			setQuantity(quantity);
+			setActionRequired(!(currPrice === value / quantity));
+			if (actionRequired) {
+				setStatus('-1');
+			}
+		}
+	}, [abi]);
+
+	if (collection?.title) {
 		return (
-			<Box>
-				<ConfirmModal setStep={setStep} />
+			<Box center column>
+				<Banner collection={collection} />
+				{status ? <AlertBox status={status} /> : ''}
+				<ContractDetails collection={collection} />
+				{!status || status === '-1' ? (
+					<Box>
+						<Box borderTop={`1px solid ${theme.colors['gray-20']}`} width="100%" my="wxs" />
+						<If
+							condition={quantity !== 0}
+							then={
+								<SchmintEditableForm
+									collection={collection}
+									actionRequired={actionRequired}
+									quantity={quantity}
+									schmint={schmint}
+								/>
+							}
+						/>
+					</Box>
+				) : (
+					''
+				)}
 			</Box>
 		);
 	}
-	if (step === 2) {
-		return (
-			<Box>
-				<StatusModal setStep={setStep} />
-			</Box>
-		);
-	}
-	return (
-		<Box>
-			{project ? (
-				<Box center column>
-					<Banner collection={project} />
-					<ContractDetails collection={project} />
-					<Box borderTop={`1px solid ${theme.colors['gray-20']}`} width="100%" my="wxs" />
-					<SchmintEditableForm collection={project} />
-				</Box>
-			) : (
-				<Box>Hi</Box>
-			)}
-		</Box>
-	);
+	return null;
 };
 
 export default SchmintPage;

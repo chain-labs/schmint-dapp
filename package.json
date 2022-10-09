@@ -17,6 +17,7 @@
 		"akar-icons": "^1.9.18",
 		"axios": "^0.27.2",
 		"date-fns": "^2.29.3",
+		"ethereum-input-data-decoder": "^0.4.2",
 		"ethers": "^5.7.1",
 		"framer-motion": "^6.3.16",
 		"graphql": "^16.6.0",

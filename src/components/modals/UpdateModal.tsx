@@ -10,6 +10,10 @@ interface props {
 	collection: any;
 	updateDetails?: boolean;
 	setStep?: (step: number) => void;
+	success?: {
+		delete: boolean;
+		update: boolean;
+	};
 }
 
 const UpdateModal = ({ collection, updateDetails, setStep }: props) => {

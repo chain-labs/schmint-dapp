@@ -8,8 +8,8 @@ export interface SchedulerState {
 }
 
 export interface SchmintState {
-	id?: number;
-	targetAddress?: string;
+	schmintId?: string;
+	target?: string;
 	isSchminted?: boolean;
 	isCancelled?: boolean;
 	gasPriceLimit?: number;

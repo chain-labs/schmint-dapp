@@ -3,6 +3,7 @@ import Box from 'src/components/Box';
 import If from 'src/components/If';
 import Text from 'src/components/Text';
 import TextInput from 'src/components/TextInput';
+import theme from 'src/styleguide/theme';
 
 interface props {
 	placeholder?: string;
@@ -69,7 +70,7 @@ const InputBox = ({
 					disabled={disabled}
 					valueDisable={disabled}
 				/>
-				<Text as="btn2" mt="mxs" color="gray-40">
+				<Text as="btn2" mt="mxs" color={`${theme.colors['gray-30']}`}>
 					{detailText}
 				</Text>
 			</Box>
