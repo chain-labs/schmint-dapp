@@ -121,7 +121,7 @@ const TextInput = ({
 				}}
 				validation={validity}
 				onBlur={handleValidity}
-				color={disabled ? 'disable-black' : 'blue-40'}
+				color="gray-50"
 				width={width ?? '32rem'}
 				min={min}
 				max={max}
@@ -146,14 +146,14 @@ const TextInput = ({
 					</Box>
 				}
 			/>
-			<If
+			{/* <If
 				condition={disabled && !disableValidation && inputType !== 'number'}
 				then={
 					<Box ml="-3.2rem" mt="0.2rem">
 						<Prohibit size={24} color="#8c8ca1" />
 					</Box>
 				}
-			/>
+			/> */}
 			{type === 'text' ||
 			type === 'email' ||
 			type === 'url' ||
@@ -210,18 +210,24 @@ interface InputProps {
 	disableValidation?: boolean;
 	fontSize?: string;
 	inputType?: string;
+	actionRequired?: boolean;
 }
 
 export const InputElement = styled(Box)(
 	(props: InputProps) => `
 	
 	padding: ${`${props.theme.space.ms} ${props.theme.space.mm}`};
-	padding-left: ${props.inputType === 'number' ? '95px' : `${props.theme.space.mm}`};
 	font-size: ${props.fontSize ?? '1.6rem'};
 	font-family: 'Switzer', sans-serif;
-	border-radius: 8px;
-	background: ${props.theme.colors['gray-10']};
-	border: 1px solid ${props.theme.colors['blue-20']};
+	border-radius: ${props.inputType === 'number' ? '0px' : '8px'};
+	background: ${
+		props.disabled
+			? props.actionRequired
+				? props.theme.colors['yellow-20']
+				: props.theme.colors['gray-20']
+			: props.theme.colors['gray-10']
+	};
+	border:${props.inputType === 'number' ? 'none' : `1px solid ${props.theme.colors['blue-20']}`} ;
 	box-shadow: inset 0px 2px 2px -1px rgba(74, 74, 104, 0.1);
 	outline: none;
 

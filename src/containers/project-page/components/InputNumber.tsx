@@ -17,9 +17,22 @@ interface props {
 	min?: number;
 	errorText?: string;
 	disabled?: boolean;
+	actionRequired?: boolean;
 }
 
-const InputNumber = ({ value, setValue, detailText, errorText, max, min, label, placeholder, required }: props) => {
+const InputNumber = ({
+	value,
+	setValue,
+	detailText,
+	errorText,
+	max,
+	min,
+	label,
+	placeholder,
+	required,
+	disabled,
+	actionRequired,
+}: props) => {
 	const handleChange = (e) => {
 		e.preventDefault();
 		if (e.target.value === '') {
@@ -53,19 +66,33 @@ const InputNumber = ({ value, setValue, detailText, errorText, max, min, label, 
 				{label}
 				<sup style={{ color: theme.colors['red-40'] }}>*</sup>
 			</Text>
-			<Box display="flex" alignItems="center" mt="mxs">
+			<Box
+				display="flex"
+				alignItems="center"
+				mt="mxs"
+				border={`1px solid ${theme.colors['blue-20']}`}
+				borderRadius="8px"
+				width="19.2rem"
+			>
 				<Box
-					ml="mxl"
+					ml="ml"
 					mt="0.2rem"
-					position="absolute"
-					color={parseInt(value) <= min ? 'disable-black' : 'blue-40'}
-					onClick={parseInt(value) <= min ? () => setValue(min) : () => setValue(parseInt(value) - 1)}
-					cursor={parseInt(value) <= min ? 'not-allowed' : 'pointer'}
+					color={parseInt(value) <= min || disabled ? 'disable-black' : 'blue-40'}
+					onClick={
+						parseInt(value) <= min
+							? () => setValue(min)
+							: disabled
+							? () => setValue(parseInt(value))
+							: () => setValue(parseInt(value) - 1)
+					}
+					cursor={parseInt(value) <= min || disabled ? 'not-allowed' : 'pointer'}
 				>
 					<Minus size={24} />
 				</Box>
 				<InputElement
 					as="input"
+					center
+					{...{ disabled }}
 					readOnly={!setValue}
 					placeholder="20"
 					value={value}
@@ -74,28 +101,35 @@ const InputNumber = ({ value, setValue, detailText, errorText, max, min, label, 
 						// @ts-expect-error ts-migrate(2339) FIXME: Property 'target' does not exist on type 'WheelEvent'.  TS2339
 						e.target.blur();
 					}}
-					// color="blue-40"
 					onBlur={handleBlur}
-					width="40%"
+					width="48px"
 					min={min}
 					required
 					max={max}
+					ml="mxxl"
 					padding="12px"
 					inputType="number"
 					cursor={parseInt(value) > max || parseInt(value) < min ? 'not-allowed' : 'pointer'}
-					color={parseInt(value) > max || parseInt(value) < min ? 'disable-black' : 'blue-40'}
+					color={parseInt(value) > max || parseInt(value) < min ? 'disable-black' : 'gray-60'}
+					actionRequired={actionRequired}
 				></InputElement>
 				<Box
-					ml="-4.8rem"
+					ml="mxxl"
 					mt="0.2rem"
-					onClick={parseInt(value) >= max ? () => setValue(max) : () => setValue(parseInt(value) + 1)}
-					cursor={parseInt(value) >= max ? 'not-allowed' : 'pointer'}
-					color={parseInt(value) >= max ? 'disable-black' : 'blue-40'}
+					onClick={
+						parseInt(value) >= max
+							? () => setValue(max)
+							: disabled
+							? () => setValue(parseInt(value))
+							: () => setValue(parseInt(value) + 1)
+					}
+					cursor={parseInt(value) >= max || disabled ? 'not-allowed' : 'pointer'}
+					color={parseInt(value) >= max || disabled ? 'disable-black' : 'blue-40'}
 				>
 					<Plus size={24} />
 				</Box>
 			</Box>
-			<Text as="btn2" mt="mxs" color="gray-50">
+			<Text as="btn2" mt="mxs" color="gray-30">
 				{detailText}
 			</Text>
 			<If

@@ -115,6 +115,7 @@ const SchmintForm = ({ collection }) => {
 						);
 					}
 				}
+
 				const schmintInput = [
 					{
 						target: buyTx.to,
@@ -123,7 +124,6 @@ const SchmintForm = ({ collection }) => {
 						gasPriceLimit: gasPriceLimit ? ethers.utils.parseUnits(gasPriceLimit, 'gwei') : 0,
 					},
 				];
-
 				const fundsToBeAdded = ethers.utils.parseEther(`${funds.length !== 0 ? funds : 0}`);
 
 				const tx = await SchedulerInstance?.connect(signer)?.createSchmint(schmintInput, {
@@ -206,6 +206,7 @@ const SchmintForm = ({ collection }) => {
 						);
 					}
 				}
+
 				const schmintInput = [
 					{
 						target: buyTx.to,
@@ -214,20 +215,19 @@ const SchmintForm = ({ collection }) => {
 						gasPriceLimit: gasPriceLimit ? ethers.utils.parseUnits(gasPriceLimit, 'gwei') : 0,
 					},
 				];
-				console.log('Hi');
-				console.log(ethers.utils.parseUnits(gasPriceLimit, 'gwei'));
+				console.log(schmintInput);
 
 				const fundsToBeAdded = ethers.utils.parseEther(`${funds.length !== 0 ? funds : 0}`);
 
 				const tx = await SchedulerInstance?.connect(signer)?.estimateGas?.createSchmint(schmintInput, {
 					value: fundsToBeAdded,
 				});
-
 				const totalEstimatedGasPrice = ethers.utils.formatEther(gasFee?.maxFeePerGas.mul(tx));
 				getCoinPrice(chain?.id).then((price) => {
 					setTxPrice(price);
 				});
 				setTxGas(totalEstimatedGasPrice);
+				console.log({ totalEstimatedGasPrice });
 			}
 		} catch (err) {
 			console.log({ err });

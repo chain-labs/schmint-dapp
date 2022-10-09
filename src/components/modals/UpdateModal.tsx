@@ -10,9 +10,13 @@ interface props {
 	collection: any;
 	updateDetails?: boolean;
 	setStep?: (step: number) => void;
+	success?: {
+		delete: boolean;
+		update: boolean;
+	};
 }
 
-const UpdateModal = ({ collection, updateDetails, setStep }: props) => {
+const UpdateModal = ({ collection, updateDetails, setStep, success }: props) => {
 	useEffect(() => {
 		console.log(collection);
 	}, [collection]);
