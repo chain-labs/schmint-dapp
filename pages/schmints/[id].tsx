@@ -58,7 +58,7 @@ const Schmint = () => {
 	}, [collection, chain]);
 
 	if (collection && schmint.schmintId === id) {
-		return <Box>{collection ? <SchmintPage schmint={schmint} collection={collection} id={id} /> : ''};</Box>;
+		return <Box>{collection ? <SchmintPage schmint={schmint} collection={collection} /> : ''};</Box>;
 	}
 
 	return null;
