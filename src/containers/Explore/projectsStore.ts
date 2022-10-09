@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { PROJECTS_DIR } from 'src/utils/constants';
 
 export interface ICollection {
 	id: string;
@@ -21,7 +22,7 @@ export interface ICollection {
 }
 
 export const getCollections = async (): Promise<ICollection[]> => {
-	const PROJECTS_JSON_URL = `${window.location.href.replace('/explore', '/api/projects')}`;
+	const PROJECTS_JSON_URL = PROJECTS_DIR;
 	const res = await axios.get(PROJECTS_JSON_URL);
 	const projects = res.data;
 
