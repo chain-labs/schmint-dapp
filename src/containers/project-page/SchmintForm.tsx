@@ -238,7 +238,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 					setTxPrice(price);
 				});
 				setTxGas(totalEstimatedGasPrice);
-				console.log({ totalEstimatedGasPrice });
+				// console.log({ totalEstimatedGasPrice });
 			}
 		} catch (err) {
 			console.log({ err });

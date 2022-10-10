@@ -19,6 +19,7 @@ export const GET_USER_SCHEDULER = gql`
 				id
 				gasPriceLimit
 				data
+				executionTimestamp
 			}
 		}
 	}

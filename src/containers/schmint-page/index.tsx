@@ -18,11 +18,12 @@ import AlertBox from './AlertBox';
 
 const SchmintPage = ({ collection, schmint }) => {
 	const scheduler = useAppSelector(schedulerSelector);
-	const [actionRequired, setActionRequired] = useState(false);
+	const [actionRequired, setActionRequired] = useState<boolean>();
 	const [abi, setABI] = useState();
-	const [currPrice, setCurrPrice] = useState(collection?.price);
+	const [currPrice, setCurrPrice] = useState(collection.price);
 	const [quantity, setQuantity] = useState<number>(0);
 	const [status, setStatus] = useState('');
+	const [prevPrice, setPrevPrice] = useState(collection.price);
 
 	useEffect(() => {
 		if (collection?.abi) {
@@ -30,6 +31,19 @@ const SchmintPage = ({ collection, schmint }) => {
 		}
 		console.log(scheduler.schedulerAddress);
 	}, [scheduler?.schedulerAddress, collection]);
+
+	useEffect(() => {
+		if (scheduler?.schedulerAddress && abi && collection) {
+			const value = parseFloat(ethers.utils.formatUnits(schmint?.value, 'ether'));
+			const data = schmint?.data;
+			const decoder = new InputDataDecoder(abi);
+			const res = decoder.decodeData(data);
+			const quantity = parseInt(res.inputs[1]);
+			setQuantity(quantity);
+			setActionRequired(!(collection.price === value / quantity));
+			setPrevPrice(value / quantity);
+		}
+	}, [abi, collection]);
 
 	useEffect(() => {
 		if (schmint.isCancelled) {
@@ -41,28 +55,17 @@ const SchmintPage = ({ collection, schmint }) => {
 		if (actionRequired) {
 			setStatus('-1');
 		}
-	}, [schmint]);
-
-	useEffect(() => {
-		if (scheduler?.schedulerAddress && abi) {
-			const value = parseFloat(ethers.utils.formatUnits(schmint?.value, 'ether'));
-			const data = schmint?.data;
-			const decoder = new InputDataDecoder(abi);
-			const res = decoder.decodeData(data);
-			const quantity = parseInt(res.inputs[1]);
-			setQuantity(quantity);
-			setActionRequired(!(currPrice === value / quantity));
-			if (actionRequired) {
-				setStatus('-1');
-			}
-		}
-	}, [abi]);
+	}, [schmint, actionRequired]);
 
 	if (collection?.title) {
 		return (
 			<Box center column>
 				<Banner collection={collection} />
-				{status ? <AlertBox status={status} /> : ''}
+				{status ? (
+					<AlertBox status={status} schmint={schmint} currPrice={currPrice} prevPrice={prevPrice} />
+				) : (
+					''
+				)}
 				<ContractDetails collection={collection} />
 				{!status || status === '-1' ? (
 					<Box>

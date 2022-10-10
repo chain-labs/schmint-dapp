@@ -16,4 +16,5 @@ export interface SchmintState {
 	data?: string;
 	value?: string;
 	status?: string;
+	executionTimestamp?: string;
 }

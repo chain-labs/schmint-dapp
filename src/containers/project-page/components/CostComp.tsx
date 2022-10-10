@@ -83,7 +83,7 @@ const CostComp = ({ collection, nft, showTotalAmount, step, setStep, estimatedGa
 							text="Total:"
 							subText={parseFloat((collection?.price * nft + estimatedGas).toFixed(4))}
 							unit={chain?.nativeCurrency.symbol}
-							width="50%"
+							width="60%"
 							textColor="blue-40"
 							fontSize="b2"
 						/>
@@ -94,7 +94,7 @@ const CostComp = ({ collection, nft, showTotalAmount, step, setStep, estimatedGa
 									text="Gnosis Safe Balance:"
 									subText={parseFloat(parseFloat(balance?.formatted).toFixed(4))}
 									unit={chain?.nativeCurrency.symbol}
-									width="50%"
+									width="60%"
 									textColor="blue-40"
 									fontSize="b2"
 								/>

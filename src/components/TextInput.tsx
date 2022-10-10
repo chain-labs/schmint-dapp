@@ -26,6 +26,7 @@ interface Props {
 	inputType?: string;
 	valueDisable?: boolean;
 	ref?: any;
+	actionRequired?: boolean;
 }
 
 const TextInput = ({
@@ -46,6 +47,7 @@ const TextInput = ({
 	inputType,
 	valueDisable,
 	ref,
+	actionRequired,
 }: Props) => {
 	const [validity, setValidity] = useState<'clear' | 'valid' | 'invalid'>('clear');
 	const [searchIcon, setSearchIcon] = useState<boolean>(true);
@@ -110,7 +112,7 @@ const TextInput = ({
 			/>
 			<InputElement
 				as="input"
-				{...{ disabled, required, type, step, disableValidation, fontSize }}
+				{...{ disabled, required, type, step, disableValidation, fontSize, actionRequired }}
 				readOnly={!setValue}
 				placeholder={placeholder}
 				pattern={regexp}
