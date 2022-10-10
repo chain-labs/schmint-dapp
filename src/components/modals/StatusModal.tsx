@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useAppDispatch } from 'src/redux/hooks';
 import { hideModal } from 'src/redux/modal';
 import theme from 'src/styleguide/theme';
+import { useNetwork } from 'wagmi';
 import Box from '../Box';
 import ButtonComp from '../Button';
 import If from '../If';
@@ -43,7 +44,11 @@ const StatusModal = ({ btnText, success, msg, gas }: props) => {
 					/>
 				</Box>
 				<Text as="h5" center>
-					{success ? 'Schmint Details Updated.' : 'Transaction Unsuccessful'}
+					{success
+						? success.update
+							? 'Schmint Details Updated.'
+							: 'Schmint Successfully Deleted'
+						: 'Transaction Unsuccessful'}
 				</Text>
 				<Text textAlign="center" as="b2" mt="mxs">
 					{success ? msg : 'The transaction could not be validated or was cancelled from the wallet.'}
@@ -60,10 +65,10 @@ const StatusModal = ({ btnText, success, msg, gas }: props) => {
 					''
 				)}
 
-				<Box row justifyContent="space-between" mt="mxl">
-					<If
-						condition={!success}
-						then={
+				<If
+					condition={!success}
+					then={
+						<Box row center mt="mxl">
 							<ButtonComp
 								bg="secondary"
 								color="gray-60"
@@ -76,6 +81,51 @@ const StatusModal = ({ btnText, success, msg, gas }: props) => {
 								}}
 							>
 								<Text as="btn2">Cancel</Text>
+							</ButtonComp>
+							<ButtonComp
+								bg="secondary"
+								color="gray-60"
+								width="14.5rem"
+								height="4.8rem"
+								borderRadius="64px"
+								border={`1px solid ${theme.colors['gray-60']}`}
+								onClick={() => {
+									dispatch(hideModal());
+								}}
+							>
+								<Text as="btn2">Retry</Text>
+							</ButtonComp>
+						</Box>
+					}
+				/>
+				<Box center>
+					<If
+						condition={success.update}
+						then={
+							<ButtonComp
+								bg="primary"
+								color="white"
+								width="14.5rem"
+								height="4.8rem"
+								borderRadius="64px"
+								onClick={() => dispatch(hideModal())}
+							>
+								Awesome!
+							</ButtonComp>
+						}
+					/>
+					<If
+						condition={success.delete}
+						then={
+							<ButtonComp
+								bg="primary"
+								color="white"
+								width="14.5rem"
+								height="4.8rem"
+								borderRadius="64px"
+								onClick={() => dispatch(hideModal())}
+							>
+								Go Back to my schmints
 							</ButtonComp>
 						}
 					/>
