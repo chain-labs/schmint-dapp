@@ -1,5 +1,7 @@
-import TestModal from 'src/components/modals/TestModal';
-import TestModal2 from 'src/components/modals/TestModal2';
+import ConfirmModal from 'src/components/modals/ConfirmModal';
+import DepositModal from 'src/components/modals/DepositModal';
+import SchmintCreatedModal from 'src/components/modals/SchmintCreatedModal';
+import StatusModal from 'src/components/modals/StatusModal';
 
 export interface ModalState {
 	isOpen: boolean;
@@ -8,11 +10,15 @@ export interface ModalState {
 }
 
 export const MODALS_LIST = {
-	TEST_MODAL: 'TEST_MODAL',
-	TEST_MODAL_2: 'TEST_MODAL_2',
+	CONFIRM_TRANSACTION: 'CONFIRM_TRANSACTION',
+	STATUS_MODAL: 'STATUS_MODAL',
+	SCHMINT_SUCCESFUL: 'SCHMINT_SUCCESFUL',
+	DEPOSIT_MODAL: 'DEPOSIT_MODAL',
 };
 
 export const MODALS = {
-	[MODALS_LIST.TEST_MODAL]: TestModal,
-	[MODALS_LIST.TEST_MODAL_2]: TestModal2,
+	[MODALS_LIST.CONFIRM_TRANSACTION]: ConfirmModal,
+	[MODALS_LIST.STATUS_MODAL]: StatusModal,
+	[MODALS_LIST.SCHMINT_SUCCESFUL]: SchmintCreatedModal,
+	[MODALS_LIST.DEPOSIT_MODAL]: DepositModal,
 };

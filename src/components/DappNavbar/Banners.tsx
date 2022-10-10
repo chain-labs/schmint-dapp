@@ -3,15 +3,19 @@ import React, { useEffect, useState } from 'react';
 import theme from 'src/styleguide/theme';
 import { getCoinPrice, getGasPrice, getGasSource } from 'src/utils/gasPrices';
 import { getNavProps } from 'src/utils/navbarUtils';
-import { useNetwork } from 'wagmi';
+import { useFeeData, useNetwork } from 'wagmi';
 import Box from 'components/Box';
 import Text from 'components/Text';
 
 const Banners = ({ setNetworkProps, networkProps }) => {
 	const [gasPrice, setGasPrice] = useState('');
 	const [coinPrice, setCoinPrice] = useState('');
-
 	const { chain } = useNetwork();
+	const feeData = useFeeData({
+		chainId: chain?.id,
+		formatUnits: 'gwei',
+		watch: true,
+	});
 
 	useEffect(() => {
 		const fetch = () => {
@@ -78,7 +82,7 @@ const Banners = ({ setNetworkProps, networkProps }) => {
 						data-tip={`Source: ${getGasSource(chain?.id)}`}
 						data-offset="{'left': 10, 'top': 2}"
 					>
-						{`${gasPrice} Gwei`}
+						{`${parseFloat(feeData?.data?.formatted.gasPrice).toFixed(0)} Gwei`}
 					</Text>
 					<Box width="1px" bg="simply-black" height="1.2rem" mx="ms" />
 					<Text as="c1" color="simply-blue" mr="mxxs">

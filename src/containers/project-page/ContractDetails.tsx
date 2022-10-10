@@ -1,6 +1,9 @@
-import { GlobeSimple } from 'phosphor-react';
+import Link from 'next/link';
+import { ArrowUpRight, GlobeSimple, StarFour } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
+import ButtonComp from 'src/components/Button';
+import If from 'src/components/If';
 import Text from 'src/components/Text';
 import theme from 'src/styleguide/theme';
 import ReadMore from './components/ReadMore';
@@ -9,11 +12,45 @@ import Social from './components/Social';
 interface props {
 	collection?: any;
 	showDetails?: boolean;
+	schmintCreated?: boolean;
 }
 
-const ContractDetails = ({ collection, showDetails }: props) => {
+const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => {
 	return (
 		<Box center column>
+			<If
+				condition={schmintCreated}
+				then={
+					<Box bg="green-20" px="mxs" py="ms" borderRadius="8px" row mt="mm">
+						<StarFour size={32} color={theme.colors['green-60']} weight="fill" />
+						<Box ml="mm" width="52.8rem">
+							<Text as="h6" color="simply-black">
+								Schmint Created!
+							</Text>
+							<Text as="b3" color="gray-50" mt="mxs">
+								You have successfully created a Schmint for Abstract 3D.
+							</Text>
+							<Link href={`/my-schmints`} passHref>
+								<ButtonComp
+									bg="tertiary"
+									px="mxl"
+									py="ms"
+									borderRadius="64px"
+									row
+									center
+									mt="mm"
+									color="simply-black"
+								>
+									<Text as="btn2" mr="mxxs">
+										View
+									</Text>
+									<ArrowUpRight size={16} />
+								</ButtonComp>
+							</Link>
+						</Box>
+					</Box>
+				}
+			/>
 			<Box
 				width="45.7rem"
 				px="mm"
@@ -28,7 +65,7 @@ const ContractDetails = ({ collection, showDetails }: props) => {
 				<ContractItem text="Blockchain" subText={collection?.network?.name} />
 				<ContractItem text="Price" subText={collection?.price} />
 				<ContractItem text="Supply" subText={collection?.supply} />
-				<ContractItem text="Token Standard" subText="ERC21A" />
+				<ContractItem text="Token Standard" subText={collection.tokenStandard} />
 			</Box>
 			{showDetails ? (
 				<Box>
@@ -44,13 +81,32 @@ const ContractDetails = ({ collection, showDetails }: props) => {
 							</Box>
 						</Text>
 					</Box>
-					<Box center>
-						<Box border={`1px solid ${theme.colors['gray-20']}`} borderRadius="4px" row maxWidth="40%">
-							<Social border status="discord" />
-							<Social border status="twitter" />
-							<Social status="etherscan" />
-						</Box>
-					</Box>
+					<If
+						condition={collection?.socials}
+						then={
+							<Box center>
+								<Box
+									border={`1px solid ${theme.colors['gray-20']}`}
+									borderRadius="4px"
+									row
+									maxWidth="40%"
+								>
+									<If
+										condition={collection?.socials?.discord}
+										then={<Social border status="discord" />}
+									/>
+									<If
+										condition={collection?.socials?.twitter}
+										then={<Social border status="twitter" />}
+									/>
+									<If
+										condition={collection?.socials?.etherscan}
+										then={<Social border status="etherscan" />}
+									/>
+								</Box>
+							</Box>
+						}
+					/>
 				</Box>
 			) : (
 				''

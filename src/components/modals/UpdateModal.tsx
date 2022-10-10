@@ -13,10 +13,6 @@ interface props {
 }
 
 const UpdateModal = ({ collection, updateDetails, setStep }: props) => {
-	useEffect(() => {
-		console.log(collection);
-	}, [collection]);
-
 	return (
 		<Modal visible>
 			<Box

@@ -1,27 +1,24 @@
+import { useQuery } from '@apollo/client';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight } from 'phosphor-react';
+import { ArrowUpRight, Sparkle, Users } from 'phosphor-react';
 import React from 'react';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
+import If from 'src/components/If';
 import Text from 'src/components/Text';
+import { GET_PROJECT_SCHMINTS } from 'src/graphql/query/GetProjectSchmints';
 import theme from 'src/styleguide/theme';
+import { useNetwork } from 'wagmi';
 import { ICollection } from './projectsStore';
 
-const getPriceUnit = (collection) => {
-	if (collection.price) {
-		switch (collection.network.name) {
-			case 'Ethereum':
-				return 'ETH';
-			case 'Polygon':
-				return 'MATIC';
-		}
-	}
-	return '';
-};
-
 const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollection }) => {
+	const { loading, data: schmintsList } = useQuery(GET_PROJECT_SCHMINTS, {
+		variables: { target: collection.contractAddress },
+	});
+
+	const { chains } = useNetwork();
 	return (
 		<Box
 			key={`col-${idx}-${collection.title}`}
@@ -38,11 +35,34 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 					box-shadow: ${theme.shadows['shadow-400']};
 				}
 			`}
+			position="relative"
 		>
+			<If
+				condition={collection?.comingSoon}
+				then={
+					<Box
+						position="absolute"
+						top="0"
+						left="0"
+						boxShadow="shadow-100"
+						bg="yellow-30"
+						borderRadius="8px"
+						px="ms"
+						py="mxs"
+						row
+						alignItems="center"
+					>
+						<Sparkle size={12} weight="fill" />
+						<Text as="c2" ml="mxxs">
+							Coming Soon!
+						</Text>
+					</Box>
+				}
+			/>
 			<Box row alignItems="center">
 				<Box
-					width="19.2rem"
-					height="10.8rem"
+					width="19rem"
+					height="13.5rem"
 					borderRadius="4px"
 					as="img"
 					src={collection.banner}
@@ -55,33 +75,64 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 					<Text as="b3" mb="0.2rem">
 						{'Minting Starts: '}
 						<span style={{ color: theme.colors['gray-50'] }}>
-							{format(collection.startTimestamp * 1000, 'LLL d yyyy, hh:mm a, OOOO')}
+							{collection.startTimestamp
+								? format(collection.startTimestamp * 1000, 'LLL d yyyy, hh:mm a, OOOO')
+								: 'N/A'}
 						</span>
 					</Text>
 					<Box row alignItems="center" mb="0.2rem">
 						<Text as="b3">{'Blockchain: '}</Text>
 						<Text as="b3" ml="mxxs" color="gray-50">
-							{collection.network.name}
+							{collection?.network?.name ? collection.network.name : 'N/A'}
 						</Text>
-						<Box position="relative" height="1.6rem" width="1.6rem" ml="mxxs">
-							<Image
-								src={`/static/images/svgs/${
-									collection.network.name === 'Ethereum' ? 'eth' : 'polygon-color'
-								}.svg`}
-								layout="fill"
-							/>
-						</Box>
+						<If
+							condition={!!collection?.network?.name}
+							then={
+								<Box position="relative" height="1.6rem" width="1.6rem" ml="mxxs">
+									<Image
+										src={`/static/images/svgs/${
+											collection.network.name === 'Ethereum' ||
+											collection.network.name === 'Goerli'
+												? 'eth'
+												: 'polygon-color'
+										}.svg`}
+										layout="fill"
+									/>
+								</Box>
+							}
+						/>
 					</Box>
 					<Text as="b3" mb="0.2rem">
 						{'Price: '}
 						<span style={{ color: theme.colors['gray-50'] }}>
-							{collection.price > 0 ? `${collection.price} ${getPriceUnit(collection)}` : 'Free'}
+							{collection.price === null
+								? 'N/A'
+								: collection.price > 0
+								? `${collection.price} ${
+										chains?.[chains?.findIndex((chain) => chain.id === collection.network.chainId)]
+											?.nativeCurrency?.symbol
+								  }`
+								: 'Free'}
 						</span>
 					</Text>
+					<Box
+						mt="mxxs"
+						row
+						opacity={!loading && schmintsList?.schmints?.length > 0 ? 1 : 0}
+						alignItems="center"
+					>
+						<Users size={16} color={theme.colors['blue-40']} weight="fill" />
+						<Text as="c2" ml="mxs" color="gray-40">
+							<span
+								style={{ color: theme.colors['simply-black'] }}
+							>{`${schmintsList?.schmints?.length} people `}</span>
+							have schminted this project already
+						</Text>
+					</Box>
 				</Box>
 			</Box>
 			<Box column>
-				<Link href={`/project-page/${idx}`}>
+				<Link href={`/projects/${collection?.id}`} passHref>
 					<ButtonComp bg="primary" color="white" width="11rem" height="3.6rem" borderRadius="64px" mb="ms">
 						<Text as="btn2">View</Text>
 					</ButtonComp>

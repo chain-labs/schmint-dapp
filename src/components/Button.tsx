@@ -11,7 +11,13 @@ export const color = {
 export const hoverColor = {
 	primary: 'blue-60',
 	secondary: 'blue-10',
-	tertiary: 'blue-00',
+	tertiary: 'simply-black',
+};
+
+export const hoverTextColor = {
+	primary: 'gray-10',
+	secondary: 'gray-10',
+	tertiary: 'gray-10',
 };
 
 const fontColor = (bg) => {
@@ -39,19 +45,23 @@ const ButtonComp = ({ bg, disable, height, children, ...restProps }: ButtonProps
 	return (
 		<Box
 			as="button"
-			backgroundColor={!disable ? buttonColour : 'simply-white'}
+			backgroundColor={!disable ? buttonColour : 'gray-30'}
 			//@ts-expect-error-button
-			color={!disable ? fontColor(bg) : 'disable-black'}
+			color={fontColor(bg)}
 			border={!disable ? bColor : '1px solid rgba(140, 140, 161, 0.2)'}
-			borderRadius="8px"
+			borderRadius="64px"
 			height={height}
 			cursor={!disable ? 'pointer' : 'not-allowed'}
 			disabled={!disable ? false : true}
-			css={`
+			css={
+				!disable &&
+				`
 				&:hover {
 					background-color: ${theme.colors[`${hColor}`]};
+					color: ${theme.colors[`${hoverTextColor[bg]}`]};
 				}
-			`}
+			`
+			}
 			{...restProps}
 		>
 			{children}
