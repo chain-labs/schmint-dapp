@@ -19,6 +19,9 @@ export interface ICollection {
 	website_url: string;
 	symbol: string;
 	maxPurchase: number;
+	maxWallet: number;
+	tokenStandard: string;
+	comingSoon?: boolean;
 }
 
 export const getCollections = async (): Promise<ICollection[]> => {
@@ -26,7 +29,11 @@ export const getCollections = async (): Promise<ICollection[]> => {
 	const res = await axios.get(PROJECTS_JSON_URL);
 	const projects = res.data;
 
-	return projects
+	const collectionsList = projects
 		.filter((collection: ICollection) => collection.startTimestamp > Date.now() / 1000)
 		.sort((a: ICollection, b: ICollection) => a.startTimestamp - b.startTimestamp);
+
+	const noStartTimeCollections = projects.filter((collection: ICollection) => !collection.startTimestamp);
+
+	return [...collectionsList, ...noStartTimeCollections];
 };

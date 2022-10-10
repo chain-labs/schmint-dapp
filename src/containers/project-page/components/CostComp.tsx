@@ -56,7 +56,7 @@ const CostComp = ({ collection, nft, showTotalAmount, step, setStep, estimatedGa
 			<Box backgroundColor={`${theme.colors['sky-blue-20']}`} px="mm" pb="mxs" mt="mm">
 				<CostItem
 					text={`NFT x${nft}`}
-					subText={parseFloat((collection?.price * nft).toFixed(3))}
+					subText={parseFloat((collection?.price * nft).toFixed(4))}
 					unit={chain?.nativeCurrency.symbol}
 					width="100%"
 				/>
@@ -81,7 +81,7 @@ const CostComp = ({ collection, nft, showTotalAmount, step, setStep, estimatedGa
 					<Box column justifyContent="flex-end" alignItems="flex-end" pt="mxs" width="100%">
 						<CostItem
 							text="Total:"
-							subText={parseFloat((collection?.price * nft + estimatedGas).toFixed(3))}
+							subText={parseFloat((collection?.price * nft + estimatedGas).toFixed(4))}
 							unit={chain?.nativeCurrency.symbol}
 							width="50%"
 							textColor="blue-40"
@@ -92,7 +92,7 @@ const CostComp = ({ collection, nft, showTotalAmount, step, setStep, estimatedGa
 							then={
 								<CostItem
 									text="Gnosis Safe Balance:"
-									subText={parseFloat(balance?.formatted.slice(0, 5))}
+									subText={parseFloat(parseFloat(balance?.formatted).toFixed(4))}
 									unit={chain?.nativeCurrency.symbol}
 									width="50%"
 									textColor="blue-40"

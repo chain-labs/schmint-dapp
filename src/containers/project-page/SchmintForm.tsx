@@ -304,16 +304,6 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 								detailText="Your transaction will not execute if the gas price is more than the set limit."
 								unit="GWEI"
 							/>
-							<InputBox
-								label="Deposit funds to Gnosis Safe"
-								placeholder="20"
-								value={funds}
-								min={(collection?.price * parseInt(nft) + estimatedGas).toFixed(3)}
-								step={'0.001'}
-								setValue={setFunds}
-								detailText="Deposit funds to the Gnosis Safe to prevent your Schmint from failing."
-								unit={chain?.nativeCurrency?.symbol}
-							/>
 						</Box>
 					}
 				/>
@@ -326,21 +316,6 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 						<Text as="h5" mt="mxxxl">
 							Cost
 						</Text>
-						<If
-							condition={step >= 1}
-							then={
-								<AlertBottomBox
-									showOptions={showOptions}
-									funds={funds}
-									setFunds={setFunds}
-									step={step}
-									setStep={setStep}
-									price={collection.price}
-									nft={nft}
-									estimatedGas={estimatedGas}
-								/>
-							}
-						/>
 						<CostComp
 							collection={collection}
 							nft={parseInt(nft)}
@@ -350,20 +325,15 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 							setStep={setStep}
 							estimatedGas={estimatedGas}
 						/>
-						<If
-							condition={step === 0}
-							then={
-								<AlertBottomBox
-									showOptions={showOptions}
-									funds={funds}
-									setFunds={setFunds}
-									step={step}
-									setStep={setStep}
-									price={collection?.price}
-									nft={nft}
-									estimatedGas={estimatedGas}
-								/>
-							}
+						<AlertBottomBox
+							showOptions={showOptions}
+							funds={funds}
+							setFunds={setFunds}
+							step={step}
+							setStep={setStep}
+							price={collection?.price}
+							nft={nft}
+							estimatedGas={estimatedGas}
 						/>
 					</React.Fragment>
 				}

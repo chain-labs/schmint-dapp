@@ -41,6 +41,7 @@ const Layout = ({ children }) => {
 				}
 			}
 		},
+		pollInterval: 8000,
 	});
 	const dispatch = useAppDispatch();
 

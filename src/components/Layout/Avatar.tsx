@@ -68,7 +68,7 @@ const Avatar = () => {
 												row
 												cursor="pointer"
 												onClick={() => {
-													navigator.clipboard?.writeText(user.address);
+													navigator.clipboard?.writeText(scheduler.avatar);
 													toast.success('Copied');
 												}}
 											>
