@@ -44,11 +44,7 @@ const StatusModal = ({ btnText, success, msg, gas }: props) => {
 					/>
 				</Box>
 				<Text as="h5" center>
-					{success
-						? success.update
-							? 'Schmint Details Updated.'
-							: 'Schmint Successfully Deleted'
-						: 'Transaction Unsuccessful'}
+					{success ? btnText : 'Transaction Unsuccessful'}
 				</Text>
 				<Text textAlign="center" as="b2" mt="mxs">
 					{success ? msg : 'The transaction could not be validated or was cancelled from the wallet.'}
@@ -99,37 +95,6 @@ const StatusModal = ({ btnText, success, msg, gas }: props) => {
 					}
 				/>
 				<Box center>
-					<If
-						condition={success.update}
-						then={
-							<ButtonComp
-								bg="primary"
-								color="white"
-								width="14.5rem"
-								height="4.8rem"
-								borderRadius="64px"
-								onClick={() => dispatch(hideModal())}
-							>
-								Awesome!
-							</ButtonComp>
-						}
-					/>
-					<If
-						condition={success.delete}
-						then={
-							<ButtonComp
-								bg="primary"
-								color="white"
-								width="14.5rem"
-								height="4.8rem"
-								borderRadius="64px"
-								onClick={() => dispatch(hideModal())}
-							>
-								Go Back to my schmints
-							</ButtonComp>
-						}
-					/>
-
 					<ButtonComp
 						bg="primary"
 						color="white"
