@@ -1,7 +1,8 @@
 import React from 'react';
+import MySchmintComponent from 'src/containers/my-schmints';
 
 const MySchmints = () => {
-	return <div>My Schmints</div>;
+	return <MySchmintComponent />;
 };
 
 export default MySchmints;

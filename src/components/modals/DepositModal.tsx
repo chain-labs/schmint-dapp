@@ -55,6 +55,7 @@ const DepositModal = () => {
 							success: true,
 							msg: `Successfully deposited ${fundsString} ${chain?.nativeCurrency?.symbol} to your Gnosis Safe.`,
 							gas: final,
+							btnText: 'OK',
 						},
 					})
 				);

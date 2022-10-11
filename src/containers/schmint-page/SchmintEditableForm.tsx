@@ -114,7 +114,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 						type: MODALS_LIST.STATUS_MODAL,
 						props: {
 							success: true,
-							gas: txGas,
+							gas: `${txGas} ${chain?.nativeCurrency?.symbol} or ${txPrice} USD`,
 							msg: 'Successfully updated your Schmint preferences.',
 							successMsg: 'Schmint Changes Saved.',
 							btnText: 'Awesome!',
