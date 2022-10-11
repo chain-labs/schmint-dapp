@@ -15,7 +15,7 @@ import SchmintsList from './SchmintsList';
 
 const MySchmintComponent = () => {
 	const { openConnectModal } = useConnectModal();
-	const [page, setPage] = React.useState<0 | 1>(0);
+	const [page, setPage] = React.useState<number>(0);
 	const [schmints, setSchmints] = useState([]);
 	const [getSchmints, { loading, called }] = useLazyQuery(GET_MY_SCHMINTS, {
 		onCompleted: ({ schmints }) => {
@@ -32,8 +32,26 @@ const MySchmintComponent = () => {
 					userId: user.address,
 				},
 			});
+		} else {
+			if (typeof window !== 'undefined') {
+				window.sessionStorage.removeItem('page');
+			}
 		}
 	}, [user.address]);
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			const pg = parseInt(window.sessionStorage.getItem('page')) ?? 0;
+			setPage(pg);
+		}
+	}, []);
+
+	const handleClick = (page) => {
+		setPage(page);
+		if (typeof window !== 'undefined') {
+			window.sessionStorage.setItem('page', page ? '1' : '0');
+		}
+	};
 
 	return (
 		<Box px="mxl" py="wxs">
@@ -52,7 +70,7 @@ const MySchmintComponent = () => {
 							<Text
 								as="h5"
 								color={!page ? 'simply-blue' : 'gray-30'}
-								onClick={() => setPage(0)}
+								onClick={() => handleClick(0)}
 								cursor="pointer"
 							>
 								Active
@@ -61,7 +79,7 @@ const MySchmintComponent = () => {
 							<Text
 								as="h5"
 								color={page ? 'simply-blue' : 'gray-30'}
-								onClick={() => setPage(1)}
+								onClick={() => handleClick(1)}
 								cursor="pointer"
 							>
 								Completed
