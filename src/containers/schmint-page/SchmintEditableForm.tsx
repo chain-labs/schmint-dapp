@@ -113,8 +113,9 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 						type: MODALS_LIST.STATUS_MODAL,
 						props: {
 							success: true,
-							txGas: txGas,
-							txPrice: txPrice,
+							msg: `Successfully updated the Schmint Details.`,
+							btnText: 'Awesome!',
+							gas: `${txGas} ${chain?.nativeCurrency?.symbol} or ${txPrice} USD`,
 						},
 					})
 				);
@@ -194,7 +195,6 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 			})
 		);
 		if (deleteschmint) {
-			console.log(deleteschmint);
 			dispatch(replaceModal({ type: MODALS_LIST.CONFIRM_TRANSACTION, props: {} }));
 
 			try {
@@ -207,7 +207,16 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 					return;
 				} else {
 					console.log({ event });
-					dispatch(replaceModal({ type: MODALS_LIST.SCHMINT_SUCCESFUL, props: {} }));
+					dispatch(
+						replaceModal({
+							type: MODALS_LIST.STATUS_MODAL,
+							props: {
+								success: true,
+								msg: 'Your Schmint for Abstract 3D was successfully deleted.',
+								btnText: 'Go Back to My Schmint',
+							},
+						})
+					);
 				}
 			} catch (err) {
 				console.log(err);
