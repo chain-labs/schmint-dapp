@@ -29,7 +29,6 @@ const SchmintPage = ({ collection, schmint }) => {
 		if (collection?.abi) {
 			setABI(collection.abi);
 		}
-		console.log(scheduler.schedulerAddress);
 	}, [scheduler?.schedulerAddress, collection]);
 
 	useEffect(() => {

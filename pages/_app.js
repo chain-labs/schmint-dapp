@@ -12,6 +12,8 @@ import ModalHandler from 'components/ModalHandler';
 import Layout from 'components/Layout';
 import If from 'components/If';
 
+import { QueryClient, QueryClientProvider, ReactQueryDevtools } from 'react-query';
+
 import 'styleguide/globalStyles.css';
 import '@rainbow-me/rainbowkit/styles.css';
 
@@ -26,6 +28,8 @@ NProgress.configure({ showSpinner: false });
 
 const MyApp = ({ Component, pageProps }) => {
 	const [hostname, setHostname] = useState('');
+	const [queryClient] = useState(() => new QueryClient());
+
 	useEffect(() => {
 		// Set a custom CSS Property for Height
 		// See https://css-tricks.com/the-trick-to-viewport-units-on-mobile/

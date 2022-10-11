@@ -1,0 +1,122 @@
+import { useLazyQuery } from '@apollo/client';
+import { format } from 'date-fns';
+import { ethers } from 'ethers';
+import Image from 'next/image';
+import Link from 'next/link';
+import { CaretDown } from 'phosphor-react';
+import React, { useEffect, useState } from 'react';
+import Box from 'src/components/Box';
+import If from 'src/components/If';
+import Loader from 'src/components/Loader';
+import Text from 'src/components/Text';
+import { CHECK_FAILED_SCHMINT } from 'src/graphql/query/CheckFailedSchmint';
+import theme from 'src/styleguide/theme';
+import { getAllCollections } from '../Explore/projectsStore';
+import SchmintTile from './SchmintTile';
+import { getSchmintQuantity } from './utils';
+
+const collection = {
+	title: 'Abstract 3D',
+	banner: 'https://simplr.mypinata.cloud/ipfs/Qmb5W3zHPy2iPJkvXbdppUb9hx5TUKknDurqypFWX8vB6W',
+	network: {
+		name: 'Goerli',
+		chainId: 5,
+	},
+};
+const SchmintsList = ({ page, schmints }) => {
+	const [collections, setCollections] = useState([]);
+	const [activeSchmints, setActiveSchmints] = useState([]);
+	const [completedSchmints, setCompletedSchmints] = useState([]);
+	const [getSuccesfulSchmints, { called }] = useLazyQuery(CHECK_FAILED_SCHMINT);
+
+	useEffect(() => {
+		getAllCollections().then((collection) => setCollections(collection));
+		const interval = setInterval(() => {
+			getAllCollections().then((collection) => setCollections(collection));
+		}, 10000);
+
+		return () => {
+			clearInterval(interval);
+		};
+	}, []);
+
+	const getSchmitsAssigned = async () => {
+		const activeSchmints: any[] = schmints.filter((schmint) => !schmint.isSchminted);
+		const completedSchmints: any[] = schmints.filter((schmint) => schmint.isSchminted);
+		const targets = activeSchmints.map((schmint) => schmint.target);
+		const data = await getSuccesfulSchmints({ variables: { target: targets } });
+
+		data.data.schmints.forEach((s) => {
+			const idx = activeSchmints.findIndex((a) => a.target === s.target);
+			completedSchmints.push(activeSchmints[idx]);
+			activeSchmints.splice(
+				activeSchmints.findIndex((a) => a.target === s.target),
+				1
+			);
+		});
+
+		setCompletedSchmints(completedSchmints);
+		setActiveSchmints(activeSchmints);
+	};
+
+	useEffect(() => {
+		if (schmints.length && collections.length) {
+			getSchmitsAssigned();
+		}
+	}, [schmints, collections]);
+
+	if (schmints.length && collections.length) {
+		return (
+			<Box
+				mt="mxxxl"
+				width="98.4rem"
+				css={`
+					display: grid;
+					grid-template-columns: 1fr 1fr 1fr;
+					grid-gap: ${theme.space.mxl};
+				`}
+			>
+				<If
+					condition={!page}
+					then={activeSchmints.map((schmint) => {
+						const collection = collections.find(
+							(collection) => collection.contractAddress.toLowerCase() === schmint.target.toLowerCase()
+						);
+						const quantity = getSchmintQuantity(collection?.abi, schmint?.data);
+						return (
+							<SchmintTile
+								collection={collection}
+								quantity={quantity}
+								value={`${ethers.utils.formatUnits(schmint.value, 'ether')}`}
+								createdTimestamp={schmint.creationTimestamp}
+								schmintID={schmint.schmintId}
+							/>
+						);
+					})}
+					else={completedSchmints.map((schmint) => {
+						const collection = collections.find(
+							(collection) => collection.contractAddress.toLowerCase() === schmint.target.toLowerCase()
+						);
+						const quantity = getSchmintQuantity(collection?.abi, schmint?.data);
+						return (
+							<SchmintTile
+								collection={collection}
+								quantity={quantity}
+								value={`${ethers.utils.formatUnits(schmint.value, 'ether')}`}
+								createdTimestamp={schmint.creationTimestamp}
+								executedTimestamp={schmint.executionTimestamp}
+								schmintID={schmint.schmintId}
+								isSchminted={schmint.isSchminted}
+								completed
+							/>
+						);
+					})}
+				/>
+			</Box>
+		);
+	} else {
+		return <Loader msg="Loading..." minHeight="50rem" />;
+	}
+};
+
+export default SchmintsList;
