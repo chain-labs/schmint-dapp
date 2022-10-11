@@ -3,31 +3,26 @@ import { format } from 'date-fns';
 import { ethers } from 'ethers';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CaretDown } from 'phosphor-react';
+import { CaretDown, User } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import Loader from 'src/components/Loader';
 import Text from 'src/components/Text';
 import { CHECK_FAILED_SCHMINT } from 'src/graphql/query/CheckFailedSchmint';
+import { useAppSelector } from 'src/redux/hooks';
+import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
 import { getAllCollections } from '../Explore/projectsStore';
 import SchmintTile from './SchmintTile';
 import { getSchmintQuantity } from './utils';
 
-const collection = {
-	title: 'Abstract 3D',
-	banner: 'https://simplr.mypinata.cloud/ipfs/Qmb5W3zHPy2iPJkvXbdppUb9hx5TUKknDurqypFWX8vB6W',
-	network: {
-		name: 'Goerli',
-		chainId: 5,
-	},
-};
 const SchmintsList = ({ page, schmints }) => {
 	const [collections, setCollections] = useState([]);
 	const [activeSchmints, setActiveSchmints] = useState([]);
 	const [completedSchmints, setCompletedSchmints] = useState([]);
 	const [getSuccesfulSchmints, { called }] = useLazyQuery(CHECK_FAILED_SCHMINT);
+	const user = useAppSelector(userSelector);
 
 	useEffect(() => {
 		getAllCollections().then((collection) => setCollections(collection));
@@ -41,13 +36,18 @@ const SchmintsList = ({ page, schmints }) => {
 	}, []);
 
 	const getSchmitsAssigned = async () => {
+		// console.log({ schmints });
+
 		const activeSchmints: any[] = schmints.filter((schmint) => !schmint.isSchminted);
-		const completedSchmints: any[] = schmints.filter((schmint) => schmint.isSchminted);
+		const completedSchmints: any[] = schmints.filter((schmint) => schmint.isSchminted || schmint.isCancelled);
 		const targets = activeSchmints.map((schmint) => schmint.target);
-		const data = await getSuccesfulSchmints({ variables: { target: targets } });
+		const data = await getSuccesfulSchmints({ variables: { target: targets, owner: user.address } });
+		console.log({ data });
 
 		data.data.schmints.forEach((s) => {
 			const idx = activeSchmints.findIndex((a) => a.target === s.target);
+			console.log({ idx, s, completedSchmints, activeSchmints });
+
 			completedSchmints.push(activeSchmints[idx]);
 			activeSchmints.splice(
 				activeSchmints.findIndex((a) => a.target === s.target),
@@ -95,14 +95,15 @@ const SchmintsList = ({ page, schmints }) => {
 					})}
 					else={completedSchmints.map((schmint) => {
 						const collection = collections.find(
-							(collection) => collection.contractAddress.toLowerCase() === schmint.target.toLowerCase()
+							(collection) => collection?.contractAddress.toLowerCase() === schmint?.target?.toLowerCase()
 						);
 						const quantity = getSchmintQuantity(collection?.abi, schmint?.data);
+
 						return (
 							<SchmintTile
 								collection={collection}
 								quantity={quantity}
-								value={`${ethers.utils.formatUnits(schmint.value, 'ether')}`}
+								value={`${ethers.utils.formatUnits(schmint?.value, 'ether')}`}
 								createdTimestamp={schmint.creationTimestamp}
 								executedTimestamp={schmint.executionTimestamp}
 								schmintID={schmint.schmintId}
