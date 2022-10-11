@@ -19,9 +19,18 @@ interface props {
 	success?: boolean;
 	msg: string;
 	gas?: string;
+	successMsg?: string;
 }
-const StatusModal = ({ btnText, success, msg, gas }: props) => {
+const StatusModal = ({ btnText, success, msg, gas, successMsg }: props) => {
 	const dispatch = useAppDispatch();
+	const handleClick = () => {
+		if (btnText === 'Go Back to My Schmints') {
+			dispatch(hideModal());
+			window.location.href = '/my-schmints';
+		} else {
+			dispatch(hideModal());
+		}
+	};
 
 	return (
 		<Modal visible>
@@ -44,7 +53,7 @@ const StatusModal = ({ btnText, success, msg, gas }: props) => {
 					/>
 				</Box>
 				<Text as="h5" center>
-					{success ? btnText : 'Transaction Unsuccessful'}
+					{success ? successMsg : 'Transaction Unsuccessful'}
 				</Text>
 				<Text textAlign="center" as="b2" mt="mxs">
 					{success ? msg : 'The transaction could not be validated or was cancelled from the wallet.'}
@@ -61,10 +70,10 @@ const StatusModal = ({ btnText, success, msg, gas }: props) => {
 					''
 				)}
 
-				<If
-					condition={!success}
-					then={
-						<Box row center mt="mxl">
+				<Box center mt="mxl">
+					<If
+						condition={!success}
+						then={
 							<ButtonComp
 								bg="secondary"
 								color="gray-60"
@@ -78,30 +87,15 @@ const StatusModal = ({ btnText, success, msg, gas }: props) => {
 							>
 								<Text as="btn2">Cancel</Text>
 							</ButtonComp>
-							<ButtonComp
-								bg="secondary"
-								color="gray-60"
-								width="14.5rem"
-								height="4.8rem"
-								borderRadius="64px"
-								border={`1px solid ${theme.colors['gray-60']}`}
-								onClick={() => {
-									dispatch(hideModal());
-								}}
-							>
-								<Text as="btn2">Retry</Text>
-							</ButtonComp>
-						</Box>
-					}
-				/>
-				<Box center>
+						}
+					/>
 					<ButtonComp
 						bg="primary"
 						color="white"
-						width="14.5rem"
+						width={success ? '25.1rem' : '14.5rem'}
 						height="4.8rem"
 						borderRadius="64px"
-						onClick={() => dispatch(hideModal())}
+						onClick={handleClick}
 						mx="auto"
 					>
 						{success ? btnText : 'Retry'}

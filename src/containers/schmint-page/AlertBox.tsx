@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowDown, ArrowUpRight, Confetti, SmileySad, WarningCircle } from 'phosphor-react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import Text from 'src/components/Text';
@@ -10,15 +10,25 @@ import { getAbi } from 'src/utils/contracts';
 import { useContractRead, useNetwork } from 'wagmi';
 import { getGnosisSafeUrl } from '../MyAssets/utils';
 
-const AlertBox = ({ status }) => {
+const AlertBox = ({ status, schmint, currPrice, prevPrice }) => {
 	const { chain } = useNetwork();
 	const scheduler = useAppSelector(schedulerSelector);
+	const [date, setDate] = useState('');
+	const [time, setTime] = useState('');
 
 	const { data, isLoading } = useContractRead({
 		addressOrName: scheduler.schedulerAddress,
 		contractInterface: getAbi(chain?.id, 'SCHEDULER'),
 		functionName: 'avatar',
 	});
+	useEffect(() => {
+		if (schmint.isSchminted) {
+			const date = new Date(schmint.executionTimestamp * 1000);
+			setDate(date.toDateString());
+			setTime(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+		}
+	}, [schmint]);
+
 	return (
 		<Box
 			width="79.6rem"
@@ -36,8 +46,9 @@ const AlertBox = ({ status }) => {
 					<Box>
 						<Text as="b2">Collection Price Changed</Text>
 						<Text as="b3" mt="mxxs">
-							The price of this NFT collection was changed from 0.5 ETH to 1 ETH per NFT. We have updated
-							the schmint details accordingly but require your consent before applying them.{' '}
+							The price of this NFT collection was changed from {prevPrice} ETH to {currPrice} ETH per
+							NFT. We have updated the schmint details accordingly but require your consent before
+							applying them.{' '}
 						</Text>
 						<Text as="b3" mt="mxxs">
 							Not applying the changes might cause the schmint to fail.{' '}
@@ -73,8 +84,8 @@ const AlertBox = ({ status }) => {
 					<Box>
 						<Text as="b2">Schmint Successful!</Text>
 						<Text as="b3" mt="mxxs">
-							Congratulations! This schmint was successfuly executed on Sep 30th 2022, 10:00 AM. Click the
-							button to view your NFTs.
+							Congratulations! This schmint was successfuly executed on {date}, {time}. Click the button
+							to view your NFTs.
 						</Text>
 						<Box as="a" target="_blank" href={getGnosisSafeUrl(chain?.id, `${data}`)}>
 							<ButtonComp

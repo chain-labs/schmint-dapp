@@ -28,7 +28,8 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 	const [txGas, setTxGas] = useState<string>('');
 	const [txPrice, setTxPrice] = useState<string>('');
 	const [step, setStep] = useState(0);
-	const [deleteschmint, setDeleteschmint] = useState(false);
+	// const [deleteschmint, setDeleteschmint] = useState<boolean>(false);
+	let deleteschmint;
 
 	const { data: signer } = useSigner();
 	const provider = useProvider();
@@ -185,12 +186,12 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 
 	const deleteSchmint = async (e) => {
 		e.preventDefault();
-
 		dispatch(
 			showModal({
 				type: MODALS_LIST.DELETE_MODAL,
 				props: {
-					setDeleteschmint: setDeleteschmint,
+					schmint: schmint,
+					collectionName: collection.title,
 				},
 			})
 		);
@@ -259,6 +260,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 				detailText={`This contract allows upto ${collection.maxWallet} NFTs per wallet and ${collection.maxPurchase} per transaction.`}
 				required
 				disabled={!editable}
+				actionRequired={actionRequired}
 			/>
 			<Text
 				as="b3"
@@ -288,6 +290,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 								detailText="Your transaction will not execute if the gas price is more than the set limit."
 								unit="GWEI"
 								disabled={!editable}
+								actionRequired={actionRequired}
 							/>
 
 							{actionRequired === true ? (
@@ -300,6 +303,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 									setValue={setFunds}
 									detailText="Deposit funds to the Gnosis Safe to prevent your Schmint from failing."
 									unit="ETH"
+									actionRequired={actionRequired}
 								/>
 							) : (
 								''
@@ -327,7 +331,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 					row
 					center
 					onClick={deleteSchmint}
-					disable={nft > quantity}
+					disable={nft > quantity || nft < quantity}
 				>
 					<Trash size={24} />
 					<Text as="btn1">Delete Schmint</Text>
@@ -339,7 +343,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 					height="4.8rem"
 					borderRadius="64px"
 					onClick={modifySchmint}
-					disable={!editable || actionRequired || quantity === nft}
+					disable={actionRequired ? false : !editable || quantity === nft}
 				>
 					<Text as="btn1">Save Changes</Text>
 				</ButtonComp>

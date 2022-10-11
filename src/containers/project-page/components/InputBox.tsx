@@ -21,6 +21,7 @@ interface props {
 	ref?: any;
 	step?: string;
 	width?: string;
+	actionRequired?: boolean;
 }
 
 const InputBox = ({
@@ -39,6 +40,7 @@ const InputBox = ({
 	ref,
 	step,
 	width,
+	actionRequired,
 }: props) => {
 	return (
 		<Box mt={label ? '2rem' : '0'}>
@@ -69,6 +71,7 @@ const InputBox = ({
 					step={step}
 					disabled={disabled}
 					valueDisable={disabled}
+					actionRequired={actionRequired}
 				/>
 				<Text as="btn2" mt="mxs" color={`${theme.colors['gray-30']}`}>
 					{detailText}
