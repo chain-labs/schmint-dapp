@@ -53,7 +53,7 @@ const CostComp = ({ collection, nft, showTotalAmount, step, setStep, estimatedGa
 
 	return (
 		<Box>
-			<Box backgroundColor={`${theme.colors['sky-blue-20']}`} px="mm" pb="mxs" mt="mm">
+			<Box backgroundColor={`${theme.colors['sky-blue-20']}`} px="mm" pb="mxs" mt="mm" borderRadius="4px">
 				<CostItem
 					text={`NFT x${nft}`}
 					subText={parseFloat((collection?.price * nft).toFixed(4))}

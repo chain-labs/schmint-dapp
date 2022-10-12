@@ -213,8 +213,10 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 					center
 					onClick={() => setEditable(!editable)}
 				>
-					{!editable ? <PencilSimple size={18} /> : ''}
-					<Text as="btn2">{editable ? 'cancel' : 'Edit'}</Text>
+					{!editable ? <PencilSimple size={16} weight="fill" /> : ''}
+					<Text as="btn2" ml="5px">
+						{editable ? 'cancel' : 'Edit'}
+					</Text>
 				</ButtonComp>
 			</Box>
 			<InputNumber
@@ -286,6 +288,9 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 				/>
 			</Box>
 			<Box borderTop={`1px solid ${theme.colors['gray-30']}`} width="100%" mt="mxxxl" />
+			<Text as="h5" mt="mxxl">
+				Cost
+			</Text>
 			<CostComp
 				collection={collection}
 				nft={nft}
@@ -295,7 +300,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 				step={step}
 				setStep={setStep}
 			/>
-			<Box center between mt="mxxxl">
+			<Box center between mt="wxs">
 				<ButtonComp
 					color="red-40"
 					width="23.4rem"
@@ -307,7 +312,9 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 					disable={nft > quantity || nft < quantity}
 				>
 					<Trash size={24} />
-					<Text as="btn1">Delete Schmint</Text>
+					<Text as="btn1" ml="5px">
+						Delete Schmint
+					</Text>
 				</ButtonComp>
 				<ButtonComp
 					bg="primary"

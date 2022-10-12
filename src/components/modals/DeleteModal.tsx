@@ -10,12 +10,15 @@ import Confetti from 'react-confetti';
 import de from 'date-fns/esm/locale/de/index.js';
 import useScheduler from 'src/containers/project-page/useScheduler';
 import { MODALS_LIST } from 'src/redux/modal/types';
-import { useSigner } from 'wagmi';
+import { useNetwork, useSigner } from 'wagmi';
+import { ethers } from 'ethers';
+import { getCoinPrice } from 'src/utils/gasPrices';
 
 const DeleteModal = ({ schmint, collectionName }) => {
 	const dispatch = useAppDispatch();
 	const SchedulerInstance = useScheduler();
 	const { data: signer } = useSigner();
+	const { chain } = useNetwork();
 
 	const handleDelete = async () => {
 		dispatch(replaceModal({ type: MODALS_LIST.CONFIRM_TRANSACTION, props: {} }));
@@ -23,20 +26,20 @@ const DeleteModal = ({ schmint, collectionName }) => {
 		try {
 			const tx = await SchedulerInstance?.connect(signer)?.cancelSchmint(schmint.schmintId);
 			const receipt = await tx?.wait();
+			if (receipt) {
+				const gas = ethers.utils.formatEther(receipt.gasUsed.mul(receipt.effectiveGasPrice));
+				const price = ((await getCoinPrice(chain?.id)) * parseFloat(gas.toString())).toFixed(2);
+				const final = `${parseFloat(gas.toString()).toFixed(6)} ${
+					chain?.nativeCurrency?.symbol
+				} or ${price} USD`;
 
-			const event = receipt?.events && receipt.events.filter((event) => event.event === 'SchmintCreated');
-			if (!event) {
-				console.log('no event found');
-				return;
-			} else {
-				console.log({ event });
 				dispatch(
 					replaceModal({
 						type: MODALS_LIST.STATUS_MODAL,
 						props: {
 							success: true,
 							btnText: 'Go Back to My Schmints',
-							gas: tx?.gasLimit?.toString(),
+							gas: final,
 							msg: `Your Schmint for ${collectionName} was successfully deleted.`,
 							successMsg: 'Schmint Successfully Deleted',
 						},
@@ -45,6 +48,7 @@ const DeleteModal = ({ schmint, collectionName }) => {
 			}
 		} catch (err) {
 			console.log(err);
+			dispatch(replaceModal({ type: MODALS_LIST.STATUS_MODAL, props: { success: false } }));
 		}
 	};
 

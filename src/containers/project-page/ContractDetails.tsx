@@ -53,11 +53,10 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 			/>
 			<Box
 				width="45.7rem"
-				px="mm"
 				backgroundColor="#F7FAFF"
 				my="mm"
 				row
-				justifyContent="space-around"
+				justifyContent="space-between"
 				border={`1px solid ${theme.colors['blue-20']} `}
 				borderRadius="8px"
 				p="mm"
@@ -124,7 +123,7 @@ const ContractItem = ({ text, subText }) => {
 				{text}
 			</Text>
 			<Text as="b3" color="gray-50">
-				{subText}
+				{subText ? subText : 'N/A'}
 			</Text>
 		</Box>
 	);

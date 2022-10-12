@@ -52,6 +52,9 @@ const SchmintPage = ({ collection, schmint }) => {
 		if (schmint.isSchminted) {
 			setStatus('1');
 		}
+		if (!schmint.isSchminted) {
+			setStatus('0');
+		}
 		if (actionRequired) {
 			setStatus('-1');
 		}
@@ -59,7 +62,7 @@ const SchmintPage = ({ collection, schmint }) => {
 
 	if (collection?.title) {
 		return (
-			<Box center column>
+			<Box center column mb="20rem">
 				<Banner collection={collection} />
 				{status ? (
 					<AlertBox status={status} schmint={schmint} currPrice={currPrice} prevPrice={prevPrice} />
@@ -67,9 +70,9 @@ const SchmintPage = ({ collection, schmint }) => {
 					''
 				)}
 				<ContractDetails collection={collection} />
+				<Box borderTop={`1px solid ${theme.colors['gray-20']}`} width="100%" my="wxs" />
 				{!status || status === '-1' ? (
 					<Box>
-						<Box borderTop={`1px solid ${theme.colors['gray-20']}`} width="100%" my="wxs" />
 						<If
 							condition={quantity !== 0}
 							then={
