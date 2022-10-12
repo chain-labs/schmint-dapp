@@ -1,5 +1,4 @@
 import { useLazyQuery } from '@apollo/client';
-import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { StarFour } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
@@ -14,10 +13,9 @@ import NoSchmintComponent from './NoSchmintComponent';
 import SchmintsList from './SchmintsList';
 
 const MySchmintComponent = () => {
-	const { openConnectModal } = useConnectModal();
 	const [page, setPage] = React.useState<number>(0);
 	const [schmints, setSchmints] = useState([]);
-	const [getSchmints, { loading, called }] = useLazyQuery(GET_MY_SCHMINTS, {
+	const [getSchmints] = useLazyQuery(GET_MY_SCHMINTS, {
 		onCompleted: ({ schmints }) => {
 			setSchmints(schmints);
 		},

@@ -1,14 +1,9 @@
 import { useLazyQuery } from '@apollo/client';
-import { format } from 'date-fns';
 import { ethers } from 'ethers';
-import Image from 'next/image';
-import Link from 'next/link';
-import { CaretDown, User } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import Loader from 'src/components/Loader';
-import Text from 'src/components/Text';
 import { CHECK_FAILED_SCHMINT } from 'src/graphql/query/CheckFailedSchmint';
 import { useAppSelector } from 'src/redux/hooks';
 import { userSelector } from 'src/redux/user';
@@ -21,7 +16,7 @@ const SchmintsList = ({ page, schmints }) => {
 	const [collections, setCollections] = useState([]);
 	const [activeSchmints, setActiveSchmints] = useState([]);
 	const [completedSchmints, setCompletedSchmints] = useState([]);
-	const [getSuccesfulSchmints, { called }] = useLazyQuery(CHECK_FAILED_SCHMINT);
+	const [getSuccesfulSchmints] = useLazyQuery(CHECK_FAILED_SCHMINT);
 	const user = useAppSelector(userSelector);
 
 	useEffect(() => {
@@ -42,12 +37,9 @@ const SchmintsList = ({ page, schmints }) => {
 		const completedSchmints: any[] = schmints.filter((schmint) => schmint.isSchminted || schmint.isCancelled);
 		const targets = activeSchmints.map((schmint) => schmint.target);
 		const data = await getSuccesfulSchmints({ variables: { target: targets, owner: user.address } });
-		console.log({ data });
 
 		data.data.schmints.forEach((s) => {
 			const idx = activeSchmints.findIndex((a) => a.target === s.target);
-			console.log({ idx, s, completedSchmints, activeSchmints });
-
 			completedSchmints.push(activeSchmints[idx]);
 			activeSchmints.splice(
 				activeSchmints.findIndex((a) => a.target === s.target),

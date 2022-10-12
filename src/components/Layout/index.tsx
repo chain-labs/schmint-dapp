@@ -21,7 +21,7 @@ const Layout = ({ children }) => {
 	const user = useAppSelector(userSelector);
 	const [userHasScheduler, setUserHasScheduler] = React.useState(false);
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
-	const [loadScheduler, { called, loading, data }] = useLazyQuery(GET_USER_SCHEDULER, {
+	const [loadScheduler, { called, loading }] = useLazyQuery(GET_USER_SCHEDULER, {
 		onCompleted: (data) => {
 			const scheduler = data?.schedulers?.[0];
 			if (scheduler?.owner?.toLowerCase() === user.address.toLowerCase()) {
