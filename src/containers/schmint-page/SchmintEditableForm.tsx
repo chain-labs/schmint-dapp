@@ -196,6 +196,34 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 				},
 			})
 		);
+		if (deleteschmint) {
+			dispatch(replaceModal({ type: MODALS_LIST.CONFIRM_TRANSACTION, props: {} }));
+
+			try {
+				const tx = await SchedulerInstance?.connect(signer)?.cancelSchmint(schmint.schmintId);
+				const receipt = await tx?.wait();
+
+				const event = receipt?.events && receipt.events.filter((event) => event.event === 'SchmintCreated');
+				if (!event) {
+					console.log('no event found');
+					return;
+				} else {
+					console.log({ event });
+					dispatch(
+						replaceModal({
+							type: MODALS_LIST.STATUS_MODAL,
+							props: {
+								success: true,
+								msg: 'Your Schmint for Abstract 3D was successfully deleted.',
+								btnText: 'Go Back to My Schmint',
+							},
+						})
+					);
+				}
+			} catch (err) {
+				console.log(err);
+			}
+		}
 	};
 
 	return (
