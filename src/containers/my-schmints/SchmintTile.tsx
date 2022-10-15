@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { ethers } from 'ethers';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CaretDown } from 'phosphor-react';
@@ -7,6 +8,7 @@ import Box from 'src/components/Box';
 import If from 'src/components/If';
 import Text from 'src/components/Text';
 import theme from 'src/styleguide/theme';
+import { useProvider, useTransaction } from 'wagmi';
 import { ICollection } from '../Explore/projectsStore';
 import TileBadge from './TileBadge';
 
@@ -19,6 +21,8 @@ interface SchmintTileProps {
 	completed?: boolean;
 	isSchminted?: boolean;
 	executedTimestamp?: number;
+	executionTrxHash?: `0x${string}`;
+	gasPrice?: string;
 }
 
 const SAMPLE_GAS_COST = 0.001;
@@ -32,8 +36,29 @@ const SchmintTile = ({
 	completed,
 	isSchminted,
 	executedTimestamp,
+	executionTrxHash,
+	gasPrice,
 }: SchmintTileProps) => {
 	const [actionRequired, setActionRequired] = useState(false);
+	const [totalTransactionCost, setTotalTransactionCost] = useState('');
+	const provider = useProvider();
+
+	const getTotalGasCost = async (trxHash, gasPrice) => {
+		const receipt = await provider.getTransactionReceipt(trxHash);
+		const gasUsed = receipt.gasUsed;
+		const totalGasCost = (parseFloat(ethers.utils.formatEther(gasUsed.mul(gasPrice))) + parseFloat(value)).toFixed(
+			4
+		);
+		return totalGasCost;
+	};
+
+	useEffect(() => {
+		if (isSchminted) {
+			getTotalGasCost(executionTrxHash, gasPrice).then((totalGasCost) => {
+				setTotalTransactionCost(totalGasCost);
+			});
+		}
+	}, [executionTrxHash, gasPrice]);
 
 	useEffect(() => {
 		if (!completed) {
@@ -78,51 +103,38 @@ const SchmintTile = ({
 						<Text as="b3">Number of NFTs</Text>
 						<Text as="b3">{quantity}</Text>
 					</Box>
-					<PriceRows text="Total Price of NFTs" value={value} networkName={collection?.network.name} />
+					<PriceRows text="Price per NFT" value={collection.price} networkName={collection?.network.name} />
 					<If
 						condition={completed}
 						then={
-							<Box mb="ms">
-								<PriceRows
-									text="Gas Cost"
-									value={SAMPLE_GAS_COST}
-									networkName={collection?.network.name}
-								/>
-								<PriceRows
-									text="Total Transaction Cost"
-									value={(parseFloat(value) + SAMPLE_GAS_COST).toPrecision(2)}
-									networkName={collection?.network.name}
-								/>
-							</Box>
+							<PriceRows
+								text="Total Transaction Cost"
+								value={isSchminted ? totalTransactionCost : 'N/A'}
+								networkName={collection?.network.name}
+							/>
+						}
+						else={
+							<PriceRows
+								text="Total Price of NFTs"
+								value={value}
+								networkName={collection?.network.name}
+							/>
 						}
 					/>
-					<Box row between mt="mxxs">
-						<Text as="b3">Created on</Text>
-						<Text as="b3">{format(createdTimestamp * 1000, 'dd-MM-yyyy, p')}</Text>
-					</Box>
-					<If
-						condition={completed}
-						then={
-							<Box row between mt="mxxs">
-								<Text as="b3">Executed on</Text>
-								<Text as="b3">
-									{executedTimestamp ? format(executedTimestamp * 1000, 'dd-MM-yyyy, p') : 'N/A'}
-								</Text>
-							</Box>
-						}
-					/>
+					<Text as="b3" mt="ms" color="gray-40">
+						<If
+							condition={isSchminted && !!executedTimestamp}
+							then={`Completed on ${format((executedTimestamp ?? 0) * 1000, 'dd/MM/yyyy')}`}
+							else={
+								<If
+									condition={completed}
+									then={'Did not complete'}
+									else={`Created on ${format(createdTimestamp * 1000, 'dd/MM/yyyy')}`}
+								/>
+							}
+						/>
+					</Text>
 				</Box>
-				<If
-					condition={!completed}
-					then={
-						<Box mt="ms" row alignItems="center">
-							<Text as="c1" color="blue-40" mr="mxs">
-								View More Details
-							</Text>
-							<CaretDown color={theme.colors['blue-40']} size={16} />
-						</Box>
-					}
-				/>
 			</Box>
 		</Link>
 	);

@@ -65,11 +65,16 @@ const AlertBox = ({ status, schmint, currPrice, prevPrice }) => {
 							mt="ml"
 							row
 							center
+							onClick={() => {
+								if (typeof window !== 'undefined') {
+									window.scrollBy(0, 1000);
+								}
+							}}
 						>
-							<Text as="btn2" fontWeight="bold">
+							<Text as="btn2" mr="mxs">
 								Confirm Changes
 							</Text>
-							<ArrowDown size={24} />
+							<ArrowDown size={16} weight="bold" />
 						</ButtonComp>
 					</Box>
 				</Box>

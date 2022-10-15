@@ -3,6 +3,7 @@ import { CaretDown, CaretUp } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
+import CounterInput from 'src/components/CounterInput';
 import If from 'src/components/If';
 import Text from 'src/components/Text';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
@@ -17,7 +18,6 @@ import { useContract, useFeeData, useNetwork, useProvider, useSigner } from 'wag
 import AlertBottomBox from './components/AlertBottomBox';
 import CostComp from './components/CostComp';
 import InputBox from './components/InputBox';
-import InputNumber from './components/InputNumber';
 import useScheduler from './useScheduler';
 import { getABIType } from './utils';
 
@@ -28,6 +28,8 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 	const [funds, setFunds] = useState('');
 	const [step, setStep] = useState(0);
 	const [estimatedGas, setEstimatedGas] = useState(0.001);
+	const [wrongNetwork, setWrongNetwork] = useState(false);
+
 	const [txGas, setTxGas] = useState<string>('');
 	const [txPrice, setTxPrice] = useState<string>('');
 
@@ -76,6 +78,23 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
 							}
 						);
+						break;
+					}
+					case 2: {
+						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
+							nft,
+							user.address,
+							{
+								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+							}
+						);
+						break;
+					}
+					case 3: {
+						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](nft, {
+							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+						});
+						break;
 					}
 				}
 				const schmintInput = [
@@ -116,6 +135,23 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
 							}
 						);
+						break;
+					}
+					case 2: {
+						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
+							nft,
+							scheduler.avatar,
+							{
+								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+							}
+						);
+						break;
+					}
+					case 3: {
+						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](nft, {
+							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+						});
+						break;
 					}
 				}
 
@@ -181,6 +217,23 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
 							}
 						);
+						break;
+					}
+					case 2: {
+						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
+							nft,
+							user.address,
+							{
+								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+							}
+						);
+						break;
+					}
+					case 3: {
+						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](nft, {
+							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+						});
+						break;
 					}
 				}
 				const schmintInput = [
@@ -201,11 +254,13 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 						value: fundsToBeAdded,
 					}
 				);
+
 				const totalEstimatedGasPrice = ethers.utils.formatEther(gasFee?.maxFeePerGas.mul(tx));
 				getCoinPrice(chain?.id).then((price) => {
 					setTxPrice(price);
 				});
 				setTxGas(totalEstimatedGasPrice);
+				console.log({ tx, totalEstimatedGasPrice });
 			} else {
 				switch (getABIType(collection.abi)) {
 					case 1: {
@@ -216,6 +271,23 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
 							}
 						);
+						break;
+					}
+					case 2: {
+						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
+							nft,
+							scheduler.avatar,
+							{
+								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+							}
+						);
+						break;
+					}
+					case 3: {
+						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](nft, {
+							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+						});
+						break;
 					}
 				}
 
@@ -238,12 +310,23 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 					setTxPrice(price);
 				});
 				setTxGas(totalEstimatedGasPrice);
-				// console.log({ totalEstimatedGasPrice });
 			}
 		} catch (err) {
 			console.log({ err });
 		}
 	};
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			if (collection && user.exists) {
+				if (collection?.network?.chainId !== chain?.id) {
+					setWrongNetwork(true);
+					return;
+				}
+			}
+			setWrongNetwork(false);
+		}
+	}, [collection, chain, user.exists]);
 
 	useEffect(() => {
 		const total = (collection?.price * parseInt(nft) + estimatedGas).toFixed(3);
@@ -254,16 +337,21 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 		if (user.exists) {
 			getEstimatedGas();
 		}
-	}, [nft, gasPriceLimit, funds, user, gasFee]);
+	}, [nft, gasPriceLimit, funds, user, gasFee, chain]);
 
 	return (
 		<Box width="54.8rem" px="mxl">
 			<Text textAlign="start" mb="3rem" as="h5">
 				Schmint Details
 			</Text>
-			<InputNumber
-				value={nft}
-				setValue={setNft}
+			<Box mt="mxxxl" />
+			<CounterInput
+				label="Number of NFTs"
+				required
+				bg="gray-10"
+				helper={`This contract allows upto ${collection.maxWallet} NFTs per wallet and ${collection.maxPurchase} per transaction.`}
+				max={Math.min(collection?.maxPurchase) ?? 15}
+				min={1}
 				errorText={
 					parseInt(nft) < 1
 						? 'Value should not be less than 1'
@@ -271,11 +359,8 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 						? `Value should not be more than ${collection?.maxPurchase}`
 						: ''
 				}
-				max={collection.maxPurchase}
-				min={1}
-				label="Number of NFTs"
-				detailText={`This contract allows upto ${collection.maxWallet} NFTs per wallet and ${collection.maxPurchase} per transaction.`}
-				required
+				value={nft}
+				setValue={setNft}
 			/>
 			<Text
 				as="b3"
@@ -325,6 +410,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 							step={step}
 							setStep={setStep}
 							estimatedGas={estimatedGas}
+							value={0}
 						/>
 						<AlertBottomBox
 							showOptions={showOptions}
@@ -346,32 +432,38 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 					width="23.4rem"
 					height="4.8rem"
 					borderRadius="64px"
-					disable={!user.exists}
+					disable={!user.exists || wrongNetwork}
 					onClick={handleCreateSchmint}
-					mb="mm"
 				>
 					<Text as="btn1">Create Schmint</Text>
 				</ButtonComp>
 				<If
-					condition={scheduler.avatar === ''}
-					then={
-						<Text as="b3" textAlign="center" color={`${theme.colors['gray-40']}`}>
-							Clicking “Create Schmint” will also create a create for you a pesonal scheduler which will
-							be used to store the schmint.
-						</Text>
-					}
-				/>
-				<If
 					condition={gasFee && user.exists}
 					then={
-						<Text as="c1" color="red-40" mt="mxxs">
-							EST. TRANSACTION COST:{' '}
+						<Text as="c1" color="red-40" mt="mxs">
+							EST. GAS COST:{' '}
 							<span style={{ color: theme.colors['gray-40'] }}>{`${parseFloat(txGas).toFixed(6)} ${
 								chain?.nativeCurrency?.symbol
 							} or ${(parseFloat(txPrice) * parseFloat(txGas)).toFixed(2)} USD`}</span>
 						</Text>
 					}
 				/>
+				<Box bg="gray-20" borderRadius="4px" p="mxs" mt="mxxxl">
+					<Text as="b3" color="gray-50" textAlign="center">
+						{`A total of ${
+							funds.length !== 0 ? funds : 0
+						} ETH will be added to your Gnosis Safe, which will then be used to mint the NFTs.`}
+					</Text>
+					<If
+						condition={scheduler.avatar === ''}
+						then={
+							<Text as="b3" textAlign="center" color={`${theme.colors['gray-50']}`} mt="mxs">
+								Clicking “Create Schmint” will also create a create for you a pesonal scheduler which
+								will be used to store the schmint.
+							</Text>
+						}
+					/>
+				</Box>
 			</Box>
 		</Box>
 	);

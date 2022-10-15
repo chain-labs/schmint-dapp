@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, GlobeSimple, StarFour } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
@@ -61,7 +62,11 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 				borderRadius="8px"
 				p="mm"
 			>
-				<ContractItem text="Blockchain" subText={collection?.network?.name} />
+				<ContractItem
+					text="Blockchain"
+					subText={collection?.network?.name}
+					network={collection?.network?.name}
+				/>
 				<ContractItem text="Price" subText={collection?.price} />
 				<ContractItem text="Supply" subText={collection?.supply} />
 				<ContractItem text="Token Standard" subText={collection.tokenStandard} />
@@ -116,14 +121,27 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 
 export default ContractDetails;
 
-const ContractItem = ({ text, subText }) => {
+const ContractItem = ({ text, subText, network }: { text?: string; subText?: string; network?: string }) => {
 	return (
 		<Box column>
 			<Text as="b2" fontWeight="medium" color="#000000">
 				{text}
 			</Text>
-			<Text as="b3" color="gray-50">
+			<Text as="b3" color="gray-50" row alignItems="center" mt="mxs">
 				{subText ? subText : 'N/A'}
+				<If
+					condition={!!network}
+					then={
+						<Box position="relative" height="1.6rem" width="1.6rem" ml="mxxs">
+							<Image
+								src={`/static/images/svgs/${
+									network === 'Ethereum' || network === 'Goerli' ? 'eth' : 'polygon-color'
+								}.svg`}
+								layout="fill"
+							/>
+						</Box>
+					}
+				/>
 			</Text>
 		</Box>
 	);

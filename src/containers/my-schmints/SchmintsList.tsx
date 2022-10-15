@@ -31,8 +31,6 @@ const SchmintsList = ({ page, schmints }) => {
 	}, []);
 
 	const getSchmitsAssigned = async () => {
-		// console.log({ schmints });
-
 		const activeSchmints: any[] = schmints.filter((schmint) => !schmint.isSchminted);
 		const completedSchmints: any[] = schmints.filter((schmint) => schmint.isSchminted || schmint.isCancelled);
 		const targets = activeSchmints.map((schmint) => schmint.target);
@@ -96,10 +94,12 @@ const SchmintsList = ({ page, schmints }) => {
 								collection={collection}
 								quantity={quantity}
 								value={`${ethers.utils.formatUnits(schmint?.value, 'ether')}`}
-								createdTimestamp={schmint.creationTimestamp}
-								executedTimestamp={schmint.executionTimestamp}
+								createdTimestamp={parseInt(schmint.creationTimestamp)}
+								executedTimestamp={parseInt(schmint.executionTimestamp)}
+								executionTrxHash={schmint.executionTrxHash}
 								schmintID={schmint.schmintId}
 								isSchminted={schmint.isSchminted}
+								gasPrice={schmint.executionGasPrice}
 								completed
 							/>
 						);

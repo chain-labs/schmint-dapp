@@ -24,18 +24,26 @@ const Layout = ({ children }) => {
 	const [loadScheduler, { called, loading }] = useLazyQuery(GET_USER_SCHEDULER, {
 		onCompleted: (data) => {
 			const scheduler = data?.schedulers?.[0];
-			if (scheduler?.owner?.toLowerCase() === user.address.toLowerCase()) {
+			if (scheduler && scheduler?.owner?.toLowerCase() === user.address.toLowerCase()) {
 				setUserHasScheduler(true);
 				dispatch(
 					setScheduler({
-						owner: scheduler.owner,
-						schedulerAddress: scheduler.id,
-						avatar: scheduler.safe,
-						schmints: scheduler.schmints,
+						owner: scheduler.owner ?? '',
+						schedulerAddress: scheduler.id ?? '',
+						avatar: scheduler.safe ?? '',
+						schmints: scheduler.schmints ?? [],
 					})
 				);
 			} else {
 				setUserHasScheduler(false);
+				dispatch(
+					setScheduler({
+						owner: '',
+						schedulerAddress: '',
+						avatar: '',
+						schmints: [],
+					})
+				);
 				if (router.pathname === '/my-assets') {
 					router.replace('/explore', undefined, { shallow: true });
 				}

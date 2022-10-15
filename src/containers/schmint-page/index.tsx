@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
-import UpdateModal from 'src/components/modals/UpdateModal';
-import ConfirmModal from 'src/components/modals/ConfirmModal';
-import StatusModal from 'src/components/modals/StatusModal';
 import ContractDetails from '../project-page/ContractDetails';
 import Banner from '../project-page/Banner';
-import SchmintForm from '../project-page/SchmintForm';
 import theme from 'src/styleguide/theme';
 import If from 'src/components/If';
 import SchmintEditableForm from './SchmintEditableForm';
-import useScheduler from '../project-page/useScheduler';
 import { useAppSelector } from 'src/redux/hooks';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { ethers } from 'ethers';
 import InputDataDecoder from 'ethereum-input-data-decoder';
 import AlertBox from './AlertBox';
+import { useLazyQuery } from '@apollo/client';
+import { CHECK_FAILED_SCHMINT } from 'src/graphql/query/CheckFailedSchmint';
+import { userSelector } from 'src/redux/user';
+import { getABIType } from '../project-page/utils';
 
 const SchmintPage = ({ collection, schmint }) => {
 	const scheduler = useAppSelector(schedulerSelector);
@@ -24,6 +23,8 @@ const SchmintPage = ({ collection, schmint }) => {
 	const [quantity, setQuantity] = useState<number>(0);
 	const [status, setStatus] = useState('');
 	const [prevPrice, setPrevPrice] = useState(collection.price);
+	const [getSuccesfulSchmints] = useLazyQuery(CHECK_FAILED_SCHMINT);
+	const user = useAppSelector(userSelector);
 
 	useEffect(() => {
 		if (collection?.abi) {
@@ -31,13 +32,47 @@ const SchmintPage = ({ collection, schmint }) => {
 		}
 	}, [scheduler?.schedulerAddress, collection]);
 
+	const getSchmitsAssigned = async () => {
+		const targets = [schmint.target];
+		if (actionRequired) {
+			setStatus('-1');
+			return;
+		}
+		if (schmint.isSchminted) {
+			setStatus('1');
+			return;
+		}
+		const data = await getSuccesfulSchmints({ variables: { target: targets, owner: user.address } });
+
+		const { schmints } = data?.data;
+		if (schmints.length > 0) {
+			setStatus('0');
+		} else {
+			setStatus('');
+		}
+	};
+
 	useEffect(() => {
 		if (scheduler?.schedulerAddress && abi && collection) {
 			const value = parseFloat(ethers.utils.formatUnits(schmint?.value, 'ether'));
 			const data = schmint?.data;
 			const decoder = new InputDataDecoder(abi);
 			const res = decoder.decodeData(data);
-			const quantity = parseInt(res.inputs[1]);
+			let quantity;
+			switch (getABIType(abi)) {
+				case 1: {
+					quantity = parseInt(res.inputs[1]);
+					break;
+				}
+				case 2: {
+					quantity = parseInt(res.inputs[0]);
+					break;
+				}
+				case 3: {
+					quantity = parseInt(res.inputs[0]);
+					break;
+				}
+			}
 			setQuantity(quantity);
 			setActionRequired(!(collection.price === value / quantity));
 			setPrevPrice(value / quantity);
@@ -47,15 +82,8 @@ const SchmintPage = ({ collection, schmint }) => {
 	useEffect(() => {
 		if (schmint.isCancelled) {
 			setStatus('0');
-		}
-		if (schmint.isSchminted) {
-			setStatus('1');
-		}
-		if (!schmint.isSchminted) {
-			setStatus('0');
-		}
-		if (actionRequired) {
-			setStatus('-1');
+		} else {
+			getSchmitsAssigned();
 		}
 	}, [schmint, actionRequired]);
 
@@ -63,30 +91,30 @@ const SchmintPage = ({ collection, schmint }) => {
 		return (
 			<Box center column mb="20rem">
 				<Banner collection={collection} />
-				{status ? (
-					<AlertBox status={status} schmint={schmint} currPrice={currPrice} prevPrice={prevPrice} />
-				) : (
-					''
-				)}
+				<If
+					condition={!!status}
+					then={<AlertBox status={status} schmint={schmint} currPrice={currPrice} prevPrice={prevPrice} />}
+				/>
 				<ContractDetails collection={collection} />
 				<Box borderTop={`1px solid ${theme.colors['gray-20']}`} width="100%" my="wxs" />
-				{!status || status === '-1' ? (
-					<Box>
-						<If
-							condition={quantity !== 0}
-							then={
-								<SchmintEditableForm
-									collection={collection}
-									actionRequired={actionRequired}
-									quantity={quantity}
-									schmint={schmint}
-								/>
-							}
-						/>
-					</Box>
-				) : (
-					''
-				)}
+				<If
+					condition={!status || status === '-1'}
+					then={
+						<Box>
+							<If
+								condition={quantity !== 0}
+								then={
+									<SchmintEditableForm
+										collection={collection}
+										actionRequired={actionRequired}
+										quantity={quantity}
+										schmint={schmint}
+									/>
+								}
+							/>
+						</Box>
+					}
+				/>
 			</Box>
 		);
 	}

@@ -8,6 +8,8 @@ const GET_MY_SCHMINTS = gql`
 			schmintId
 			creationTimestamp
 			executionTimestamp
+			executionTrxHash
+			executionGasPrice
 			cancelledTimestamp
 			isCancelled
 			isSchminted

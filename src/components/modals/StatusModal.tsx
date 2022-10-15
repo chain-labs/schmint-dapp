@@ -75,7 +75,7 @@ const StatusModal = ({ btnText, success, msg, gas, successMsg }: props) => {
 						condition={!success}
 						then={
 							<ButtonComp
-								bg="secondary"
+								bg="tertiary"
 								color="gray-60"
 								width="14.5rem"
 								height="4.8rem"

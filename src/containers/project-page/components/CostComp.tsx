@@ -20,9 +20,22 @@ interface props {
 	setStep?: (number) => void;
 	step?: number;
 	estimatedGas?: number;
+	actionRequired?: boolean;
+	editable?: boolean;
+	value?: number;
 }
 
-const CostComp = ({ collection, nft, showTotalAmount, step, setStep, estimatedGas }: props) => {
+const CostComp = ({
+	collection,
+	nft,
+	showTotalAmount,
+	step,
+	setStep,
+	estimatedGas,
+	editable,
+	actionRequired,
+	value,
+}: props) => {
 	const scheduler = useAppSelector(schedulerSelector);
 	const user = useAppSelector(userSelector);
 	const { chain } = useNetwork();
@@ -68,7 +81,7 @@ const CostComp = ({ collection, nft, showTotalAmount, step, setStep, estimatedGa
 					strikeThrough
 				/>
 				<CostItem
-					text="Estimated gas cost"
+					text="Funds to cover your transaction"
 					tooltip={ESTIMATED_GAS_COST_TOOLTIP}
 					subText={0.001}
 					unit={chain?.nativeCurrency.symbol}
@@ -79,9 +92,25 @@ const CostComp = ({ collection, nft, showTotalAmount, step, setStep, estimatedGa
 				condition={showTotalAmount}
 				then={
 					<Box column justifyContent="flex-end" alignItems="flex-end" pt="mxs" width="100%">
+						<If
+							condition={editable || actionRequired}
+							then={
+								<CostItem
+									text="Amount Already Added:"
+									subText={value * -1}
+									unit={chain?.nativeCurrency.symbol}
+									width="60%"
+									textColor="blue-40"
+									fontSize="b2"
+								/>
+							}
+						/>
 						<CostItem
 							text="Total:"
-							subText={parseFloat((collection?.price * nft + estimatedGas).toFixed(4))}
+							subText={Math.max(
+								parseFloat((collection?.price * nft + estimatedGas - value).toFixed(4)),
+								0
+							)}
 							unit={chain?.nativeCurrency.symbol}
 							width="60%"
 							textColor="blue-40"

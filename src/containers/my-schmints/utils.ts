@@ -3,12 +3,17 @@ import { ethers } from 'ethers';
 import { getABIType } from '../project-page/utils';
 
 export const getSchmintQuantity = (abi: any, data: string) => {
+	const decoder = new InputDataDecoder(abi);
+	const res = decoder.decodeData(data);
 	switch (getABIType(abi)) {
 		case 1: {
-			const decoder = new InputDataDecoder(abi);
-			const res = decoder.decodeData(data);
-			const quantity = parseInt(res.inputs[1]);
-			return quantity;
+			return parseInt(res.inputs[1]);
+		}
+		case 2: {
+			return parseInt(res.inputs[0]);
+		}
+		case 3: {
+			return parseInt(res.inputs[0]);
 		}
 	}
 };
