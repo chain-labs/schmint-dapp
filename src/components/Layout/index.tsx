@@ -15,6 +15,7 @@ import Loader from 'components/Loader';
 import { setScheduler } from 'src/redux/scheduler';
 import If from 'components/If';
 import { GET_USER_SCHEDULER } from 'src/graphql/query/GetUserScheduler';
+import Footer from '../Footer';
 
 const Layout = ({ children }) => {
 	const router = useRouter();
@@ -116,7 +117,7 @@ const Layout = ({ children }) => {
 		<Box overflowX="hidden">
 			<DappNavbar />
 			<Box minHeight="16.8rem" bg={setLayoutStripBg()} width="100vw"></Box>
-			<Box row>
+			<Box row minHeight={`${windowHeight - 168}px`}>
 				<Box
 					position="fixed"
 					left="24px"
@@ -143,6 +144,7 @@ const Layout = ({ children }) => {
 					/>
 				</Box>
 			</Box>
+			<Footer />
 		</Box>
 	);
 };
