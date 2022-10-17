@@ -90,9 +90,13 @@ const Avatar = () => {
 									else={
 										<React.Fragment>
 											<Box row>
-												<Text as="c1">{parseFloat(balance?.formatted).toFixed(4)}</Text>
+												<Text as="c1">
+													{!isNaN(parseFloat(balance?.formatted))
+														? parseFloat(balance?.formatted).toFixed(4)
+														: 'Fetching...'}
+												</Text>
 												<Text as="c1" ml="mxxs">
-													{balance?.symbol}
+													{!isNaN(parseFloat(balance?.formatted)) ? balance?.symbol : ''}
 												</Text>
 											</Box>
 											<Box

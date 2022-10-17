@@ -16,13 +16,17 @@ import { setScheduler } from 'src/redux/scheduler';
 import If from 'components/If';
 import { GET_USER_SCHEDULER } from 'src/graphql/query/GetUserScheduler';
 import Footer from '../Footer';
+import { networkSelector, setNetwork } from 'src/redux/network';
+import { useNetwork } from 'wagmi';
 
 const Layout = ({ children }) => {
 	const router = useRouter();
 	const user = useAppSelector(userSelector);
 	const [userHasScheduler, setUserHasScheduler] = React.useState(false);
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
-	const [loadScheduler, { called, loading }] = useLazyQuery(GET_USER_SCHEDULER, {
+	const network = useAppSelector(networkSelector);
+	const { chains, chain } = useNetwork();
+	const [loadScheduler, { called, loading, refetch: refetchScheduler }] = useLazyQuery(GET_USER_SCHEDULER, {
 		onCompleted: (data) => {
 			const scheduler = data?.schedulers?.[0];
 			if (scheduler && scheduler?.owner?.toLowerCase() === user.address.toLowerCase()) {
@@ -62,8 +66,15 @@ const Layout = ({ children }) => {
 			setWindowHeight(window.innerHeight);
 		};
 		window.addEventListener('resize', resize);
-		window.ethereum.on('chainChanged', () => {
-			loadScheduler();
+		window.ethereum.on('chainChanged', (chain) => {
+			console.log({ chain });
+
+			dispatch(
+				setNetwork({
+					chainId: parseInt(chain),
+					name: chains.find((c) => c.id === parseInt(chain)).name,
+				})
+			);
 		});
 
 		return () => {
@@ -79,7 +90,13 @@ const Layout = ({ children }) => {
 				},
 			});
 		}
-	}, [user.address]);
+	}, [user.address, network.apolloClient]);
+
+	useEffect(() => {
+		if (chain?.id) {
+			dispatch(setNetwork({ chainId: chain?.id, name: chain?.name }));
+		}
+	}, [chain]);
 
 	const getSidebarHeight = () => {
 		const height = windowHeight;

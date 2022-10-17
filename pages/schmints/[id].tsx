@@ -1,8 +1,11 @@
 import { useQuery } from '@apollo/client';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
+import ButtonComp from 'src/components/Button';
 import If from 'src/components/If';
+import Text from 'src/components/Text';
 import { getCollections, ICollection } from 'src/containers/Explore/projectsStore';
 import NoSchmintComponent from 'src/containers/my-schmints/NoSchmintComponent';
 import SchmintPage from 'src/containers/schmint-page';
@@ -13,6 +16,8 @@ import { schedulerSelector } from 'src/redux/scheduler';
 import { SchmintState } from 'src/redux/scheduler/types';
 import { userSelector } from 'src/redux/user';
 import { useNetwork } from 'wagmi';
+
+const illustration = 'https://ik.imagekit.io/chainlabs/Schmint/pablo-list-is-empty_1__1__Ux_bWTmMO.svg';
 
 const Schmint = () => {
 	const router = useRouter();
@@ -28,6 +33,7 @@ const Schmint = () => {
 		variables: {
 			id: id,
 		},
+		pollInterval: 8000,
 		onCompleted: (data) => {
 			setSchmint(data.schmint);
 		},
@@ -87,7 +93,28 @@ const Schmint = () => {
 		return <NoSchmintComponent page={0} />;
 	}
 
-	return null;
+	return (
+		<Box mt="wm">
+			<Box position="relative" width="40rem" height="23rem" mx="auto">
+				<Image src={illustration} alt="No Schmint" layout="fill" />
+			</Box>
+			<Text as="b3" color="gray-40" mt="mxs" textAlign="center" maxWidth="40rem" mx="auto">
+				Schmint not found
+			</Text>
+			<Box mt="mxl" center>
+				<ButtonComp
+					bg="primary"
+					py="ms"
+					px="mxl"
+					borderRadius="64px"
+					onClick={() => router.push('/my-schmints')}
+					mx="auto"
+				>
+					<Text as="btn2">Go to My Schmints</Text>
+				</ButtonComp>
+			</Box>
+		</Box>
+	);
 };
 
 export default Schmint;

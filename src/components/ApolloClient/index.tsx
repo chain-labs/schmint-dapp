@@ -1,5 +1,7 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { networkSelector, setApolloClient } from 'src/redux/network';
 import { GOERLI_SUBGRAPH_ENDPOINT, MUMBAI_SUBGRAPH_ENDPOINT } from 'src/utils/constants';
 import { useNetwork } from 'wagmi';
 
@@ -15,7 +17,8 @@ const getEndpoint = (chainId) => {
 };
 
 const ApolloClientProvider = ({ children }) => {
-	const { chain } = useNetwork();
+	const dispatch = useAppDispatch();
+	const network = useAppSelector(networkSelector);
 	const [client, setClient] = React.useState(
 		new ApolloClient({
 			uri: getEndpoint(5),
@@ -24,29 +27,16 @@ const ApolloClientProvider = ({ children }) => {
 	);
 
 	useEffect(() => {
-		if (chain) {
-			const ENDPOINT = getEndpoint(chain?.id);
+		if (network.isOnline) {
+			const ENDPOINT = getEndpoint(network.chainId);
 			const client = new ApolloClient({
 				uri: ENDPOINT,
 				cache: new InMemoryCache(),
 			});
+			dispatch(setApolloClient({ apolloClient: client }));
 			setClient(client);
 		}
-	}, [chain]);
-
-	useEffect(() => {
-		window.ethereum.on('chainChanged', (chainId) => {
-			if (chainId) {
-				const ENDPOINT = getEndpoint(parseInt(chainId));
-
-				const client = new ApolloClient({
-					uri: ENDPOINT,
-					cache: new InMemoryCache(),
-				});
-				setClient(client);
-			}
-		});
-	}, []);
+	}, [network.chainId]);
 
 	return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };

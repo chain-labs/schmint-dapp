@@ -453,22 +453,27 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 						</Text>
 					}
 				/>
-				<Box bg="gray-20" borderRadius="4px" p="mxs" mt="mxxxl">
-					<If
-						condition={scheduler.avatar === ''}
-						then={
-							<Text as="b3" textAlign="center" color={`${theme.colors['gray-50']}`} mb="mxs">
-								Clicking “Create Schmint” will also create a create for you a pesonal scheduler which
-								will be used to store the schmint.
+				<If
+					condition={user.exists}
+					then={
+						<Box bg="gray-20" borderRadius="4px" p="mxs" mt="mxxxl">
+							<If
+								condition={scheduler.avatar === ''}
+								then={
+									<Text as="b3" textAlign="center" color={`${theme.colors['gray-50']}`} mb="mxs">
+										Clicking “Create Schmint” will also create a create for you a pesonal scheduler
+										which will be used to store the schmint.
+									</Text>
+								}
+							/>
+							<Text as="b3" color="gray-50" textAlign="center">
+								{`A total of ${funds.length !== 0 ? funds : 0} ${
+									chain?.nativeCurrency.symbol
+								} will be added to your Gnosis Safe, which will then be used to mint the NFTs. We recommend having a little more than minimum funds in your Gnosis Safe to prevent your transaction from failing.`}
 							</Text>
-						}
-					/>
-					<Text as="b3" color="gray-50" textAlign="center">
-						{`A total of ${funds.length !== 0 ? funds : 0} ${
-							chain?.nativeCurrency.symbol
-						} will be added to your Gnosis Safe, which will then be used to mint the NFTs. We recommend having a little more than minimum funds in your Gnosis Safe to prevent your transaction from failing.`}
-					</Text>
-				</Box>
+						</Box>
+					}
+				/>
 			</Box>
 		</Box>
 	);
