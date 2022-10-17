@@ -1,10 +1,13 @@
+import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import { getCollections, ICollection } from 'src/containers/Explore/projectsStore';
+import NoSchmintComponent from 'src/containers/my-schmints/NoSchmintComponent';
 import SchmintPage from 'src/containers/schmint-page';
 import WrongNetworkAlert from 'src/containers/WrongNetworkAlert';
+import GET_SCHMINT from 'src/graphql/query/GetSchmint';
 import { useAppSelector } from 'src/redux/hooks';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { SchmintState } from 'src/redux/scheduler/types';
@@ -21,6 +24,14 @@ const Schmint = () => {
 	const scheduler = useAppSelector(schedulerSelector);
 	const [schmint, setSchmint] = useState<SchmintState>();
 	const [wrongNetwork, setWrongNetwork] = useState(false);
+	const { loading } = useQuery(GET_SCHMINT, {
+		variables: {
+			id: id,
+		},
+		onCompleted: (data) => {
+			setSchmint(data.schmint);
+		},
+	});
 
 	const getAllCollections = async () => {
 		const data = await fetch('https://chain-labs.github.io/schmint-projects/projects.json');
@@ -28,15 +39,10 @@ const Schmint = () => {
 		setCollections(res);
 	};
 
-	const getCollection = async () => {
-		scheduler.schmints.map(async (schmint) => {
-			if (schmint.schmintId === id) {
-				await setSchmint(schmint);
-				collections.map(async (collection) => {
-					if (collection.contractAddress.toLowerCase() === schmint.target) {
-						await setCollection(collection);
-					}
-				});
+	const getCollection = () => {
+		collections.map((collection) => {
+			if (collection?.contractAddress.toLowerCase() === schmint?.target.toLowerCase()) {
+				setCollection(collection);
 			}
 		});
 	};
@@ -46,10 +52,10 @@ const Schmint = () => {
 	}, []);
 
 	useEffect(() => {
-		if (scheduler?.schedulerAddress && collections) {
+		if (scheduler?.schedulerAddress && collections && schmint) {
 			getCollection();
 		}
-	}, [id, scheduler?.schedulerAddress, collections]);
+	}, [id, scheduler?.schedulerAddress, collections, schmint]);
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
@@ -63,7 +69,7 @@ const Schmint = () => {
 		}
 	}, [collection, chain, user.exists]);
 
-	if (collection && schmint.schmintId === id) {
+	if (collection && schmint.id === id) {
 		return (
 			<Box>
 				{collection ? <SchmintPage schmint={schmint} collection={collection} /> : ''}
@@ -75,6 +81,10 @@ const Schmint = () => {
 				/>
 			</Box>
 		);
+	}
+
+	if (!user.exists) {
+		return <NoSchmintComponent page={0} />;
 	}
 
 	return null;

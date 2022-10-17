@@ -19,7 +19,7 @@ import { replaceModal, showModal } from 'src/redux/modal';
 import { MODALS_LIST } from 'src/redux/modal/types';
 import CounterInput from 'src/components/CounterInput';
 
-const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) => {
+const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, disabled }) => {
 	const [showOptions, setShowOptions] = useState(false);
 	const [nft, setNft] = useState(quantity);
 	const [gasPriceLimit, setGasPriceLimit] = useState('');
@@ -65,7 +65,18 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 	const modifySchmint = async (e) => {
 		e.preventDefault();
 
-		dispatch(showModal({ type: MODALS_LIST.CONFIRM_TRANSACTION, props: {} }));
+		dispatch(
+			showModal({
+				type: MODALS_LIST.CONFIRM_TRANSACTION,
+				props: {
+					title: 'Waiting for Confirmation',
+					subtext: 'Confirm the wallet transaction to proceed.',
+					gasCost: `${parseFloat(txGas).toFixed(6)} ${chain?.nativeCurrency?.symbol} or ${(
+						parseFloat(txPrice) * parseFloat(txGas)
+					).toFixed(2)} USD`,
+				},
+			})
+		);
 
 		try {
 			let buyTx;
@@ -79,14 +90,31 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
 						}
 					);
+					break;
+				}
+				case 2: {
+					buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
+						nft,
+						scheduler.avatar,
+						{
+							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+						}
+					);
+					break;
+				}
+				case 3: {
+					buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](nft, {
+						value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+					});
+					break;
 				}
 			}
 			const modifySchmintInput = [
 				{
-					schmintId: schmint.schmintId,
-					newValue: buyTx.value,
+					schmintId: schmint?.schmintId,
+					newValue: buyTx?.value,
 					gasPriceLimit: gasPriceLimit ? ethers.utils.parseUnits(gasPriceLimit, 'gwei') : 0,
-					data: buyTx.data,
+					data: buyTx?.data,
 				},
 			];
 
@@ -97,13 +125,24 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 			);
 
 			const tx = await SchedulerInstance?.connect(signer)?.modifySchmint(
-				modifySchmintInput[0].schmintId,
-				modifySchmintInput[0].newValue,
-				modifySchmintInput[0].gasPriceLimit,
-				modifySchmintInput[0].data,
+				modifySchmintInput[0]?.schmintId,
+				modifySchmintInput[0]?.newValue,
+				modifySchmintInput[0]?.gasPriceLimit,
+				modifySchmintInput[0]?.data,
 				{
 					value: fundsToBeAdded,
 				}
+			);
+
+			dispatch(
+				replaceModal({
+					type: MODALS_LIST.CONFIRM_TRANSACTION,
+					props: {
+						title: 'Processing...',
+						subtext: 'Please wait while your transaction is being processed.',
+						loader: true,
+					},
+				})
 			);
 
 			const receipt = await tx?.wait();
@@ -131,6 +170,8 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 				);
 			}
 		} catch (err) {
+			console.log({ err });
+
 			dispatch(
 				replaceModal({
 					type: MODALS_LIST.STATUS_MODAL,
@@ -155,15 +196,32 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
 						}
 					);
+					break;
+				}
+				case 2: {
+					buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
+						nft,
+						scheduler.avatar,
+						{
+							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+						}
+					);
+					break;
+				}
+				case 3: {
+					buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](nft, {
+						value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+					});
+					break;
 				}
 			}
 
 			const modifySchmintInput = [
 				{
-					schmintId: schmint.schmintId,
-					newValue: buyTx.value,
+					schmintId: schmint?.schmintId,
+					newValue: buyTx?.value,
 					gasPriceLimit: gasPriceLimit ? ethers.utils.parseUnits(gasPriceLimit, 'gwei') : 0,
-					data: buyTx.data,
+					data: buyTx?.data,
 				},
 			];
 			const prevValue = parseFloat(ethers.utils.formatEther(schmint?.value));
@@ -252,6 +310,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 					row
 					center
 					onClick={() => setEditable(!editable)}
+					disable={disabled}
 				>
 					<If
 						condition={editable}
@@ -355,7 +414,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 					row
 					center
 					onClick={deleteSchmint}
-					disable={nft > quantity || nft < quantity}
+					disable={disabled}
 					css={`
 						&:hover {
 							background-color: ${theme.colors['red-40']};
@@ -378,7 +437,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint }) 
 					height="4.8rem"
 					borderRadius="64px"
 					onClick={modifySchmint}
-					disable={actionRequired ? false : !editable || quantity === nft}
+					disable={actionRequired ? false : !editable || quantity === nft || disabled}
 				>
 					<Text as="btn1">Save Changes</Text>
 				</ButtonComp>

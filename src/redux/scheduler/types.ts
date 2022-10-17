@@ -1,3 +1,5 @@
+import { BigNumber } from 'ethers';
+
 export interface SchedulerState {
 	owner?: string;
 	balance?: string;
@@ -17,4 +19,7 @@ export interface SchmintState {
 	value?: string;
 	status?: string;
 	executionTimestamp?: string;
+	executionTrxHash?: string;
+	executionGasPrice?: BigNumber;
+	id: string;
 }

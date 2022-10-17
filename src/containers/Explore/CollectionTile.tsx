@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { ArrowUpRight, Sparkle, Users } from 'phosphor-react';
 import React from 'react';
 import Box from 'src/components/Box';
@@ -17,6 +18,7 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 	const { loading, data: schmintsList } = useQuery(GET_PROJECT_SCHMINTS, {
 		variables: { target: collection.contractAddress },
 	});
+	const router = useRouter();
 
 	const { chains } = useNetwork();
 	return (
@@ -36,6 +38,10 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 				}
 			`}
 			position="relative"
+			onClick={() => {
+				router.push(`/projects/${collection?.id}`);
+			}}
+			cursor="pointer"
 		>
 			<If
 				condition={collection?.comingSoon}
@@ -137,7 +143,7 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 						<Text as="btn2">View</Text>
 					</ButtonComp>
 				</Link>
-				<a href={collection.website_url} target="_blank" rel="noreferrer">
+				<a href={collection.website_url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
 					<ButtonComp
 						bg="tertiary"
 						color="gray-50"

@@ -1,16 +1,14 @@
 import Image from 'next/image';
 import React, { useEffect } from 'react';
 import { useAppDispatch } from 'src/redux/hooks';
-import { hideModal, replaceModal } from 'src/redux/modal';
+import { hideModal, replaceModal, showModal } from 'src/redux/modal';
 import Box from '../Box';
 import ButtonComp from '../Button';
 import Modal from '../Modal';
 import Text from '../Text';
-import Confetti from 'react-confetti';
-import de from 'date-fns/esm/locale/de/index.js';
 import useScheduler from 'src/containers/project-page/useScheduler';
 import { MODALS_LIST } from 'src/redux/modal/types';
-import { useNetwork, useSigner } from 'wagmi';
+import { useFeeData, useNetwork, useSigner } from 'wagmi';
 import { ethers } from 'ethers';
 import { getCoinPrice } from 'src/utils/gasPrices';
 
@@ -19,12 +17,40 @@ const DeleteModal = ({ schmint, collectionName }) => {
 	const SchedulerInstance = useScheduler();
 	const { data: signer } = useSigner();
 	const { chain } = useNetwork();
+	const { data: gasFee } = useFeeData({
+		formatUnits: 'gwei',
+		watch: true,
+	});
+
+	const [txPrice, setTxPrice] = React.useState('');
+	const [txGas, setTxGas] = React.useState('');
 
 	const handleDelete = async () => {
-		dispatch(replaceModal({ type: MODALS_LIST.CONFIRM_TRANSACTION, props: {} }));
+		dispatch(
+			showModal({
+				type: MODALS_LIST.CONFIRM_TRANSACTION,
+				props: {
+					title: 'Waiting for Confirmation',
+					subtext: 'Confirm the wallet transaction to proceed.',
+					gasCost: `${parseFloat(txGas).toFixed(6)} ${chain?.nativeCurrency?.symbol} or ${(
+						parseFloat(txPrice) * parseFloat(txGas)
+					).toFixed(2)} USD`,
+				},
+			})
+		);
 
 		try {
 			const tx = await SchedulerInstance?.connect(signer)?.cancelSchmint(schmint.schmintId);
+			dispatch(
+				replaceModal({
+					type: MODALS_LIST.CONFIRM_TRANSACTION,
+					props: {
+						title: 'Processing...',
+						subtext: 'Please wait while your transaction is being processed.',
+						loader: true,
+					},
+				})
+			);
 			const receipt = await tx?.wait();
 			if (receipt) {
 				const gas = ethers.utils.formatEther(receipt.gasUsed.mul(receipt.effectiveGasPrice));
@@ -51,6 +77,23 @@ const DeleteModal = ({ schmint, collectionName }) => {
 			dispatch(replaceModal({ type: MODALS_LIST.STATUS_MODAL, props: { success: false } }));
 		}
 	};
+
+	const estimatedGas = async () => {
+		try {
+			const tx = await SchedulerInstance?.connect(signer)?.estimateGas?.cancelSchmint(schmint.schmintId);
+			const totalEstimatedGasPrice = ethers.utils.formatEther(gasFee?.maxFeePerGas.mul(tx));
+			getCoinPrice(chain?.id).then((price) => {
+				setTxPrice(price);
+			});
+			setTxGas(totalEstimatedGasPrice);
+		} catch (err) {
+			console.log({ err });
+		}
+	};
+
+	useEffect(() => {
+		estimatedGas();
+	}, [gasFee]);
 
 	useEffect(() => {
 		return () => {

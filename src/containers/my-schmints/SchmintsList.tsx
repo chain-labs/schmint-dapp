@@ -9,6 +9,7 @@ import { useAppSelector } from 'src/redux/hooks';
 import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
 import { getAllCollections } from '../Explore/projectsStore';
+import NoSchmintComponent from './NoSchmintComponent';
 import SchmintTile from './SchmintTile';
 import { getSchmintQuantity } from './utils';
 
@@ -31,8 +32,9 @@ const SchmintsList = ({ page, schmints }) => {
 	}, []);
 
 	const getSchmitsAssigned = async () => {
-		const activeSchmints: any[] = schmints.filter((schmint) => !schmint.isSchminted);
+		const activeSchmints: any[] = schmints.filter((schmint) => !schmint.isSchminted && !schmint.isCancelled);
 		const completedSchmints: any[] = schmints.filter((schmint) => schmint.isSchminted || schmint.isCancelled);
+		console.log({ schmints, activeSchmints, completedSchmints });
 		const targets = activeSchmints.map((schmint) => schmint.target);
 		const data = await getSuccesfulSchmints({ variables: { target: targets, owner: user.address } });
 
@@ -57,55 +59,62 @@ const SchmintsList = ({ page, schmints }) => {
 
 	if (schmints.length && collections.length) {
 		return (
-			<Box
-				mt="mxxxl"
-				width="98.4rem"
-				css={`
-					display: grid;
-					grid-template-columns: 1fr 1fr 1fr;
-					grid-gap: ${theme.space.mxl};
-				`}
-			>
-				<If
-					condition={!page}
-					then={activeSchmints.map((schmint) => {
-						const collection = collections.find(
-							(collection) => collection.contractAddress.toLowerCase() === schmint.target.toLowerCase()
-						);
-						const quantity = getSchmintQuantity(collection?.abi, schmint?.data);
-						return (
-							<SchmintTile
-								collection={collection}
-								quantity={quantity}
-								value={`${ethers.utils.formatUnits(schmint.value, 'ether')}`}
-								createdTimestamp={schmint.creationTimestamp}
-								schmintID={schmint.schmintId}
-							/>
-						);
-					})}
-					else={completedSchmints.map((schmint) => {
-						const collection = collections.find(
-							(collection) => collection?.contractAddress.toLowerCase() === schmint?.target?.toLowerCase()
-						);
-						const quantity = getSchmintQuantity(collection?.abi, schmint?.data);
-
-						return (
-							<SchmintTile
-								collection={collection}
-								quantity={quantity}
-								value={`${ethers.utils.formatUnits(schmint?.value, 'ether')}`}
-								createdTimestamp={parseInt(schmint.creationTimestamp)}
-								executedTimestamp={parseInt(schmint.executionTimestamp)}
-								executionTrxHash={schmint.executionTrxHash}
-								schmintID={schmint.schmintId}
-								isSchminted={schmint.isSchminted}
-								gasPrice={schmint.executionGasPrice}
-								completed
-							/>
-						);
-					})}
-				/>
-			</Box>
+			<If
+				condition={(!page && activeSchmints.length < 1) || (page && completedSchmints.length < 1)}
+				then={<NoSchmintComponent page={page + 1 ?? 0} />}
+				else={
+					<Box
+						mt="mxxxl"
+						width="98.4rem"
+						css={`
+							display: grid;
+							grid-template-columns: 1fr 1fr 1fr;
+							grid-gap: ${theme.space.mxl};
+						`}
+					>
+						<If
+							condition={!page}
+							then={activeSchmints.map((schmint) => {
+								const collection = collections.find(
+									(collection) =>
+										collection.contractAddress.toLowerCase() === schmint.target.toLowerCase()
+								);
+								const quantity = getSchmintQuantity(collection?.abi, schmint?.data);
+								return (
+									<SchmintTile
+										collection={collection}
+										quantity={quantity}
+										value={`${ethers.utils.formatUnits(schmint.value, 'ether')}`}
+										createdTimestamp={schmint.creationTimestamp}
+										schmintID={schmint.id}
+									/>
+								);
+							})}
+							else={completedSchmints.map((schmint) => {
+								const collection = collections.find(
+									(collection) =>
+										collection?.contractAddress.toLowerCase() === schmint?.target?.toLowerCase()
+								);
+								const quantity = getSchmintQuantity(collection?.abi, schmint?.data);
+								return (
+									<SchmintTile
+										collection={collection}
+										quantity={quantity}
+										value={`${ethers.utils.formatUnits(schmint?.value, 'ether')}`}
+										createdTimestamp={parseInt(schmint.creationTimestamp)}
+										executedTimestamp={parseInt(schmint.executionTimestamp)}
+										executionTrxHash={schmint.executionTrxHash}
+										schmintID={schmint.id}
+										isSchminted={schmint.isSchminted}
+										gasPrice={schmint.executionGasPrice}
+										completed
+									/>
+								);
+							})}
+						/>
+					</Box>
+				}
+			/>
 		);
 	} else {
 		return <Loader msg="Loading..." minHeight="50rem" />;

@@ -62,7 +62,18 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 	const handleCreateSchmint = async (e) => {
 		e.preventDefault();
 
-		dispatch(showModal({ type: MODALS_LIST.CONFIRM_TRANSACTION, props: {} }));
+		dispatch(
+			showModal({
+				type: MODALS_LIST.CONFIRM_TRANSACTION,
+				props: {
+					title: 'Waiting for Confirmation',
+					subtext: 'Confirm the wallet transaction to proceed.',
+					gasCost: `${parseFloat(txGas).toFixed(6)} ${chain?.nativeCurrency?.symbol} or ${(
+						parseFloat(txPrice) * parseFloat(txGas)
+					).toFixed(2)} USD`,
+				},
+			})
+		);
 
 		try {
 			let buyTx;
@@ -172,7 +183,11 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 				dispatch(
 					replaceModal({
 						type: MODALS_LIST.CONFIRM_TRANSACTION,
-						props: { msg: 'Waiting for transaction to succeed.' },
+						props: {
+							title: 'Processing...',
+							subtext: 'Please wait while your transaction is being processed.',
+							loader: true,
+						},
 					})
 				);
 
@@ -412,16 +427,6 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 							estimatedGas={estimatedGas}
 							value={0}
 						/>
-						<AlertBottomBox
-							showOptions={showOptions}
-							funds={funds}
-							setFunds={setFunds}
-							step={step}
-							setStep={setStep}
-							price={collection?.price}
-							nft={nft}
-							estimatedGas={estimatedGas}
-						/>
 					</React.Fragment>
 				}
 			/>
@@ -449,20 +454,20 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 					}
 				/>
 				<Box bg="gray-20" borderRadius="4px" p="mxs" mt="mxxxl">
-					<Text as="b3" color="gray-50" textAlign="center">
-						{`A total of ${
-							funds.length !== 0 ? funds : 0
-						} ETH will be added to your Gnosis Safe, which will then be used to mint the NFTs.`}
-					</Text>
 					<If
 						condition={scheduler.avatar === ''}
 						then={
-							<Text as="b3" textAlign="center" color={`${theme.colors['gray-50']}`} mt="mxs">
+							<Text as="b3" textAlign="center" color={`${theme.colors['gray-50']}`} mb="mxs">
 								Clicking “Create Schmint” will also create a create for you a pesonal scheduler which
 								will be used to store the schmint.
 							</Text>
 						}
 					/>
+					<Text as="b3" color="gray-50" textAlign="center">
+						{`A total of ${
+							funds.length !== 0 ? funds : 0
+						} ETH will be added to your Gnosis Safe, which will then be used to mint the NFTs. We recommend having a little more than minimum funds in your Gnosis Safe to prevent your transaction from failing.`}
+					</Text>
 				</Box>
 			</Box>
 		</Box>

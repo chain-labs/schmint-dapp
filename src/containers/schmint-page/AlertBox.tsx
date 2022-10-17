@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowDown, ArrowUpRight, Confetti, SmileySad, WarningCircle } from 'phosphor-react';
+import { ArrowDown, ArrowUpRight, Confetti, SmileySad, Warning, WarningCircle } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
@@ -33,7 +33,7 @@ const AlertBox = ({ status, schmint, currPrice, prevPrice }) => {
 		<Box
 			width="79.6rem"
 			px="ms"
-			backgroundColor={status === '0' ? 'red-20' : status === '1' ? 'green-20' : 'yellow-20'}
+			backgroundColor={status === '0' || status === '2' ? 'red-20' : status === '1' ? 'green-20' : 'yellow-20'}
 			py="ms"
 			mt="mm"
 			borderRadius="8px"
@@ -125,6 +125,23 @@ const AlertBox = ({ status, schmint, currPrice, prevPrice }) => {
 						</Text>
 						<Text as="b3" mt="mxxs">
 							This Schmint was not executed because of insufficient funds in the Gnosis Safe.
+						</Text>
+					</Box>
+				</Box>
+			) : (
+				''
+			)}
+			{status === '2' ? (
+				<Box row>
+					<Box mr="ml">
+						<Warning size={32} color="red" />{' '}
+					</Box>
+					<Box>
+						<Text as="b2" color="red-40">
+							You do not own this Schmint.
+						</Text>
+						<Text as="b3" mt="mxxs">
+							You do not have the permission to edit or modify this schmint.
 						</Text>
 					</Box>
 				</Box>

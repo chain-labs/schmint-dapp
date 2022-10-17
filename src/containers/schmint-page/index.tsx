@@ -14,6 +14,8 @@ import { useLazyQuery } from '@apollo/client';
 import { CHECK_FAILED_SCHMINT } from 'src/graphql/query/CheckFailedSchmint';
 import { userSelector } from 'src/redux/user';
 import { getABIType } from '../project-page/utils';
+import Text from 'src/components/Text';
+import SchmintReceipt from './SchmintReceipt';
 
 const SchmintPage = ({ collection, schmint }) => {
 	const scheduler = useAppSelector(schedulerSelector);
@@ -80,6 +82,10 @@ const SchmintPage = ({ collection, schmint }) => {
 	}, [abi, collection]);
 
 	useEffect(() => {
+		if (user.address.toLowerCase() !== schmint?.scheduler?.owner.toLowerCase()) {
+			setStatus('2');
+			return;
+		}
 		if (schmint.isCancelled) {
 			setStatus('0');
 		} else {
@@ -96,9 +102,12 @@ const SchmintPage = ({ collection, schmint }) => {
 					then={<AlertBox status={status} schmint={schmint} currPrice={currPrice} prevPrice={prevPrice} />}
 				/>
 				<ContractDetails collection={collection} />
-				<Box borderTop={`1px solid ${theme.colors['gray-20']}`} width="100%" my="wxs" />
 				<If
-					condition={!status || status === '-1'}
+					condition={!(parseInt(status) >= 0)}
+					then={<Box borderTop={`1px solid ${theme.colors['gray-20']}`} width="100%" my="wxs" />}
+				/>
+				<If
+					condition={!status || status === '-1' || status === '2'}
 					then={
 						<Box>
 							<If
@@ -109,11 +118,27 @@ const SchmintPage = ({ collection, schmint }) => {
 										actionRequired={actionRequired}
 										quantity={quantity}
 										schmint={schmint}
+										disabled={status === '2'}
 									/>
 								}
 							/>
 						</Box>
 					}
+				/>
+				<If
+					condition={parseInt(status) >= 0 && status !== '2'}
+					then={
+						<SchmintReceipt
+							quantity={quantity}
+							schmint={schmint}
+							status={status}
+							network={collection.network}
+						/>
+					}
+				/>
+				<If
+					condition={parseInt(status) >= 0}
+					then={<Box borderTop={`1px solid ${theme.colors['gray-20']}`} width="100%" mt="wxs" />}
 				/>
 			</Box>
 		);

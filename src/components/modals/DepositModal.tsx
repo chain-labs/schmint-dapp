@@ -4,12 +4,12 @@ import { Copy } from 'phosphor-react';
 import React, { useState } from 'react';
 import InputBox from 'src/containers/project-page/components/InputBox';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { hideModal, replaceModal } from 'src/redux/modal';
+import { hideModal, replaceModal, showModal } from 'src/redux/modal';
 import { MODALS_LIST } from 'src/redux/modal/types';
 import { schedulerSelector } from 'src/redux/scheduler';
 import theme from 'src/styleguide/theme';
 import { getCoinPrice } from 'src/utils/gasPrices';
-import { useNetwork, useSigner } from 'wagmi';
+import { useFeeData, useNetwork, useSigner } from 'wagmi';
 import Box from '../Box';
 import ButtonComp from '../Button';
 import { condenseAddress } from '../DappNavbar/ConnectWallet';
@@ -23,6 +23,10 @@ const DepositModal = () => {
 	const dispatch = useAppDispatch();
 	const { chain } = useNetwork();
 	const { data: signer } = useSigner();
+	const { data: gasFee } = useFeeData({
+		formatUnits: 'gwei',
+		watch: true,
+	});
 
 	const [funds, setFunds] = useState<number>();
 
@@ -30,12 +34,32 @@ const DepositModal = () => {
 		e.preventDefault();
 
 		try {
-			dispatch(replaceModal({ type: MODALS_LIST.CONFIRM_TRANSACTION, props: {} }));
+			dispatch(
+				showModal({
+					type: MODALS_LIST.CONFIRM_TRANSACTION,
+					props: {
+						title: 'Waiting for Confirmation',
+						subtext: 'Confirm the wallet transaction to proceed.',
+						loader: true,
+					},
+				})
+			);
 
 			const tx = await signer.sendTransaction({
 				to: scheduler.avatar,
 				value: ethers.utils.parseEther(funds.toString()),
 			});
+
+			dispatch(
+				replaceModal({
+					type: MODALS_LIST.CONFIRM_TRANSACTION,
+					props: {
+						title: 'Processing...',
+						subtext: 'Please wait while your transaction is being processed.',
+						loader: true,
+					},
+				})
+			);
 
 			const receipt = await tx.wait();
 

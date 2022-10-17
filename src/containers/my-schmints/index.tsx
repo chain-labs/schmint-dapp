@@ -9,6 +9,7 @@ import { useAppSelector } from 'src/redux/hooks';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
+import { useNetwork } from 'wagmi';
 import NoSchmintComponent from './NoSchmintComponent';
 import SchmintsList from './SchmintsList';
 
@@ -22,25 +23,36 @@ const MySchmintComponent = () => {
 	});
 	const user = useAppSelector(userSelector);
 	const scheduler = useAppSelector(schedulerSelector);
+	const { chain } = useNetwork();
 
 	useEffect(() => {
-		if (user.address) {
-			getSchmints({
-				variables: {
-					userId: user.address,
-				},
-			});
-		} else {
-			if (typeof window !== 'undefined') {
-				window.sessionStorage.removeItem('page');
+		const fetch = async () => {
+			if (user.address) {
+				getSchmints({
+					variables: {
+						userId: user.address,
+					},
+				});
+			} else {
+				if (typeof window !== 'undefined') {
+					window.sessionStorage.removeItem('page');
+				}
 			}
-		}
-	}, [user.address]);
+		};
+		fetch();
+		const interval = setInterval(fetch, 5000);
+
+		return () => {
+			clearInterval(interval);
+		};
+	}, [user.address, chain]);
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
-			const pg = parseInt(window.sessionStorage.getItem('page')) ?? 0;
-			setPage(pg);
+			const pg = parseInt(window.sessionStorage.getItem('page'));
+			if (isNaN(pg)) {
+				setPage(0);
+			} else setPage(pg);
 		}
 	}, []);
 
@@ -61,7 +73,7 @@ const MySchmintComponent = () => {
 			</Box>
 			<If
 				condition={!scheduler.avatar || !user.exists}
-				then={<NoSchmintComponent />}
+				then={<NoSchmintComponent page={page + 1 ?? 0} />}
 				else={
 					<React.Fragment>
 						<Box mt="wxs" row alignItems="center">

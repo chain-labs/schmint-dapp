@@ -58,9 +58,17 @@ const Layout = ({ children }) => {
 
 	useEffect(() => {
 		setWindowHeight(window.innerHeight);
-		window.addEventListener('resize', () => {
+		const resize = () => {
 			setWindowHeight(window.innerHeight);
+		};
+		window.addEventListener('resize', resize);
+		window.ethereum.on('chainChanged', () => {
+			loadScheduler();
 		});
+
+		return () => {
+			window.removeEventListener('resize', resize);
+		};
 	}, []);
 
 	useEffect(() => {

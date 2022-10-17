@@ -124,14 +124,11 @@ const SchmintTile = ({
 					<Text as="b3" mt="ms" color="gray-40">
 						<If
 							condition={isSchminted && !!executedTimestamp}
-							then={`Completed on ${format((executedTimestamp ?? 0) * 1000, 'dd/MM/yyyy')}`}
-							else={
-								<If
-									condition={completed}
-									then={'Did not complete'}
-									else={`Created on ${format(createdTimestamp * 1000, 'dd/MM/yyyy')}`}
-								/>
+							then={
+								executedTimestamp &&
+								`Completed on ${format((executedTimestamp ?? 0) * 1000, 'dd/MM/yyyy')}`
 							}
+							else={<If condition={completed} then={'Did not complete'} else={``} />}
 						/>
 					</Text>
 				</Box>

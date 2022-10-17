@@ -34,6 +34,20 @@ const ApolloClientProvider = ({ children }) => {
 		}
 	}, [chain]);
 
+	useEffect(() => {
+		window.ethereum.on('chainChanged', (chainId) => {
+			if (chainId) {
+				const ENDPOINT = getEndpoint(parseInt(chainId));
+
+				const client = new ApolloClient({
+					uri: ENDPOINT,
+					cache: new InMemoryCache(),
+				});
+				setClient(client);
+			}
+		});
+	}, []);
+
 	return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };
 
