@@ -28,9 +28,9 @@ const Projectpage = ({ collection }) => {
 					px="mxxxl"
 					row
 					alignItems="center"
-					zIndex={20}
+					zIndex={5}
 					cursor="pointer"
-					onClick={() => router.back()}
+					onClick={() => router.replace('/explore')}
 				>
 					<ArrowLeft size={16} />
 					<Text as="btn2">Back to Explore</Text>
