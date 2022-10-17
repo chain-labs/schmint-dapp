@@ -16,6 +16,8 @@ import { userSelector } from 'src/redux/user';
 import { getABIType } from '../project-page/utils';
 import Text from 'src/components/Text';
 import SchmintReceipt from './SchmintReceipt';
+import { ArrowLeft } from 'phosphor-react';
+import { useRouter } from 'next/router';
 
 const SchmintPage = ({ collection, schmint }) => {
 	const scheduler = useAppSelector(schedulerSelector);
@@ -27,6 +29,7 @@ const SchmintPage = ({ collection, schmint }) => {
 	const [prevPrice, setPrevPrice] = useState(collection.price);
 	const [getSuccesfulSchmints] = useLazyQuery(CHECK_FAILED_SCHMINT);
 	const user = useAppSelector(userSelector);
+	const router = useRouter();
 
 	useEffect(() => {
 		if (collection?.abi) {
@@ -95,7 +98,26 @@ const SchmintPage = ({ collection, schmint }) => {
 
 	if (collection?.title) {
 		return (
-			<Box center column mb="20rem">
+			<Box center column mb="20rem" position="relative">
+				<Box
+					position="absolute"
+					top="16px"
+					left="16px"
+					bg="gray-10"
+					border={`1px solid ${theme.colors['gray-40']}`}
+					boxShadow="shadow-200"
+					borderRadius="64px"
+					py="ms"
+					px="mxxxl"
+					row
+					alignItems="center"
+					zIndex={20}
+					cursor="pointer"
+					onClick={() => router.back()}
+				>
+					<ArrowLeft size={16} />
+					<Text as="btn2">Back to My Schmints</Text>
+				</Box>
 				<Banner collection={collection} />
 				<If
 					condition={!!status}

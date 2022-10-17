@@ -464,9 +464,9 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 						}
 					/>
 					<Text as="b3" color="gray-50" textAlign="center">
-						{`A total of ${
-							funds.length !== 0 ? funds : 0
-						} ETH will be added to your Gnosis Safe, which will then be used to mint the NFTs. We recommend having a little more than minimum funds in your Gnosis Safe to prevent your transaction from failing.`}
+						{`A total of ${funds.length !== 0 ? funds : 0} ${
+							chain?.nativeCurrency.symbol
+						} will be added to your Gnosis Safe, which will then be used to mint the NFTs. We recommend having a little more than minimum funds in your Gnosis Safe to prevent your transaction from failing.`}
 					</Text>
 				</Box>
 			</Box>

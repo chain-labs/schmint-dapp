@@ -6,14 +6,35 @@ import theme from 'src/styleguide/theme';
 import SchmintForm from './SchmintForm';
 import Text from 'src/components/Text';
 import If from 'src/components/If';
+import { ArrowLeft } from 'phosphor-react';
+import { useRouter } from 'next/router';
 
 const Projectpage = ({ collection }) => {
 	const [schmintCreated, setSchmintCreated] = React.useState(false);
-	console.log({ collection });
+	const router = useRouter();
 
 	if (collection.title) {
 		return (
-			<Box center column>
+			<Box center column position="relative">
+				<Box
+					position="absolute"
+					top="16px"
+					left="16px"
+					bg="gray-10"
+					border={`1px solid ${theme.colors['gray-40']}`}
+					boxShadow="shadow-200"
+					borderRadius="64px"
+					py="ms"
+					px="mxxxl"
+					row
+					alignItems="center"
+					zIndex={20}
+					cursor="pointer"
+					onClick={() => router.back()}
+				>
+					<ArrowLeft size={16} />
+					<Text as="btn2">Back to Explore</Text>
+				</Box>
 				<Banner collection={collection} />
 				<If
 					condition={!!collection?.info || collection?.comingSoon}

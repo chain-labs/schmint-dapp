@@ -16,8 +16,10 @@ import SchmintsList from './SchmintsList';
 const MySchmintComponent = () => {
 	const [page, setPage] = React.useState<number>(0);
 	const [schmints, setSchmints] = useState([]);
-	const [getSchmints] = useLazyQuery(GET_MY_SCHMINTS, {
+	const [getSchmints, { refetch: getSchmintsAgain }] = useLazyQuery(GET_MY_SCHMINTS, {
 		onCompleted: ({ schmints }) => {
+			console.log({ schmints });
+
 			setSchmints(schmints);
 		},
 	});
@@ -28,18 +30,24 @@ const MySchmintComponent = () => {
 	useEffect(() => {
 		const fetch = async () => {
 			if (user.address) {
-				getSchmints({
-					variables: {
-						userId: user.address,
-					},
-				});
+				getSchmintsAgain();
 			} else {
 				if (typeof window !== 'undefined') {
 					window.sessionStorage.removeItem('page');
 				}
 			}
 		};
-		fetch();
+		if (user.address) {
+			getSchmints({
+				variables: {
+					userId: user.address,
+				},
+			});
+		} else {
+			if (typeof window !== 'undefined') {
+				window.sessionStorage.removeItem('page');
+			}
+		}
 		const interval = setInterval(fetch, 5000);
 
 		return () => {
