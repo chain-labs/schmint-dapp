@@ -100,9 +100,9 @@ const SchmintPage = ({ collection, schmint }) => {
 		return (
 			<Box center column mb="20rem" position="relative">
 				<Box
-					position="absolute"
-					top="16px"
-					left="16px"
+					position="fixed"
+					top="184px"
+					left="308px"
 					bg="gray-10"
 					border={`1px solid ${theme.colors['gray-40']}`}
 					boxShadow="shadow-200"

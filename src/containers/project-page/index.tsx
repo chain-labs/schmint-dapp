@@ -17,9 +17,9 @@ const Projectpage = ({ collection }) => {
 		return (
 			<Box center column position="relative">
 				<Box
-					position="absolute"
-					top="16px"
-					left="16px"
+					position="fixed"
+					top="184px"
+					left="308px"
 					bg="gray-10"
 					border={`1px solid ${theme.colors['gray-40']}`}
 					boxShadow="shadow-200"
@@ -28,7 +28,7 @@ const Projectpage = ({ collection }) => {
 					px="mxxxl"
 					row
 					alignItems="center"
-					zIndex={5}
+					zIndex={14}
 					cursor="pointer"
 					onClick={() => router.replace('/explore')}
 				>
