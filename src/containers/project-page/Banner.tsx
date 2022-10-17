@@ -1,9 +1,14 @@
 import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowSquareOut } from 'phosphor-react';
 import React from 'react';
 import Box from 'src/components/Box';
+import If from 'src/components/If';
 import Text from 'src/components/Text';
+import theme from 'src/styleguide/theme';
+import { ICollection } from '../Explore/projectsStore';
 
-const Banner = ({ collection }) => {
+const Banner = ({ collection, schmint }: { collection: ICollection; schmint?: boolean }) => {
 	return (
 		<Box width="100%">
 			<Box>
@@ -24,7 +29,21 @@ const Banner = ({ collection }) => {
 				/>
 			</Box>
 			<Box center column>
-				<Text as="h4">{collection?.title}</Text>
+				<Box row alignItems="center">
+					<Text as="h4" mr={schmint ? 'mxs' : '0'}>
+						{collection?.title}
+					</Text>
+					<If
+						condition={schmint}
+						then={
+							<Link href={`/projects/${collection?.id}`} passHref>
+								<Box cursor="pointer">
+									<ArrowSquareOut size={32} color={theme.colors['blue-40']} />
+								</Box>
+							</Link>
+						}
+					/>
+				</Box>
 				<Text as="h5" textAlign="center" color="gray-50">
 					({collection?.symbol})
 				</Text>
