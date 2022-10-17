@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
-import { StarFour } from 'phosphor-react';
+import { LightbulbFilament, StarFour } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
@@ -95,6 +95,23 @@ const MySchmintComponent = () => {
 								Completed
 							</Text>
 						</Box>
+						<If
+							condition={!page}
+							then={
+								<Box bg="yellow-20" py="ms" px="mxs" width="80rem" borderRadius="8px" mt="mxxxl">
+									<Box row>
+										<LightbulbFilament size={32} />
+										<Box ml="mm">
+											<Text as="h6">Just so you know...</Text>
+											<Text as="b3" mt="mxs" color="gray-40">
+												The Schmint will be executed as soon as the collection is avalible for
+												minting.
+											</Text>
+										</Box>
+									</Box>
+								</Box>
+							}
+						/>
 						<SchmintsList page={page} schmints={schmints} />
 					</React.Fragment>
 				}
