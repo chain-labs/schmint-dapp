@@ -7,6 +7,7 @@ import ButtonComp from 'src/components/Button';
 import If from 'src/components/If';
 import Text from 'src/components/Text';
 import theme from 'src/styleguide/theme';
+import { useNetwork } from 'wagmi';
 import ReadMore from './components/ReadMore';
 import Social from './components/Social';
 
@@ -17,6 +18,14 @@ interface props {
 }
 
 const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => {
+	const { chains } = useNetwork();
+	const [chainExplorer, setChainExplorer] = useState('');
+
+	useEffect(() => {
+		const chain = chains.find((chain) => chain.id === collection?.network?.chainId);
+		setChainExplorer(chain?.blockExplorers?.etherscan?.url);
+	}, [chains, collection]);
+
 	return (
 		<Box center column>
 			<If
@@ -85,10 +94,10 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 							</Box>
 						</Text>
 					</Box>
-					<If
-						condition={collection?.socials}
-						then={
-							<Box center>
+					<Box center>
+						<If
+							condition={collection?.contractAddress || collection?.socials}
+							then={
 								<Box
 									border={`1px solid ${theme.colors['gray-20']}`}
 									borderRadius="4px"
@@ -103,14 +112,14 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 										condition={collection?.socials?.twitter}
 										then={<Social border status="twitter" />}
 									/>
-									<If
-										condition={collection?.socials?.etherscan}
-										then={<Social border status="etherscan" />}
+									<Social
+										status="etherscan"
+										link={`${chainExplorer}/address/${collection?.contractAddress}`}
 									/>
 								</Box>
-							</Box>
-						}
-					/>
+							}
+						/>
+					</Box>
 				</Box>
 			) : (
 				''
