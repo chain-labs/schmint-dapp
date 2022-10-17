@@ -108,6 +108,7 @@ const SchmintsList = ({ page, schmints }) => {
 										isSchminted={schmint.isSchminted}
 										gasPrice={schmint.executionGasPrice}
 										completed
+										isCancelled={schmint.isCancelled}
 									/>
 								);
 							})}

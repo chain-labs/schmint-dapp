@@ -26,14 +26,15 @@ const DeleteModal = ({ schmint, collectionName }) => {
 	const [txGas, setTxGas] = React.useState('');
 
 	const handleDelete = async () => {
+		const price = ((await getCoinPrice(chain?.id)) * parseFloat(txGas.toString())).toFixed(2);
 		dispatch(
 			showModal({
 				type: MODALS_LIST.CONFIRM_TRANSACTION,
 				props: {
 					title: 'Waiting for Confirmation',
 					subtext: 'Confirm the wallet transaction to proceed.',
-					gasCost: `${parseFloat(txGas).toFixed(6)} ${chain?.nativeCurrency?.symbol} or ${(
-						parseFloat(txPrice) * parseFloat(txGas)
+					gasCost: `${parseFloat(txGas).toFixed(6)} ${chain?.nativeCurrency?.symbol} or ${parseFloat(
+						price
 					).toFixed(2)} USD`,
 				},
 			})

@@ -121,10 +121,12 @@ const AlertBox = ({ status, schmint, currPrice, prevPrice }) => {
 					</Box>
 					<Box>
 						<Text as="b2" color="red-40">
-							Schmint Unsuccessful :(
+							{schmint?.isCancelled ? 'Schmint Cancelled' : 'Schmint Unsuccessful :('}
 						</Text>
 						<Text as="b3" mt="mxxs">
-							This Schmint was not executed because of insufficient funds in the Gnosis Safe.
+							{schmint?.isCancelled
+								? 'This Schmint was cancelled by you.'
+								: 'This Schmint was not executed because of insufficient funds in the Gnosis Safe.'}
 						</Text>
 					</Box>
 				</Box>

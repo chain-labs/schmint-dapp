@@ -2,7 +2,7 @@ import { CheckCircle, Warning, XCircle } from 'phosphor-react';
 import Box from 'src/components/Box';
 import Text from 'src/components/Text';
 
-const TileBadge = ({ type }: { type: 'action_required' | 'succesful' | 'failed' }) => {
+const TileBadge = ({ type }: { type: 'action_required' | 'succesful' | 'failed' | 'cancelled' }) => {
 	const getBgColor = () => {
 		switch (type) {
 			case 'action_required':
@@ -10,6 +10,7 @@ const TileBadge = ({ type }: { type: 'action_required' | 'succesful' | 'failed' 
 			case 'succesful':
 				return 'green-20';
 			case 'failed':
+			case 'cancelled':
 				return 'red-20';
 		}
 	};
@@ -21,6 +22,7 @@ const TileBadge = ({ type }: { type: 'action_required' | 'succesful' | 'failed' 
 			case 'succesful':
 				return <CheckCircle size={16} weight="fill" />;
 			case 'failed':
+			case 'cancelled':
 				return <XCircle size={16} weight="fill" />;
 		}
 	};
@@ -32,7 +34,8 @@ const TileBadge = ({ type }: { type: 'action_required' | 'succesful' | 'failed' 
 			case 'succesful':
 				return 'Successful';
 			case 'failed':
-				return 'Failed';
+			case 'cancelled':
+				return 'Cancelled';
 		}
 	};
 
@@ -43,7 +46,8 @@ const TileBadge = ({ type }: { type: 'action_required' | 'succesful' | 'failed' 
 			case 'succesful':
 				return 'green-60';
 			case 'failed':
-				return 'red-40';
+			case 'cancelled':
+				return 'Cancelled';
 		}
 	};
 	return (

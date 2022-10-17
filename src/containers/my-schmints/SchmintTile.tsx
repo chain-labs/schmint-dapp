@@ -23,6 +23,7 @@ interface SchmintTileProps {
 	executedTimestamp?: number;
 	executionTrxHash?: `0x${string}`;
 	gasPrice?: string;
+	isCancelled?: boolean;
 }
 
 const SAMPLE_GAS_COST = 0.001;
@@ -35,6 +36,7 @@ const SchmintTile = ({
 	schmintID,
 	completed,
 	isSchminted,
+	isCancelled,
 	executedTimestamp,
 	executionTrxHash,
 	gasPrice,
@@ -89,7 +91,7 @@ const SchmintTile = ({
 			>
 				<If
 					condition={completed}
-					then={<TileBadge type={isSchminted ? 'succesful' : 'failed'} />}
+					then={<TileBadge type={isSchminted ? 'succesful' : isCancelled ? 'cancelled' : 'failed'} />}
 					else={<If condition={actionRequired} then={<TileBadge type="action_required" />} />}
 				/>
 				<Box width="100%" height="16.2rem" overflow="hidden" borderRadius="4px" mb="mm">
