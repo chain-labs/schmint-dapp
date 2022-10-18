@@ -854,7 +854,7 @@
 			"chainId": "5",
 			"contracts": {
 				"DefaultCallbackHandler": {
-					"address": "0x1611F187f0c49F41b49D0514aDa95eC5c73764b3",
+					"address": "0x8EbBB27e807F5843F812Aa285Ca8053fb395b93b",
 					"abi": [
 						{
 							"inputs": [],
@@ -1054,7 +1054,7 @@
 					]
 				},
 				"Resolver": {
-					"address": "0x055655958CA48261888E5EB1D5dB68A77BBAB3dd",
+					"address": "0x3Cd4d6d4Cfd710266974c296Df886B27d687fBac",
 					"abi": [
 						{
 							"inputs": [],
@@ -1629,7 +1629,7 @@
 					]
 				},
 				"Scheduler": {
-					"address": "0x7A8873b00035c647Bf2b1a34dC9fd15274Fe9f10",
+					"address": "0xD97f918E1603302cb2f776ce257a1AE831e397CC",
 					"abi": [
 						{
 							"inputs": [],
@@ -2488,7 +2488,7 @@
 					]
 				},
 				"SchedulerFactory": {
-					"address": "0x9FBa92703a3B3F39c904460aF58767cB913eDED3",
+					"address": "0x3663f9b5E3D2DD8071Dc3d38D237E79646fd77eb",
 					"abi": [
 						{
 							"inputs": [
@@ -2827,7 +2827,7 @@
 			"chainId": "80001",
 			"contracts": {
 				"DefaultCallbackHandler": {
-					"address": "0x017b1e5C45c48821170FD02A85DeD5B7954f15f9",
+					"address": "0x0e6Bc182808F069a2809BfB64bB918B1cC201EEc",
 					"abi": [
 						{
 							"inputs": [],
@@ -3027,7 +3027,7 @@
 					]
 				},
 				"Resolver": {
-					"address": "0xEa52ad657d76FC68261Db8F4dE52016Ac6EE3Ff3",
+					"address": "0x21d686ABba1D032564EDabfeCdD4121ef50bfcca",
 					"abi": [
 						{
 							"inputs": [],
@@ -3602,7 +3602,7 @@
 					]
 				},
 				"Scheduler": {
-					"address": "0x5f860f4282fdFCc51D688a980B07aabFaC76477C",
+					"address": "0xa3dFbab6F0EF34EB7A485e8d13445e7d1c45E671",
 					"abi": [
 						{
 							"inputs": [],
@@ -4461,7 +4461,7 @@
 					]
 				},
 				"SchedulerFactory": {
-					"address": "0x3D8aD776280a3710ab7d5aFb379eE9327f58cF21",
+					"address": "0x6E494ebEF465e253EE86415e53Dd55D63499aeb7",
 					"abi": [
 						{
 							"inputs": [

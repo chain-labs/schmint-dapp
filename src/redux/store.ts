@@ -4,6 +4,7 @@ import { userReducer } from './user/reducers';
 import { modalReducer } from './modal/reducers';
 import { filterReducer } from './filter/reducers';
 import { schedulerReducer } from './scheduler/reducers';
+import { networkReducer } from './network';
 
 const makeStore = () =>
 	configureStore({
@@ -12,6 +13,7 @@ const makeStore = () =>
 			modal: modalReducer,
 			filter: filterReducer,
 			scheduler: schedulerReducer,
+			network: networkReducer,
 		},
 		middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
 		devTools: true,

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { PROJECTS_DIR } from 'src/utils/constants';
 
 export interface ICollection {
-	id: string;
+	id?: string;
 	title: string;
 	contractAddress: string;
 	abi: any;
@@ -36,4 +36,11 @@ export const getCollections = async (): Promise<ICollection[]> => {
 	const noStartTimeCollections = projects.filter((collection: ICollection) => !collection.startTimestamp);
 
 	return [...collectionsList, ...noStartTimeCollections];
+};
+
+export const getAllCollections = async (): Promise<ICollection[]> => {
+	const PROJECTS_JSON_URL = PROJECTS_DIR;
+	const res = await axios.get(PROJECTS_JSON_URL);
+	const projects = res.data;
+	return projects;
 };

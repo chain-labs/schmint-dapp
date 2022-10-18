@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useAppDispatch } from 'src/redux/hooks';
 import { hideModal } from 'src/redux/modal';
@@ -23,10 +24,11 @@ interface props {
 }
 const StatusModal = ({ btnText, success, msg, gas, successMsg }: props) => {
 	const dispatch = useAppDispatch();
+	const router = useRouter();
 	const handleClick = () => {
 		if (btnText === 'Go Back to My Schmints') {
 			dispatch(hideModal());
-			window.location.href = '/my-schmints';
+			router.push('/my-schmints');
 		} else {
 			dispatch(hideModal());
 		}
@@ -75,7 +77,7 @@ const StatusModal = ({ btnText, success, msg, gas, successMsg }: props) => {
 						condition={!success}
 						then={
 							<ButtonComp
-								bg="secondary"
+								bg="tertiary"
 								color="gray-60"
 								width="14.5rem"
 								height="4.8rem"

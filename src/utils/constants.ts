@@ -17,6 +17,10 @@ export const FAQ_URL = 'https://stonly.com/guide/en/simplr-collection-faqs-56Dsb
 
 export const DOCS_URL = 'https://docs.simplrcollection.com';
 
-export const SUBGRAPH_ENDPOINT = process.env.NEXT_PUBLIC_SUBGRAPH_ENDPOINT;
+export const BLOGS_URL = 'https://blog.chainlabs.in/';
+
+export const GOERLI_SUBGRAPH_ENDPOINT = process.env.NEXT_PUBLIC_GOERLI_SUBGRAPH_ENDPOINT;
+
+export const MUMBAI_SUBGRAPH_ENDPOINT = process.env.NEXT_PUBLIC_MUMBAI_SUBGRAPH_ENDPOINT;
 
 export const PROJECTS_DIR = process.env.NEXT_PUBLIC_PROJECT_DIRECTORY;

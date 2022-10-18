@@ -69,7 +69,7 @@ const fontW = {
 	btn2: fontWeights.regular,
 	c1: fontWeights.medium,
 	c2: fontWeights.medium,
-	nav: { mobS: fontWeights.regular, deskM: fontWeights.medium },
+	nav: { mobS: fontWeights.regular, deskM: fontWeights.regular },
 };
 
 const charSpacing = {
