@@ -7,9 +7,12 @@ import ButtonComp from '../Button';
 import Modal from '../Modal';
 import Text from '../Text';
 import Confetti from 'react-confetti';
+import _ from 'lodash';
 
 const SchmintCreatedModal = () => {
 	const dispatch = useAppDispatch();
+	const [image, setImage] = React.useState('');
+	const [placeholder, setPlaceholder] = React.useState('');
 
 	useEffect(() => {
 		return () => {
@@ -18,6 +21,25 @@ const SchmintCreatedModal = () => {
 			}
 		};
 	}, []);
+
+	useEffect(() => {
+		const randomize = () => {
+			let randomNumber = _.random(0, 499);
+			randomNumber = randomNumber % 4;
+			randomNumber += 1;
+			const img = `https://ik.imagekit.io/chainlabs/Schmint/gifs/${randomNumber}.gif`;
+			const placeholder = `https://ik.imagekit.io/chainlabs/Schmint/placeholders/${randomNumber}.jpeg`;
+			setImage(img);
+			setPlaceholder(placeholder);
+		};
+
+		randomize();
+
+		return () => {
+			randomize();
+		};
+	}, []);
+
 	return (
 		<Modal visible>
 			<Confetti initialVelocityY={-10} />
@@ -34,11 +56,7 @@ const SchmintCreatedModal = () => {
 				column
 			>
 				<Box position="relative" width="35rem" height="13.2rem" mb="mxxxl">
-					<Image
-						src="https://ik.imagekit.io/chainlabs/Schmint/succes_schmint_8ooAkVgV_.svg"
-						layout="fill"
-						objectFit="cover"
-					/>
+					<Image src={image} alt="gif" layout="fill" objectFit="contain" blurDataURL={placeholder} />
 				</Box>
 				<Box width="35rem" column center>
 					<Text as="h5">Congratulations!</Text>
