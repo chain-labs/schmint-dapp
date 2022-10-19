@@ -1,6 +1,7 @@
+import { TwitterFill } from 'akar-icons';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight, GlobeSimple, StarFour } from 'phosphor-react';
+import { ArrowUpRight, GlobeSimple, StarFour, TwitterLogo } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
@@ -20,10 +21,14 @@ interface props {
 const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => {
 	const { chains } = useNetwork();
 	const [chainExplorer, setChainExplorer] = useState('');
+	const [projectTwitterHandle, setProjectTwitterHandle] = useState('');
+	const [projectWebsiteUrl, setProjectWebsiteUrl] = useState('');
 
 	useEffect(() => {
 		const chain = chains.find((chain) => chain.id === collection?.network?.chainId);
 		setChainExplorer(chain?.blockExplorers?.etherscan?.url);
+		setProjectTwitterHandle(collection?.twitter_url?.slice(20));
+		setProjectWebsiteUrl(collection.id);
 	}, [chains, collection]);
 
 	return (
@@ -40,23 +45,47 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 							<Text as="b3" color="gray-50" mt="mxs">
 								You have successfully created a Schmint for Abstract 3D.
 							</Text>
-							<Link href={`/my-schmints`} passHref>
-								<ButtonComp
-									bg="tertiary"
-									px="mxl"
-									py="ms"
-									borderRadius="64px"
-									row
-									center
-									mt="mm"
-									color="simply-black"
+							<Box row>
+								<Link href={`/my-schmints`} passHref>
+									<ButtonComp
+										bg="tertiary"
+										px="mxl"
+										py="ms"
+										borderRadius="64px"
+										row
+										center
+										mt="mm"
+										color="simply-black"
+										mr="mxxs"
+									>
+										<Text as="btn2" mr="mxxs">
+											View
+										</Text>
+										<ArrowUpRight size={16} />
+									</ButtonComp>
+								</Link>
+								<a
+									href={`https://twitter.com/intent/tweet?text=I%20just%20schminted%20%40${projectTwitterHandle}%27s%20NFT%20using%20%40simplrhq%27s%20Schmint.%0AYou%20can%20schedule%20your%20mint%20on%20Schmint%3A%20https%3A//schmint.simplrhq.com/projects/${projectWebsiteUrl}%0A%23justSchmintIt%20%23NoMoreFomo`}
+									target="_blank"
+									rel="noreferrer"
 								>
-									<Text as="btn2" mr="mxxs">
-										View
-									</Text>
-									<ArrowUpRight size={16} />
-								</ButtonComp>
-							</Link>
+									<ButtonComp
+										bg="tertiary"
+										px="mxl"
+										py="ms"
+										borderRadius="64px"
+										row
+										center
+										mt="mm"
+										color="simply-black"
+									>
+										<Text as="btn2" mr="mxxs">
+											Share on twitter
+										</Text>
+										<TwitterLogo weight="fill" size={16} />
+									</ButtonComp>
+								</a>
+							</Box>
 						</Box>
 					</Box>
 				}

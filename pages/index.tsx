@@ -20,46 +20,31 @@ const Home = () => {
 				center
 			>
 				<Text as="h1" mb={{ mobS: 'mm', deskM: 'mxl' }} textAlign="center">
-					{"Don't be a victim of FOMO, take control."}
+					Schedule mints in advance and relax.
 				</Text>
 				<Text as="b1" textAlign="center" width={{ mobS: '30.72rem', tabS: '51rem', deskM: '51.67rem' }}>
-					Saw a cool NFT project on Twitter but it sold out even before you connected your wallet? Next time
-					just <span style={{ color: theme.colors['blue-40'] }}>schmint </span>
-					it.
+					Schmint helps collectors get a good night’s sleep.
 				</Text>
 				<Box mt="wxs" row alignItems="center">
-					<Box
-						onClick={clickPopup}
-						center
-						bg="blue-40"
-						height={{ mobS: '4.8rem', deskM: '5.6rem' }}
-						px={{ mobS: 'mxxxl', deskM: 'wxs' }}
-						border="none"
-						outline="none"
-						borderRadius="64px"
-						mr="mxl"
-						cursor="pointer"
-						css={`
-							&:hover {
-								background: ${theme.colors['blue-50']};
-							}
-						`}
-					>
-						<Text as="b1" color="simply-white">
-							Enter Waitlist
-						</Text>
-					</Box>
-					<Link href="/learn-more" passHref>
+					<Link href="/explore">
 						<Box
+							center
+							bg="blue-40"
+							height={{ mobS: '4.8rem', deskM: '5.6rem' }}
+							px={{ mobS: 'mxxxl', deskM: 'wxs' }}
+							border="none"
+							outline="none"
+							borderRadius="64px"
+							mr="mxl"
+							cursor="pointer"
 							css={`
-              color: :${theme.colors['blue-40']};
-                &:hover {
-                  text-decoration: underline;
-                }
-              `}
+								&:hover {
+									background: ${theme.colors['blue-50']};
+								}
+							`}
 						>
-							<Text as="b1" color="blue-40" cursor="pointer">
-								Learn More
+							<Text as="b1" color="simply-white">
+								Start Schminting
 							</Text>
 						</Box>
 					</Link>

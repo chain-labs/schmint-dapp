@@ -19,7 +19,7 @@ export const DOCS_URL = 'https://docs.simplrcollection.com';
 
 export const BLOGS_URL = 'https://blog.chainlabs.in/';
 
-export const INVITELIST_URL = "https://chain-labs.github.io/schmint-projects/inviteList.json";
+export const INVITELIST_URL = process.env.NEXT_PUBLIC_INVITELIST_URL;
 
 export const GOERLI_SUBGRAPH_ENDPOINT = process.env.NEXT_PUBLIC_GOERLI_SUBGRAPH_ENDPOINT;
 
