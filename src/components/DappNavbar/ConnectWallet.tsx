@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { setUser, userSelector } from 'src/redux/user';
-import { useEnsName } from 'wagmi';
+import { useDisconnect, useEnsName } from 'wagmi';
 import Box from '../Box';
 import If from '../If';
 
@@ -11,6 +11,8 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import theme from 'src/styleguide/theme';
 import Text from '../Text';
 import ButtonComp from '../Button';
+import { showModal } from 'src/redux/modal';
+import { MODALS_LIST } from 'src/redux/modal/types';
 
 export const condenseAddress = (address) => {
 	if (!address) return null;
@@ -20,6 +22,7 @@ export const condenseAddress = (address) => {
 const ConnectWallet = ({ networkProps }) => {
 	const user = useAppSelector(userSelector);
 	const dispatch = useAppDispatch();
+	const { disconnect } = useDisconnect();
 
 	return (
 		<ConnectButton.Custom>
@@ -30,7 +33,13 @@ const ConnectWallet = ({ networkProps }) => {
 
 				useEffect(() => {
 					if (account) {
-						dispatch(setUser(account?.address));
+						const checkIfUserisValid = false;
+						if (!checkIfUserisValid) {
+							disconnect();
+							dispatch(showModal({ type: MODALS_LIST.INVITE_ONLY_MODAL, props: {} }));
+						} else {
+							dispatch(setUser(account?.address));
+						}
 					}
 				}, [account]);
 

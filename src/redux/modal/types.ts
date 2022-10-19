@@ -3,6 +3,7 @@ import DepositModal from 'src/components/modals/DepositModal';
 import DeleteModal from 'src/components/modals/DeleteModal';
 import SchmintCreatedModal from 'src/components/modals/SchmintCreatedModal';
 import StatusModal from 'src/components/modals/StatusModal';
+import InviteOnlyModal from 'src/components/modals/InviteOnlyModal';
 
 export interface ModalState {
 	isOpen: boolean;
@@ -16,6 +17,7 @@ export const MODALS_LIST = {
 	SCHMINT_SUCCESFUL: 'SCHMINT_SUCCESFUL',
 	DEPOSIT_MODAL: 'DEPOSIT_MODAL',
 	DELETE_MODAL: 'DELETE_MODAL',
+	INVITE_ONLY_MODAL: 'INVITE_ONLY_MODAL',
 };
 
 export const MODALS = {
@@ -24,4 +26,5 @@ export const MODALS = {
 	[MODALS_LIST.SCHMINT_SUCCESFUL]: SchmintCreatedModal,
 	[MODALS_LIST.DEPOSIT_MODAL]: DepositModal,
 	[MODALS_LIST.DELETE_MODAL]: DeleteModal,
+	[MODALS_LIST.INVITE_ONLY_MODAL]: InviteOnlyModal,
 };

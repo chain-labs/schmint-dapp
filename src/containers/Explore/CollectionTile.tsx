@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ArrowUpRight, Sparkle, Users } from 'phosphor-react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import If from 'src/components/If';
@@ -13,14 +13,22 @@ import { GET_PROJECT_SCHMINTS } from 'src/graphql/query/GetProjectSchmints';
 import theme from 'src/styleguide/theme';
 import { useNetwork } from 'wagmi';
 import { ICollection } from './projectsStore';
+import { chains } from 'src/utils/chains';
 
 const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollection }) => {
 	const { loading, data: schmintsList } = useQuery(GET_PROJECT_SCHMINTS, {
 		variables: { target: collection.contractAddress },
 	});
 	const router = useRouter();
+	const [unit, setUnit] = useState('');
+	useEffect(() => {
+		if (collection?.network?.chainId) {
+			const idx = chains.findIndex((c) => c.chainId === collection?.network?.chainId);
+			const chain = chains?.[idx];
+			setUnit(chains?.[idx]?.nativeCurrency.symbol);
+		}
+	}, [collection]);
 
-	const { chains } = useNetwork();
 	return (
 		<Box
 			key={`col-${idx}-${collection.title}`}
@@ -111,14 +119,17 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 					<Text as="b3" mb="0.2rem">
 						{'Price: '}
 						<span style={{ color: theme.colors['gray-50'] }}>
-							{collection.price === null
-								? 'N/A'
-								: collection.price > 0
-								? `${collection.price} ${
-										chains?.[chains?.findIndex((chain) => chain.id === collection.network.chainId)]
-											?.nativeCurrency?.symbol
-								  }`
-								: 'Free'}
+							<If
+								condition={collection?.price === null}
+								then={'N/A'}
+								else={
+									<If
+										condition={collection?.price > 0}
+										then={`${collection.price} ${unit}`}
+										else={'Free'}
+									/>
+								}
+							/>
 						</span>
 					</Text>
 					<Box
