@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { setUser, userSelector } from 'src/redux/user';
+import { removeUser, setUser, userSelector } from 'src/redux/user';
 import { useDisconnect, useEnsName } from 'wagmi';
 import Box from '../Box';
 import If from '../If';
@@ -11,8 +11,9 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import theme from 'src/styleguide/theme';
 import Text from '../Text';
 import ButtonComp from '../Button';
-import { showModal } from 'src/redux/modal';
+import { hideModal, showModal } from 'src/redux/modal';
 import { MODALS_LIST } from 'src/redux/modal/types';
+import { checkIfUserInvited } from 'src/utils/whitelist';
 
 export const condenseAddress = (address) => {
 	if (!address) return null;
@@ -24,6 +25,24 @@ const ConnectWallet = ({ networkProps }) => {
 	const dispatch = useAppDispatch();
 	const { disconnect } = useDisconnect();
 
+	useEffect(() => {
+		if (user.exists) {
+			const validateAddressForInvite = async () => {
+				const checkIfUserisValid = await checkIfUserInvited(user.address);
+				console.log({ checkIfUserisValid, user: user.address });
+
+				if (!checkIfUserisValid) {
+					disconnect();
+					dispatch(showModal({ type: MODALS_LIST.INVITE_ONLY_MODAL, props: {} }));
+					dispatch(removeUser());
+				} else {
+					dispatch(hideModal());
+				}
+			};
+			validateAddressForInvite();
+		}
+	}, [user]);
+
 	return (
 		<ConnectButton.Custom>
 			{({ account, chain, openConnectModal, openChainModal, openAccountModal }) => {
@@ -33,13 +52,16 @@ const ConnectWallet = ({ networkProps }) => {
 
 				useEffect(() => {
 					if (account) {
-						const checkIfUserisValid = false;
-						if (!checkIfUserisValid) {
-							disconnect();
-							dispatch(showModal({ type: MODALS_LIST.INVITE_ONLY_MODAL, props: {} }));
-						} else {
-							dispatch(setUser(account?.address));
-						}
+						const validateAddressForInvite = async () => {
+							const checkIfUserisValid = checkIfUserInvited(user.address);
+							if (!checkIfUserisValid) {
+								disconnect();
+								dispatch(showModal({ type: MODALS_LIST.INVITE_ONLY_MODAL, props: {} }));
+							} else {
+								dispatch(setUser(account?.address));
+							}
+						};
+						validateAddressForInvite();
 					}
 				}, [account]);
 

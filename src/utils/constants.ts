@@ -19,8 +19,14 @@ export const DOCS_URL = 'https://docs.simplrcollection.com';
 
 export const BLOGS_URL = 'https://blog.chainlabs.in/';
 
+export const INVITELIST_URL = "https://chain-labs.github.io/schmint-projects/inviteList.json";
+
 export const GOERLI_SUBGRAPH_ENDPOINT = process.env.NEXT_PUBLIC_GOERLI_SUBGRAPH_ENDPOINT;
 
 export const MUMBAI_SUBGRAPH_ENDPOINT = process.env.NEXT_PUBLIC_MUMBAI_SUBGRAPH_ENDPOINT;
+
+export const POLYGON_SUBGRAPH_ENDPOINT = process.env.NEXT_PUBLIC_POLYGON_SUBGRAPH_ENDPOINT;
+
+export const MAINNET_SUBGRAPH_ENDPOINT = process.env.NEXT_PUBLIC_MAINNET_SUBGRAPH_ENDPOINT;
 
 export const PROJECTS_DIR = process.env.NEXT_PUBLIC_PROJECT_DIRECTORY;

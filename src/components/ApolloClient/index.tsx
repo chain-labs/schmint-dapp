@@ -2,15 +2,23 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { networkSelector, setApolloClient } from 'src/redux/network';
-import { GOERLI_SUBGRAPH_ENDPOINT, MUMBAI_SUBGRAPH_ENDPOINT } from 'src/utils/constants';
-import { useNetwork } from 'wagmi';
+import {
+	GOERLI_SUBGRAPH_ENDPOINT,
+	MAINNET_SUBGRAPH_ENDPOINT,
+	MUMBAI_SUBGRAPH_ENDPOINT,
+	POLYGON_SUBGRAPH_ENDPOINT,
+} from 'src/utils/constants';
 
 const getEndpoint = (chainId) => {
 	switch (chainId) {
+		case 1:
+			return MAINNET_SUBGRAPH_ENDPOINT;
 		case 5:
 			return GOERLI_SUBGRAPH_ENDPOINT;
 		case 80001:
 			return MUMBAI_SUBGRAPH_ENDPOINT;
+		case 137:
+			return POLYGON_SUBGRAPH_ENDPOINT;
 		default:
 			return GOERLI_SUBGRAPH_ENDPOINT;
 	}
