@@ -1,3 +1,5 @@
+import { BLOGS_URL, DOCS_URL } from './utils/constants';
+
 export const TWITTER_URL = 'https://twitter.com/simplrhq';
 export const LINKEDIN_URL = 'https://www.linkedin.com/company/0xchainlabs';
 export const GITHUB_URL = 'https://github.com/chain-labs';
@@ -9,3 +11,26 @@ export const EMAIL_CONTACT = 'hello@chainlabs.in';
 export const CALENDLY_LINK = process.env.NEXT_PUBLIC_CALENDLY_URL;
 export const WAITLIST_ID = process.env.NEXT_PUBLIC_WAITLIST_ID;
 export const DISCORD_INVITE = process.env.NEXT_PUBLIC_DISCORD_INVITE;
+
+export const FOOTER_LINKS = [
+	{
+		title: 'Docs',
+		url: DOCS_URL,
+	},
+	{
+		title: 'Blogs',
+		url: BLOGS_URL,
+	},
+	{
+		title: 'Twitter',
+		url: TWITTER_URL,
+	},
+	{
+		title: 'Discord',
+		url: DISCORD_INVITE,
+	},
+	{
+		title: 'Disclaimer',
+		url: DOCS_URL,
+	},
+];

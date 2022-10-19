@@ -1,3 +1,5 @@
+import { BigNumber } from 'ethers';
+
 export interface SchedulerState {
 	owner?: string;
 	balance?: string;
@@ -8,12 +10,16 @@ export interface SchedulerState {
 }
 
 export interface SchmintState {
-	id: number;
-	targetAddress: string;
-	input: {
-		projectName: string;
-		mintPrice: string;
-		status: 'SCHEDULED' | 'MINTED' | 'CANCELLED' | 'FAILED';
-		storeInScheduler: boolean;
-	};
+	schmintId?: string;
+	target?: string;
+	isSchminted?: boolean;
+	isCancelled?: boolean;
+	gasPriceLimit?: number;
+	data?: string;
+	value?: string;
+	status?: string;
+	executionTimestamp?: string;
+	executionTrxHash?: string;
+	executionGasPrice?: BigNumber;
+	id: string;
 }

@@ -26,6 +26,7 @@ NProgress.configure({ showSpinner: false });
 
 const MyApp = ({ Component, pageProps }) => {
 	const [hostname, setHostname] = useState('');
+
 	useEffect(() => {
 		// Set a custom CSS Property for Height
 		// See https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
@@ -121,7 +122,6 @@ const MyApp = ({ Component, pageProps }) => {
 						<Layout>
 							<Component {...pageProps} />
 						</Layout>
-
 						<ModalHandler />
 					</ApolloClientProvider>
 				</Wagmi>

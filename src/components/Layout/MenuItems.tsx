@@ -19,8 +19,6 @@ const MenuItems = ({ userHasScheduler }) => {
 				route="/my-assets"
 				disabled={!user.exists || !userHasScheduler}
 			/>
-			<Box mt="mm" />
-			<MenuItem Icon={Wallet} text="Wallet" route="/wallet" disabled={!user.exists || !userHasScheduler} />
 		</Box>
 	);
 };

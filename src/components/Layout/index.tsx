@@ -11,41 +11,75 @@ import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { indexAddress } from './utils';
 import React, { useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
-import { GET_USER_SCHEDULER } from 'graphql/UserScheduler';
 import Loader from 'components/Loader';
 import { setScheduler } from 'src/redux/scheduler';
 import If from 'components/If';
+import { GET_USER_SCHEDULER } from 'src/graphql/query/GetUserScheduler';
+import Footer from '../Footer';
+import { networkSelector, setNetwork } from 'src/redux/network';
+import { useNetwork } from 'wagmi';
 
 const Layout = ({ children }) => {
 	const router = useRouter();
 	const user = useAppSelector(userSelector);
 	const [userHasScheduler, setUserHasScheduler] = React.useState(false);
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
-	const [loadScheduler, { called, loading, data }] = useLazyQuery(GET_USER_SCHEDULER);
+	const network = useAppSelector(networkSelector);
+	const { chains, chain } = useNetwork();
+	const [loadScheduler, { called, loading, refetch: refetchScheduler }] = useLazyQuery(GET_USER_SCHEDULER, {
+		onCompleted: (data) => {
+			const scheduler = data?.schedulers?.[0];
+			if (scheduler && scheduler?.owner?.toLowerCase() === user.address.toLowerCase()) {
+				setUserHasScheduler(true);
+				dispatch(
+					setScheduler({
+						owner: scheduler.owner ?? '',
+						schedulerAddress: scheduler.id ?? '',
+						avatar: scheduler.safe ?? '',
+						schmints: scheduler.schmints ?? [],
+					})
+				);
+			} else {
+				setUserHasScheduler(false);
+				dispatch(
+					setScheduler({
+						owner: '',
+						schedulerAddress: '',
+						avatar: '',
+						schmints: [],
+					})
+				);
+				if (router.pathname === '/my-assets') {
+					router.replace('/explore', undefined, { shallow: true });
+				}
+			}
+		},
+		pollInterval: 8000,
+	});
 	const dispatch = useAppDispatch();
 
 	const [windowHeight, setWindowHeight] = React.useState(0);
 
 	useEffect(() => {
-		if (called && !loading) {
-			const scheduler = data?.schedulers?.[0];
-			if (scheduler?.owner?.toLowerCase() === user.address.toLowerCase()) {
-				setUserHasScheduler(true);
-				dispatch(setScheduler({ owner: scheduler.owner, schedulerAddress: scheduler.id }));
-			} else {
-				setUserHasScheduler(false);
-				if (router.pathname === '/my-assets') {
-					router.replace('/explore', undefined, { shallow: true });
-				}
-			}
-		}
-	}, [called, loading]);
-
-	useEffect(() => {
 		setWindowHeight(window.innerHeight);
-		window.addEventListener('resize', () => {
+		const resize = () => {
 			setWindowHeight(window.innerHeight);
+		};
+		window.addEventListener('resize', resize);
+		window.ethereum.on('chainChanged', (chain) => {
+			console.log({ chain });
+
+			dispatch(
+				setNetwork({
+					chainId: parseInt(chain),
+					name: chains.find((c) => c.id === parseInt(chain)).name,
+				})
+			);
 		});
+
+		return () => {
+			window.removeEventListener('resize', resize);
+		};
 	}, []);
 
 	useEffect(() => {
@@ -56,7 +90,13 @@ const Layout = ({ children }) => {
 				},
 			});
 		}
-	}, [user.address]);
+	}, [user.address, network.apolloClient]);
+
+	useEffect(() => {
+		if (chain?.id) {
+			dispatch(setNetwork({ chainId: chain?.id, name: chain?.name }));
+		}
+	}, [chain]);
 
 	const getSidebarHeight = () => {
 		const height = windowHeight;
@@ -99,10 +139,10 @@ const Layout = ({ children }) => {
 		);
 	}
 	return (
-		<Box>
+		<Box overflowX="hidden">
 			<DappNavbar />
 			<Box minHeight="16.8rem" bg={setLayoutStripBg()} width="100vw"></Box>
-			<Box row>
+			<Box row minHeight={`${windowHeight - 168}px`}>
 				<Box
 					position="fixed"
 					left="24px"
@@ -129,6 +169,7 @@ const Layout = ({ children }) => {
 					/>
 				</Box>
 			</Box>
+			<Footer />
 		</Box>
 	);
 };
