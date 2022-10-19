@@ -54,9 +54,10 @@ const SchmintCreatedModal = () => {
 				border="1px solid"
 				borderColor="blue-30"
 				column
+				width="38.2rem"
 			>
-				<Box position="relative" width="35rem" height="13.2rem" mb="mxxxl">
-					<Image src={image} alt="gif" layout="fill" objectFit="contain" blurDataURL={placeholder} />
+				<Box position="relative" width="35rem" height="26.4rem" mb="mxxxl">
+					<Image src={image} layout="fill" objectFit="cover" />
 				</Box>
 				<Box width="35rem" column center>
 					<Text as="h5">Congratulations!</Text>
