@@ -27,7 +27,7 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 	useEffect(() => {
 		const chain = chains.find((chain) => chain.id === collection?.network?.chainId);
 		setChainExplorer(chain?.blockExplorers?.etherscan?.url);
-		setProjectTwitterHandle(collection.twitter_url.slice(20));
+		setProjectTwitterHandle(collection?.twitter_url?.slice(20));
 		setProjectWebsiteUrl(collection.id);
 	}, [chains, collection]);
 
@@ -64,10 +64,9 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 										<ArrowUpRight size={16} />
 									</ButtonComp>
 								</Link>
-								<Link
-									target="_blank"
+								<a
 									href={`https://twitter.com/intent/tweet?text=I%20just%20schminted%20%40${projectTwitterHandle}%27s%20NFT%20using%20%40simplrhq%27s%20Schmint.%0AYou%20can%20schedule%20your%20mint%20on%20Schmint%3A%20https%3A//schmint.simplrhq.com/projects/${projectWebsiteUrl}%0A%23justSchmintIt%20%23NoMoreFomo`}
-									passHref
+									target="_blank"
 								>
 									<ButtonComp
 										bg="tertiary"
@@ -84,7 +83,7 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 										</Text>
 										<TwitterLogo weight="fill" size={16} />
 									</ButtonComp>
-								</Link>
+								</a>
 							</Box>
 						</Box>
 					</Box>

@@ -27,8 +27,10 @@ export interface ICollection {
 export const getCollections = async (): Promise<ICollection[]> => {
 	const PROJECTS_JSON_URL = PROJECTS_DIR;
 	const res = await axios.get(PROJECTS_JSON_URL);
-	const projects = res.data;
-
+	let projects = res.data;
+	if (typeof projects === 'string') {
+		projects = JSON.parse(projects);
+	}
 	const collectionsList = projects
 		.filter((collection: ICollection) => collection.startTimestamp > Date.now() / 1000)
 		.sort((a: ICollection, b: ICollection) => a.startTimestamp - b.startTimestamp);

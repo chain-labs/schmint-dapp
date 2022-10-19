@@ -67,7 +67,6 @@ const Layout = ({ children }) => {
 		};
 		window.addEventListener('resize', resize);
 		window.ethereum.on('chainChanged', (chain) => {
-			console.log({ chain });
 
 			dispatch(
 				setNetwork({

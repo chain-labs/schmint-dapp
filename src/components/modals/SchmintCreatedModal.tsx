@@ -25,10 +25,10 @@ const SchmintCreatedModal = () => {
 	useEffect(() => {
 		const randomize = () => {
 			let randomNumber = _.random(0, 499);
-			randomNumber = randomNumber % 4;
+			randomNumber = randomNumber % 7;
 			randomNumber += 1;
 			const img = `https://ik.imagekit.io/chainlabs/Schmint/gifs/${randomNumber}.gif`;
-			const placeholder = `https://ik.imagekit.io/chainlabs/Schmint/placeholders/${randomNumber}.jpeg`;
+			const placeholder = `https://ik.imagekit.io/chainlabs/Schmint/placeholders/${(randomNumber % 4) + 1}.jpeg`;
 			setImage(img);
 			setPlaceholder(placeholder);
 		};
@@ -56,7 +56,7 @@ const SchmintCreatedModal = () => {
 				column
 				width="38.2rem"
 			>
-				<Box position="relative" width="35rem" height="26.4rem" mb="mxxxl">
+				<Box position="relative" width="35rem" height="26.4rem" mb="mxxxl" borderRadius="8px" overflow="hidden">
 					<Image src={image} layout="fill" objectFit="cover" />
 				</Box>
 				<Box width="35rem" column center>

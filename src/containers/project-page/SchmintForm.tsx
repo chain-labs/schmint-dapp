@@ -275,7 +275,6 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 					setTxPrice(price);
 				});
 				setTxGas(totalEstimatedGasPrice);
-				console.log({ tx, totalEstimatedGasPrice });
 			} else {
 				switch (getABIType(collection.abi)) {
 					case 1: {

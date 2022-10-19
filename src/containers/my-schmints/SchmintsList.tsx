@@ -34,7 +34,6 @@ const SchmintsList = ({ page, schmints }) => {
 	const getSchmitsAssigned = async () => {
 		const activeSchmints: any[] = schmints.filter((schmint) => !schmint.isSchminted && !schmint.isCancelled);
 		const completedSchmints: any[] = schmints.filter((schmint) => schmint.isSchminted || schmint.isCancelled);
-		console.log({ schmints, activeSchmints, completedSchmints });
 		const targets = activeSchmints.map((schmint) => schmint.target);
 		const data = await getSuccesfulSchmints({ variables: { target: targets, owner: user.address } });
 
