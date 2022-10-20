@@ -171,7 +171,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 						target: buyTx.to,
 						data: buyTx.data,
 						value: buyTx.value,
-						gasPriceLimit: gasPriceLimit ? ethers.utils.parseUnits(gasPriceLimit, 'gwei') : 0,
+						gasPriceLimit: gasPriceLimit ? ethers.utils.parseUnits(gasPriceLimit.toString(), 'gwei') : 0,
 					},
 				];
 				const fundsToBeAdded = ethers.utils.parseEther(`${funds.length !== 0 ? funds : 0}`);
@@ -256,7 +256,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 						target: buyTx.to,
 						data: buyTx.data,
 						value: buyTx.value,
-						gasPriceLimit: gasPriceLimit ? ethers.utils.parseUnits(gasPriceLimit, 'gwei') : 0,
+						gasPriceLimit: gasPriceLimit ? ethers.utils.parseUnits(gasPriceLimit.toString(), 'gwei') : 0,
 					},
 				];
 
