@@ -24,7 +24,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 	const [nft, setNft] = useState(quantity);
 	const [gasPriceLimit, setGasPriceLimit] = useState('');
 	const [funds, setFunds] = useState('');
-	const [estimatedGas] = useState(0.001);
+	const [estimatedGas, setEstimatedGas] = useState(0.001);
 	const [txGas, setTxGas] = useState<string>('');
 	const [txPrice, setTxPrice] = useState<string>('');
 	const [step, setStep] = useState(0);
@@ -148,7 +148,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 			const receipt = await tx?.wait();
 			console.log(receipt);
 
-			const event = receipt?.events && receipt.events.filter((event) => event.event === 'SchmintCreated');
+			const event = receipt?.events && receipt.events.filter((event) => event.event === 'SchmintModified');
 			if (!event) {
 				console.log('no event found');
 				return;
@@ -365,7 +365,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 					then={
 						<Box>
 							<InputBox
-								label="Maximum Gas Limit"
+								label="Maximum Gas Price Limit"
 								placeholder={!gasPriceLimit ? 'Not Set' : gasPriceLimit}
 								value={gasPriceLimit}
 								setValue={setGasPriceLimit}
@@ -437,7 +437,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 					height="4.8rem"
 					borderRadius="64px"
 					onClick={modifySchmint}
-					disable={actionRequired ? false : !editable || quantity === nft || disabled}
+					disable={actionRequired ? false : !editable || (quantity === nft && !gasPriceLimit) || disabled}
 				>
 					<Text as="btn1">Save Changes</Text>
 				</ButtonComp>

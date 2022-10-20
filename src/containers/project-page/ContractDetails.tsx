@@ -131,15 +131,35 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 									border={`1px solid ${theme.colors['gray-20']}`}
 									borderRadius="4px"
 									row
-									maxWidth="40%"
+									maxWidth="100%"
 								>
 									<If
-										condition={collection?.socials?.discord}
-										then={<Social border status="discord" />}
+										condition={collection?.discord_url}
+										then={<Social border status="discord" link={collection?.discord_url} />}
 									/>
 									<If
-										condition={collection?.socials?.twitter}
-										then={<Social border status="twitter" />}
+										condition={collection?.twitter_url}
+										then={<Social border status="twitter" link={collection?.twitter_url} />}
+									/>
+									<If
+										condition={collection?.x2y2_url}
+										then={<Social border status="x2y2" link={collection?.x2y2_url} />}
+									/>
+									<If
+										condition={collection?.looksrare_url}
+										then={<Social border status="Looksrare" link={collection?.looksrare_url} />}
+									/>
+									<If
+										condition={collection?.icytools_url}
+										then={<Social border status="icy-tools" link={collection?.icytools_url} />}
+									/>
+									<If
+										condition={collection?.rarity_url}
+										then={<Social border status="rarity-tools" link={collection?.rarity_url} />}
+									/>
+									<If
+										condition={collection?.opensea_url}
+										then={<Social border status="OpenSea" link={collection?.opensea_url} />}
 									/>
 									<Social
 										status="etherscan"
@@ -166,7 +186,7 @@ const ContractItem = ({ text, subText, network }: { text?: string; subText?: str
 				{text}
 			</Text>
 			<Text as="b3" color="gray-50" row alignItems="center" mt="mxs">
-				{subText ? subText : 'N/A'}
+				{subText ? subText : parseInt(subText) === 0 ? subText : 'N/A'}
 				<If
 					condition={!!network}
 					then={

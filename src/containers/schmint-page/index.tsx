@@ -39,12 +39,13 @@ const SchmintPage = ({ collection, schmint }) => {
 
 	const getSchmitsAssigned = async () => {
 		const targets = [schmint.target];
-		if (actionRequired) {
-			setStatus('-1');
-			return;
-		}
+
 		if (schmint.isSchminted) {
 			setStatus('1');
+			return;
+		}
+		if (actionRequired) {
+			setStatus('-1');
 			return;
 		}
 		const data = await getSuccesfulSchmints({ variables: { target: targets, owner: user.address } });

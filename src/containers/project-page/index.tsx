@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Box from 'src/components/Box';
 import Banner from './Banner';
 import ContractDetails from './ContractDetails';
@@ -12,6 +12,9 @@ import { useRouter } from 'next/router';
 const Projectpage = ({ collection }) => {
 	const [schmintCreated, setSchmintCreated] = React.useState(false);
 	const router = useRouter();
+	useEffect(() => {
+		console.log('collection', collection);
+	}, [collection]);
 
 	if (collection.title) {
 		return (
