@@ -25,21 +25,21 @@ const ConnectWallet = ({ networkProps }) => {
 	const dispatch = useAppDispatch();
 	const { disconnect } = useDisconnect();
 
-	// useEffect(() => {
-	// 	if (user.exists) {
-	// 		const validateAddressForInvite = async () => {
-	// 			const checkIfUserisValid = await checkIfUserInvited(user.address);
-	// 			if (!checkIfUserisValid) {
-	// 				disconnect();
-	// 				dispatch(showModal({ type: MODALS_LIST.INVITE_ONLY_MODAL, props: {} }));
-	// 				dispatch(removeUser());
-	// 			} else {
-	// 				dispatch(hideModal());
-	// 			}
-	// 		};
-	// 		validateAddressForInvite();
-	// 	}
-	// }, [user]);
+	useEffect(() => {
+		if (user.exists) {
+			const validateAddressForInvite = async () => {
+				const checkIfUserisValid = await checkIfUserInvited(user.address);
+				if (!checkIfUserisValid) {
+					disconnect();
+					dispatch(showModal({ type: MODALS_LIST.INVITE_ONLY_MODAL, props: {} }));
+					dispatch(removeUser());
+				} else {
+					dispatch(hideModal());
+				}
+			};
+			validateAddressForInvite();
+		}
+	}, [user]);
 
 	return (
 		<ConnectButton.Custom>
