@@ -6,6 +6,7 @@ const initialState: NetworkState = {
 	isOnline: false,
 	chainId: null,
 	name: '',
+	unit: '',
 	apolloClient: null,
 };
 
@@ -16,6 +17,7 @@ export const networkReducer = createReducer(initialState, (builder) => {
 			const newState = {
 				...state,
 				chainId,
+				unit: getUnit(chainId),
 				isOnline: true,
 				name,
 			};
@@ -33,3 +35,15 @@ export const networkReducer = createReducer(initialState, (builder) => {
 			return initialState;
 		});
 });
+
+const getUnit = (chainId: number): string => {
+	switch (chainId) {
+		case 1:
+		case 4:
+		case 5:
+			return 'ETH';
+		case 137:
+		case 80001:
+			return 'MATIC';
+	}
+};

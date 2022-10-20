@@ -37,20 +37,18 @@ const SchmintPage = ({ collection, schmint }) => {
 		}
 	}, [scheduler?.schedulerAddress, collection]);
 
-	const getSchmitsAssigned = async () => {
+	const getSchmintsAssigned = async () => {
 		const targets = [schmint.target];
+		const data = await getSuccesfulSchmints({ variables: { target: targets, owner: user.address } });
+		const { schmints } = data?.data;
+
 		if (actionRequired) {
 			setStatus('-1');
 			return;
-		}
-		if (schmint.isSchminted) {
+		} else if (schmint.isSchminted) {
 			setStatus('1');
 			return;
-		}
-		const data = await getSuccesfulSchmints({ variables: { target: targets, owner: user.address } });
-
-		const { schmints } = data?.data;
-		if (schmints.length > 0) {
+		} else if (schmints.length > 0) {
 			setStatus('0');
 		} else {
 			setStatus('');
@@ -92,7 +90,7 @@ const SchmintPage = ({ collection, schmint }) => {
 		if (schmint.isCancelled) {
 			setStatus('0');
 		} else {
-			getSchmitsAssigned();
+			getSchmintsAssigned();
 		}
 	}, [schmint, actionRequired]);
 
@@ -120,7 +118,7 @@ const SchmintPage = ({ collection, schmint }) => {
 				</Box>
 				<Banner collection={collection} schmint />
 				<If
-					condition={!!status}
+					condition={status != ''}
 					then={<AlertBox status={status} schmint={schmint} currPrice={currPrice} prevPrice={prevPrice} />}
 				/>
 				<ContractDetails collection={collection} />

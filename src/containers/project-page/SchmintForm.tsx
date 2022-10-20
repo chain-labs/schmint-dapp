@@ -9,6 +9,7 @@ import Text from 'src/components/Text';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { replaceModal, showModal } from 'src/redux/modal';
 import { MODALS_LIST } from 'src/redux/modal/types';
+import { networkSelector } from 'src/redux/network';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
@@ -39,8 +40,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 		formatUnits: 'gwei',
 		watch: true,
 	});
-
-	const { chain } = useNetwork();
+	const network = useAppSelector(networkSelector);
 	const user = useAppSelector(userSelector);
 	const scheduler = useAppSelector(schedulerSelector);
 
@@ -53,8 +53,8 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 	const SchedulerInstance = useScheduler();
 
 	const SchedulerFactoryInstance = useContract({
-		addressOrName: getContractAddress(chain?.id, 'SCHEDULER_FACTORY'),
-		contractInterface: getAbi(chain?.id, 'SCHEDULER_FACTORY'),
+		addressOrName: getContractAddress(network?.chainId, 'SCHEDULER_FACTORY'),
+		contractInterface: getAbi(network?.chainId, 'SCHEDULER_FACTORY'),
 	});
 
 	const dispatch = useAppDispatch();
@@ -68,7 +68,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 				props: {
 					title: 'Waiting for Confirmation',
 					subtext: 'Confirm the wallet transaction to proceed.',
-					gasCost: `${parseFloat(txGas).toFixed(6)} ${chain?.nativeCurrency?.symbol} or ${(
+					gasCost: `${parseFloat(txGas).toFixed(6)} ${network.unit} or ${(
 						parseFloat(txPrice) * parseFloat(txGas)
 					).toFixed(2)} USD`,
 				},
@@ -271,7 +271,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 				);
 
 				const totalEstimatedGasPrice = ethers.utils.formatEther(gasFee?.maxFeePerGas.mul(tx));
-				getCoinPrice(chain?.id).then((price) => {
+				getCoinPrice(network.chainId).then((price) => {
 					setTxPrice(price);
 				});
 				setTxGas(totalEstimatedGasPrice);
@@ -320,7 +320,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 					value: fundsToBeAdded,
 				});
 				const totalEstimatedGasPrice = ethers.utils.formatEther(gasFee?.maxFeePerGas.mul(tx));
-				getCoinPrice(chain?.id).then((price) => {
+				getCoinPrice(network.chainId).then((price) => {
 					setTxPrice(price);
 				});
 				setTxGas(totalEstimatedGasPrice);
@@ -333,14 +333,14 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			if (collection && user.exists) {
-				if (collection?.network?.chainId !== chain?.id) {
+				if (collection?.network?.chainId !== network.chainId) {
 					setWrongNetwork(true);
 					return;
 				}
 			}
 			setWrongNetwork(false);
 		}
-	}, [collection, chain, user.exists]);
+	}, [collection, network.chainId, user.exists]);
 
 	useEffect(() => {
 		const total = (collection?.price * parseInt(nft) + estimatedGas).toFixed(3);
@@ -351,7 +351,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 		if (user.exists) {
 			getEstimatedGas();
 		}
-	}, [nft, gasPriceLimit, funds, user, gasFee, chain]);
+	}, [nft, gasPriceLimit, funds, user, gasFee, network.chainId]);
 
 	return (
 		<Box width="54.8rem" px="mxl">
@@ -447,7 +447,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 						<Text as="c1" color="red-40" mt="mxs">
 							EST. GAS COST:{' '}
 							<span style={{ color: theme.colors['gray-40'] }}>{`${parseFloat(txGas).toFixed(6)} ${
-								chain?.nativeCurrency?.symbol
+								network.unit
 							} or ${(parseFloat(txPrice) * parseFloat(txGas)).toFixed(2)} USD`}</span>
 						</Text>
 					}
@@ -467,7 +467,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 							/>
 							<Text as="b3" color="gray-50" textAlign="center">
 								{`A total of ${funds.length !== 0 ? funds : 0} ${
-									chain?.nativeCurrency.symbol
+									network.unit
 								} will be added to your Gnosis Safe, which will then be used to mint the NFTs. We recommend having a little more than minimum funds in your Gnosis Safe to prevent your transaction from failing.`}
 							</Text>
 						</Box>
