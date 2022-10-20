@@ -21,6 +21,9 @@ interface Props {
 
 const CounterInput = ({ label, required, bg, helper, max, min, errorText, value, setValue, disabled }: Props) => {
 	const [errorState, setErrorState] = React.useState(false);
+	useEffect(() => {
+		console.log({ disabled });
+	}, [disabled]);
 
 	useEffect(() => {
 		if (parseInt(value) > max || parseInt(value) < min) {
@@ -112,6 +115,7 @@ const CounterInput = ({ label, required, bg, helper, max, min, errorText, value,
 						e.target.blur();
 					}}
 					onBlur={handleBlur}
+					disabled={disabled}
 				></Box>
 				<Box
 					bg="gray-10"
