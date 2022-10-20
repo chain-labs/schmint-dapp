@@ -107,7 +107,6 @@ const DappNavbar = () => {
 						</Box>
 						<Box row center>
 							<NavItem url={FAQ_URL} text="FAQs" />
-							<NavItem url={DOCS_URL} text="Docs" />
 							<ConnectWallet networkProps={networkProps} />
 						</Box>
 					</Box>

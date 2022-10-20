@@ -15,10 +15,6 @@ export const DISCLAIMER_URL = 'https://chain-labs.github.io/schmint-projects/dis
 
 export const FOOTER_LINKS = [
 	{
-		title: 'Docs',
-		url: DOCS_URL,
-	},
-	{
 		title: 'Blogs',
 		url: BLOGS_URL,
 	},
