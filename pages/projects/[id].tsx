@@ -30,9 +30,9 @@ const ProjectPage = () => {
 	};
 
 	const getCollection = async () => {
-		collections.map(async (collection) => {
-			if (collection.id.toString() === id) {
-				await setCollection(collection);
+		collections.map((collection) => {
+			if (collection.id === id) {
+				setCollection(collection);
 			}
 		});
 	};
@@ -40,6 +40,7 @@ const ProjectPage = () => {
 	useEffect(() => {
 		getCollection();
 	}, [id, collections]);
+
 
 	useEffect(() => {
 		getAllCollections();

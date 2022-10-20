@@ -4,5 +4,6 @@ export interface NetworkState {
 	isOnline?: boolean;
 	chainId?: number;
 	name?: string;
+	unit?: string;
 	apolloClient?: ApolloClient<NormalizedCacheObject>;
 }
