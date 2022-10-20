@@ -22,10 +22,6 @@ interface Props {
 const CounterInput = ({ label, required, bg, helper, max, min, errorText, value, setValue, disabled }: Props) => {
 	const [errorState, setErrorState] = React.useState(false);
 	useEffect(() => {
-		console.log({ disabled });
-	}, [disabled]);
-
-	useEffect(() => {
 		if (parseInt(value) > max || parseInt(value) < min) {
 			setErrorState(true);
 		} else {
