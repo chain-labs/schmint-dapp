@@ -118,7 +118,7 @@ const SchmintPage = ({ collection, schmint }) => {
 				</Box>
 				<Banner collection={collection} schmint />
 				<If
-					condition={status != ''}
+					condition={status !== ''}
 					then={<AlertBox status={status} schmint={schmint} currPrice={currPrice} prevPrice={prevPrice} />}
 				/>
 				<ContractDetails collection={collection} />
