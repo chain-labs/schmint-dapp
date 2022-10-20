@@ -441,6 +441,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 				>
 					<Text as="btn1">Create Schmint</Text>
 				</ButtonComp>
+
 				<If
 					condition={gasFee && user.exists}
 					then={
@@ -471,6 +472,11 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 								} will be added to your Gnosis Safe, which will then be used to mint the NFTs. We recommend having a little more than minimum funds in your Gnosis Safe to prevent your transaction from failing.`}
 							</Text>
 						</Box>
+					}
+					else={
+						<Text as="b3" textAlign="center" p="mxs" color={`${theme.colors['gray-50']}`} mb="mxs">
+							Connect wallet to create Schmint
+						</Text>
 					}
 				/>
 			</Box>

@@ -64,7 +64,7 @@ const SchmintTile = ({
 
 	useEffect(() => {
 		if (!completed) {
-			const currentPrice = collection.price;
+			const currentPrice = collection?.price;
 			const txPrice = parseFloat(value) / quantity;
 			if (currentPrice !== txPrice) {
 				setActionRequired(true);

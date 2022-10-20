@@ -31,7 +31,7 @@ const ProjectPage = () => {
 
 	const getCollection = async () => {
 		collections.map(async (collection) => {
-			if (collection.id === id) {
+			if (collection.id.toString() === id) {
 				await setCollection(collection);
 			}
 		});

@@ -68,11 +68,11 @@ const Avatar = () => {
 												row
 												cursor="pointer"
 												onClick={() => {
-													navigator.clipboard?.writeText(scheduler.avatar);
+													navigator.clipboard?.writeText(scheduler.schedulerAddress);
 													toast.success('Copied');
 												}}
 											>
-												<Copy color={theme.colors['blue-40']} size={16} />
+												<Copy color={theme.colors['blue-40']} weight="bold" size={16} />
 											</Box>
 										</React.Fragment>
 									}
@@ -106,7 +106,7 @@ const Avatar = () => {
 												cursor="pointer"
 												onClick={handleDepositFunds}
 											>
-												<Plus color={theme.colors['blue-40']} size={16} />
+												<Plus color={theme.colors['blue-40']} weight="bold" size={16} />
 											</Box>
 										</React.Fragment>
 									}
