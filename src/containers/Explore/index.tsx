@@ -6,6 +6,7 @@ import theme from 'src/styleguide/theme';
 import Filters from './Filters';
 import CollectionsList from './CollectionsList';
 import SearchInput from './SearchInput';
+import Link from 'next/link';
 
 const ExploreComp = () => {
 	return (
@@ -17,11 +18,19 @@ const ExploreComp = () => {
 						Explore
 					</Text>
 				</Box>
-				<Box alignSelf="flex-end" cursor="pointer">
+				{/* <Link target href="https://form.jotform.com/222922224502041"> */}
+				<Box
+					alignSelf="flex-end"
+					cursor="pointer"
+					as="a"
+					href="https://form.jotform.com/222922224502041"
+					target="_blank"
+				>
 					<Text as="btn2" color="simply-blue">
 						Submit a project
 					</Text>
 				</Box>
+				{/* </Link> */}
 			</Box>
 			<SearchInput />
 			<Filters />
