@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { userSelector, setUser } from 'src/redux/user';
 import ReactTooltip from 'react-tooltip';
 import { List } from 'phosphor-react';
-import { DOCS_URL, FAQ_URL } from 'src/utils/constants';
+import { FAQ_URL } from 'src/utils/constants';
 import Link from 'next/link';
 import { useAccount, useSigner, useSwitchNetwork } from 'wagmi';
 import If from '../If';

@@ -1,4 +1,3 @@
-import { parse } from 'path';
 import { Minus, Plus } from 'phosphor-react';
 import React, { useEffect } from 'react';
 import theme from 'src/styleguide/theme';
@@ -19,7 +18,7 @@ interface Props {
 	disabled?: boolean;
 }
 
-const CounterInput = ({ label, required, bg, helper, max, min, errorText, value, setValue, disabled }: Props) => {
+const CounterInput = ({ label, bg, helper, max, min, errorText, value, setValue, disabled }: Props) => {
 	const [errorState, setErrorState] = React.useState(false);
 	useEffect(() => {
 		if (parseInt(value) > max || parseInt(value) < min) {
@@ -51,7 +50,7 @@ const CounterInput = ({ label, required, bg, helper, max, min, errorText, value,
 		setValue(n);
 	};
 
-	const handleBlur = (e) => {
+	const handleBlur = () => {
 		if (value === '') {
 			setValue(min);
 		}

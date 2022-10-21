@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import CostComp from 'src/containers/project-page/components/CostComp';
 import Box from '../Box';
 import ButtonComp from '../Button';

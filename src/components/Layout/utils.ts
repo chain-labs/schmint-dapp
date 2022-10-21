@@ -4,5 +4,3 @@ export const indexAddress = (address: string) => {
 	const index = decimalEquivalent % 4;
 	return index + 1;
 };
-
-

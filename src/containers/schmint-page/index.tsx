@@ -23,7 +23,7 @@ const SchmintPage = ({ collection, schmint }) => {
 	const scheduler = useAppSelector(schedulerSelector);
 	const [actionRequired, setActionRequired] = useState<boolean>();
 	const [abi, setABI] = useState();
-	const [currPrice, setCurrPrice] = useState(collection.price);
+	const [currPrice] = useState(collection.price);
 	const [quantity, setQuantity] = useState<number>(0);
 	const [status, setStatus] = useState('');
 	const [prevPrice, setPrevPrice] = useState(collection.price);

@@ -1,11 +1,10 @@
-import Link from 'next/link';
 import { ArrowDown, ArrowUpRight, Confetti, SmileySad, Warning, WarningCircle } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import Text from 'src/components/Text';
 import { useAppSelector } from 'src/redux/hooks';
-import { schedulerReducer, schedulerSelector } from 'src/redux/scheduler';
+import { schedulerSelector } from 'src/redux/scheduler';
 import { getAbi } from 'src/utils/contracts';
 import { useContractRead, useNetwork } from 'wagmi';
 import { getGnosisSafeUrl } from '../MyAssets/utils';
@@ -16,7 +15,7 @@ const AlertBox = ({ status, schmint, currPrice, prevPrice }) => {
 	const [date, setDate] = useState('');
 	const [time, setTime] = useState('');
 
-	const { data, isLoading } = useContractRead({
+	const { data } = useContractRead({
 		addressOrName: scheduler.schedulerAddress,
 		contractInterface: getAbi(chain?.id, 'SCHEDULER'),
 		functionName: 'avatar',

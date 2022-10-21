@@ -9,8 +9,7 @@ import { useAppSelector } from 'src/redux/hooks';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
-import { getAbi } from 'src/utils/contracts';
-import { useContractRead, useNetwork } from 'wagmi';
+import { useNetwork } from 'wagmi';
 import { getGnosisSafeUrl } from './utils';
 
 const MyAssetsComponent = () => {

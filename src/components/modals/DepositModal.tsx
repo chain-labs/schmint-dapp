@@ -9,7 +9,7 @@ import { MODALS_LIST } from 'src/redux/modal/types';
 import { schedulerSelector } from 'src/redux/scheduler';
 import theme from 'src/styleguide/theme';
 import { getCoinPrice } from 'src/utils/gasPrices';
-import { useFeeData, useNetwork, useSigner } from 'wagmi';
+import { useNetwork, useSigner } from 'wagmi';
 import Box from '../Box';
 import ButtonComp from '../Button';
 import { condenseAddress } from '../DappNavbar/ConnectWallet';
@@ -23,10 +23,6 @@ const DepositModal = () => {
 	const dispatch = useAppDispatch();
 	const { chain } = useNetwork();
 	const { data: signer } = useSigner();
-	const { data: gasFee } = useFeeData({
-		formatUnits: 'gwei',
-		watch: true,
-	});
 
 	const [funds, setFunds] = useState<number>();
 

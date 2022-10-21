@@ -29,7 +29,7 @@ const Layout = ({ children }) => {
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
 	const network = useAppSelector(networkSelector);
 	const { chains, chain } = useNetwork();
-	const [loadScheduler, { called, loading, refetch: refetchScheduler }] = useLazyQuery(GET_USER_SCHEDULER, {
+	const [loadScheduler, { called, loading }] = useLazyQuery(GET_USER_SCHEDULER, {
 		onCompleted: (data) => {
 			const scheduler = data?.schedulers?.[0];
 			if (scheduler && scheduler?.owner?.toLowerCase() === user.address.toLowerCase()) {
@@ -162,8 +162,9 @@ const Layout = ({ children }) => {
 						/>
 					</Box>
 					<Text as="h5" color="gray-50" textAlign="center" maxWidth="32rem" mt="mxl">
-						Schmint is currently only available for desktop devices.But don't worry, Schmint for mobile will
-						be available soon.
+						{
+							"Schmint is currently only available for desktop devices.But don't worry, Schmint for mobile will be available soon."
+						}
 					</Text>
 					<Link href="/" passHref>
 						<ButtonComp bg="primary" mt="wxs" px="wxxs" py="ms">

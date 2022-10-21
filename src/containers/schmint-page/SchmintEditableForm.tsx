@@ -24,7 +24,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 	const [nft, setNft] = useState(quantity);
 	const [gasPriceLimit, setGasPriceLimit] = useState<number>();
 	const [funds, setFunds] = useState('');
-	const [estimatedGas, setEstimatedGas] = useState(0.001);
+	const [estimatedGas] = useState(0.001);
 	const [txGas, setTxGas] = useState<string>('');
 	const [txPrice, setTxPrice] = useState<string>('');
 	const [step, setStep] = useState(0);
@@ -254,7 +254,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 					data: buyTx?.data,
 				},
 			];
-			
+
 			const prevValue = parseFloat(ethers.utils.formatEther(schmint?.value));
 
 			const fundsToBeAdded = ethers.utils.parseEther(

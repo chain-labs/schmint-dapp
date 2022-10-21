@@ -7,7 +7,7 @@ import Box from 'components/Box';
 import Text from 'components/Text';
 
 const Drawer = ({ drawerOpen, setDrawerOpen }) => {
-	const [expandable, setExpandable] = useState(false);
+	const [expandable] = useState(false);
 
 	const controls = useAnimationControls();
 	const drawerControls = useAnimationControls();

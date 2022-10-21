@@ -6,7 +6,6 @@ import theme from 'src/styleguide/theme';
 import Filters from './Filters';
 import CollectionsList from './CollectionsList';
 import SearchInput from './SearchInput';
-import Link from 'next/link';
 
 const ExploreComp = () => {
 	return (

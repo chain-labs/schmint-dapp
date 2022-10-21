@@ -1,5 +1,4 @@
-import Link from 'next/link';
-import React, { useState } from 'react';
+import React from 'react';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import If from 'src/components/If';

@@ -1,7 +1,7 @@
 import Box from 'components/Box';
 import theme from 'src/styleguide/theme';
 import styled from 'styled-components';
-import { Prohibit, Check, WarningCircle, MagnifyingGlass, Plus, Minus } from 'phosphor-react';
+import { Check, WarningCircle, MagnifyingGlass, Plus, Minus } from 'phosphor-react';
 import If from './If';
 import { useEffect, useState } from 'react';
 import Text from './Text';
@@ -45,7 +45,6 @@ const TextInput = ({
 	disableValidation,
 	fontSize,
 	inputType,
-	valueDisable,
 	ref,
 	actionRequired,
 }: Props) => {

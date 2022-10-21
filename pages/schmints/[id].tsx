@@ -6,7 +6,7 @@ import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import If from 'src/components/If';
 import Text from 'src/components/Text';
-import { getCollections, ICollection } from 'src/containers/Explore/projectsStore';
+import { ICollection } from 'src/containers/Explore/projectsStore';
 import NoSchmintComponent from 'src/containers/my-schmints/NoSchmintComponent';
 import SchmintPage from 'src/containers/schmint-page';
 import WrongNetworkAlert from 'src/containers/WrongNetworkAlert';
@@ -29,7 +29,7 @@ const Schmint = () => {
 	const scheduler = useAppSelector(schedulerSelector);
 	const [schmint, setSchmint] = useState<SchmintState>();
 	const [wrongNetwork, setWrongNetwork] = useState(false);
-	const { loading } = useQuery(GET_SCHMINT, {
+	useQuery(GET_SCHMINT, {
 		variables: {
 			id: id,
 		},

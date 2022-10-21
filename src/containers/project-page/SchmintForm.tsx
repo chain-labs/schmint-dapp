@@ -15,8 +15,7 @@ import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
 import { getAbi, getContractAddress } from 'src/utils/contracts';
 import { getCoinPrice } from 'src/utils/gasPrices';
-import { useContract, useFeeData, useNetwork, useProvider, useSigner } from 'wagmi';
-import AlertBottomBox from './components/AlertBottomBox';
+import { useContract, useFeeData, useProvider, useSigner } from 'wagmi';
 import CostComp from './components/CostComp';
 import InputBox from './components/InputBox';
 import useScheduler from './useScheduler';
@@ -28,7 +27,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 	const [gasPriceLimit, setGasPriceLimit] = useState('');
 	const [funds, setFunds] = useState('');
 	const [step, setStep] = useState(0);
-	const [estimatedGas, setEstimatedGas] = useState(0.001);
+	const [estimatedGas] = useState(0.001);
 	const [wrongNetwork, setWrongNetwork] = useState(false);
 
 	const [txGas, setTxGas] = useState<string>('');

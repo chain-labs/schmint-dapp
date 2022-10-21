@@ -1,10 +1,9 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useAppDispatch } from 'src/redux/hooks';
 import { hideModal } from 'src/redux/modal';
 import theme from 'src/styleguide/theme';
-import { useNetwork } from 'wagmi';
 import Box from '../Box';
 import ButtonComp from '../Button';
 import If from '../If';

@@ -22,7 +22,6 @@ const DeleteModal = ({ schmint, collectionName }) => {
 		watch: true,
 	});
 
-	const [txPrice, setTxPrice] = React.useState('');
 	const [txGas, setTxGas] = React.useState('');
 
 	const handleDelete = async () => {
@@ -83,9 +82,6 @@ const DeleteModal = ({ schmint, collectionName }) => {
 		try {
 			const tx = await SchedulerInstance?.connect(signer)?.estimateGas?.cancelSchmint(schmint.schmintId);
 			const totalEstimatedGasPrice = ethers.utils.formatEther(gasFee?.maxFeePerGas.mul(tx));
-			getCoinPrice(chain?.id).then((price) => {
-				setTxPrice(price);
-			});
 			setTxGas(totalEstimatedGasPrice);
 		} catch (err) {
 			console.log({ err });

@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { Question } from 'phosphor-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import ReactTooltip from 'react-tooltip';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
