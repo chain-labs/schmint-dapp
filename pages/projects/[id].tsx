@@ -6,6 +6,7 @@ import { ICollection } from 'src/containers/Explore/projectsStore';
 import Projectpage from 'src/containers/project-page';
 import WrongNetworkAlert from 'src/containers/WrongNetworkAlert';
 import { useAppSelector } from 'src/redux/hooks';
+import { networkSelector } from 'src/redux/network';
 import { userSelector } from 'src/redux/user';
 import { PROJECTS_DIR } from 'src/utils/constants';
 import { useNetwork } from 'wagmi';
@@ -18,6 +19,7 @@ const ProjectPage = () => {
 	const { chain } = useNetwork();
 	const user = useAppSelector(userSelector);
 	const [wrongNetwork, setWrongNetwork] = useState(false);
+	const network = useAppSelector(networkSelector);
 
 	const getAllCollections = async () => {
 		const data = await fetch(PROJECTS_DIR);
@@ -44,7 +46,7 @@ const ProjectPage = () => {
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			if (collection && user.exists) {
-				if (collection?.network?.chainId !== chain?.id) {
+				if (!network.isValid || collection?.network?.chainId !== chain?.id) {
 					setWrongNetwork(true);
 					return;
 				}

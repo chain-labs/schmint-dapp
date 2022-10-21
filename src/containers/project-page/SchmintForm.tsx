@@ -52,8 +52,8 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 	const SchedulerInstance = useScheduler();
 
 	const SchedulerFactoryInstance = useContract({
-		addressOrName: getContractAddress(network?.chainId, 'SCHEDULER_FACTORY'),
-		contractInterface: getAbi(network?.chainId, 'SCHEDULER_FACTORY'),
+		addressOrName: getContractAddress(network.isValid ? network?.chainId : 4, 'SCHEDULER_FACTORY'),
+		contractInterface: getAbi(network.isValid ? network?.chainId : 4, 'SCHEDULER_FACTORY'),
 	});
 
 	const dispatch = useAppDispatch();
@@ -332,7 +332,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			if (collection && user.exists) {
-				if (collection?.network?.chainId !== network.chainId) {
+				if (!network.isValid || collection?.network?.chainId !== network.chainId) {
 					setWrongNetwork(true);
 					return;
 				}

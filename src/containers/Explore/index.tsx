@@ -17,7 +17,6 @@ const ExploreComp = () => {
 						Explore
 					</Text>
 				</Box>
-				{/* <Link target href="https://form.jotform.com/222922224502041"> */}
 				<Box
 					alignSelf="flex-end"
 					cursor="pointer"

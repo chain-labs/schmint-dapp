@@ -11,6 +11,7 @@ export const EMAIL_CONTACT = 'hello@chainlabs.in';
 export const CALENDLY_LINK = process.env.NEXT_PUBLIC_CALENDLY_URL;
 export const WAITLIST_ID = process.env.NEXT_PUBLIC_WAITLIST_ID;
 export const DISCORD_INVITE = process.env.NEXT_PUBLIC_DISCORD_INVITE;
+export const TEST_ENV = process.env.NEXT_PUBLIC_TEST_ENV;
 export const DISCLAIMER_URL = 'https://chain-labs.github.io/schmint-projects/disclaimer.html';
 
 export const FOOTER_LINKS = [

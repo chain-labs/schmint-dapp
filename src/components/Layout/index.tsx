@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { SIMPLR_URL } from 'src/constants';
+import { SIMPLR_URL, TEST_ENV } from 'src/constants';
 import Box from 'components/Box';
 import Avatar from './Avatar';
 import MenuItems from './MenuItems';
@@ -21,6 +21,7 @@ import { useNetwork } from 'wagmi';
 import Text from '../Text';
 import ButtonComp from '../Button';
 import Link from 'next/link';
+import WrongNetworkAlert from 'src/containers/WrongNetworkAlert';
 
 const Layout = ({ children }) => {
 	const router = useRouter();
@@ -70,10 +71,11 @@ const Layout = ({ children }) => {
 		};
 		window.addEventListener('resize', resize);
 		window.ethereum.on('chainChanged', (chain) => {
+			const name = chains.find((c) => c.id === parseInt(chain))?.name;
 			dispatch(
 				setNetwork({
 					chainId: parseInt(chain),
-					name: chains.find((c) => c.id === parseInt(chain)).name,
+					name: name ?? '',
 				})
 			);
 		});
@@ -84,7 +86,7 @@ const Layout = ({ children }) => {
 	}, []);
 
 	useEffect(() => {
-		if (user.address) {
+		if (user.address && network.isValid) {
 			loadScheduler({
 				variables: {
 					id: user.address.toLowerCase(),
@@ -196,12 +198,25 @@ const Layout = ({ children }) => {
 				<Box width="29.2rem"></Box>
 				<Box flex={1}>
 					<If
-						condition={!user.exists || (called && !loading)}
+						condition={!user.exists || (called && !loading) || !network.isValid}
 						then={children}
 						else={<Loader msg="Loading..." minHeight={`${windowHeight - 167}px`} />}
 					/>
 				</Box>
 			</Box>
+			<If
+				condition={
+					network.isOnline &&
+					!network.isValid &&
+					(router.asPath === '/explore' || router.asPath === '/my-assets' || router.asPath === '/my-schmints')
+				}
+				then={
+					<WrongNetworkAlert
+						customText="This network is currently not supported. Switch to a supported network."
+						chainTo={TEST_ENV ? 5 : 137}
+					/>
+				}
+			/>
 			<Footer />
 		</Box>
 	);

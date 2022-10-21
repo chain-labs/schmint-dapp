@@ -1,9 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
+import { TEST_ENV } from 'src/constants';
 import { disconnect, setApolloClient, setNetwork } from './actions';
 import { NetworkState } from './types';
 
 const initialState: NetworkState = {
 	isOnline: false,
+	isValid: false,
 	chainId: null,
 	name: '',
 	unit: '',
@@ -19,7 +21,7 @@ export const networkReducer = createReducer(initialState, (builder) => {
 				chainId,
 				unit: getUnit(chainId),
 				isOnline: true,
-				name,
+				isValid: checkValidNetwork(chainId),
 			};
 			return newState;
 		})
@@ -45,5 +47,24 @@ const getUnit = (chainId: number): string => {
 		case 137:
 		case 80001:
 			return 'MATIC';
+	}
+};
+
+const checkValidNetwork = (chainId: number): boolean => {
+	if (TEST_ENV) {
+		switch (chainId) {
+			case 5:
+			case 80001:
+				return true;
+			default:
+				return false;
+		}
+	} else {
+		switch (chainId) {
+			case 137:
+				return true;
+			default:
+				return false;
+		}
 	}
 };
