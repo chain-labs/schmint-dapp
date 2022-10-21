@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import If from 'src/components/If';
+import Loader from 'src/components/Loader';
 import Text from 'src/components/Text';
 import { ICollection } from 'src/containers/Explore/projectsStore';
 import NoSchmintComponent from 'src/containers/my-schmints/NoSchmintComponent';
@@ -12,6 +13,7 @@ import SchmintPage from 'src/containers/schmint-page';
 import WrongNetworkAlert from 'src/containers/WrongNetworkAlert';
 import GET_SCHMINT from 'src/graphql/query/GetSchmint';
 import { useAppSelector } from 'src/redux/hooks';
+import { networkSelector } from 'src/redux/network';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { SchmintState } from 'src/redux/scheduler/types';
 import { userSelector } from 'src/redux/user';
@@ -29,7 +31,8 @@ const Schmint = () => {
 	const scheduler = useAppSelector(schedulerSelector);
 	const [schmint, setSchmint] = useState<SchmintState>();
 	const [wrongNetwork, setWrongNetwork] = useState(false);
-	useQuery(GET_SCHMINT, {
+	const network = useAppSelector(networkSelector);
+	const { loading } = useQuery(GET_SCHMINT, {
 		variables: {
 			id: id,
 		},
@@ -66,7 +69,7 @@ const Schmint = () => {
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			if (collection && user.exists) {
-				if (collection?.network?.chainId !== chain?.id) {
+				if (collection?.network?.chainId !== network.chainId) {
 					setWrongNetwork(true);
 					return;
 				}
@@ -91,6 +94,9 @@ const Schmint = () => {
 
 	if (!user.exists) {
 		return <NoSchmintComponent page={0} />;
+	}
+	if (loading) {
+		return <Loader />;
 	}
 
 	return (
