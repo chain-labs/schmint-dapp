@@ -43,7 +43,7 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 								Schmint Created!
 							</Text>
 							<Text as="b3" color="gray-50" mt="mxs">
-								You have successfully created a Schmint for Abstract 3D.
+								You have successfully created a Schmint for {collection?.title}.
 							</Text>
 							<Box row>
 								<Link href={`/my-schmints`} passHref>
