@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import Image from 'next/image';
 import { Copy } from 'phosphor-react';
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import InputBox from 'src/containers/project-page/components/InputBox';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { hideModal, replaceModal, showModal } from 'src/redux/modal';
@@ -123,7 +124,10 @@ const DepositModal = () => {
 						<Copy
 							size={16}
 							color={theme.colors['blue-40']}
-							onClick={() => navigator.clipboard.writeText(scheduler.avatar)}
+							onClick={() => {
+								navigator.clipboard.writeText(scheduler.avatar);
+								toast.success('Copied');
+							}}
 							style={{ cursor: 'pointer' }}
 						/>
 					</Box>
