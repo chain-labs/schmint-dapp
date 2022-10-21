@@ -120,7 +120,12 @@ const DepositModal = () => {
 						<Text as="c1" mr="mxs">
 							{condenseAddress(scheduler.avatar)}
 						</Text>
-						<Copy size={16} color={theme.colors['blue-40']} />
+						<Copy
+							size={16}
+							color={theme.colors['blue-40']}
+							onClick={() => navigator.clipboard.writeText(scheduler.avatar)}
+							style={{ cursor: 'pointer' }}
+						/>
 					</Box>
 				</Box>
 				<Box>
