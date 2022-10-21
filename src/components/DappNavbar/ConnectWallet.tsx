@@ -23,7 +23,6 @@ export const condenseAddress = (address) => {
 const ConnectWallet = ({ networkProps }) => {
 	const user = useAppSelector(userSelector);
 	const dispatch = useAppDispatch();
-	const { disconnect } = useDisconnect();
 
 	useEffect(() => {
 		if (user.exists) {
@@ -31,7 +30,6 @@ const ConnectWallet = ({ networkProps }) => {
 				const checkIfUserisValid = await checkIfUserInvited(user.address);
 				if (!checkIfUserisValid) {
 					dispatch(showModal({ type: MODALS_LIST.INVITE_ONLY_MODAL, props: {} }));
-					disconnect();
 					dispatch(removeUser());
 				} else {
 					dispatch(hideModal());
@@ -53,7 +51,6 @@ const ConnectWallet = ({ networkProps }) => {
 						const validateAddressForInvite = async () => {
 							const checkIfUserisValid = checkIfUserInvited(user.address);
 							if (!checkIfUserisValid) {
-								disconnect();
 								dispatch(showModal({ type: MODALS_LIST.INVITE_ONLY_MODAL, props: {} }));
 							} else {
 								dispatch(setUser(account?.address));

@@ -24,9 +24,10 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 	const [projectWebsiteUrl, setProjectWebsiteUrl] = useState('');
 
 	useEffect(() => {
+		const twitter = collection?.socials?.twitter_url?.split('/')[3];
 		const chain = chains.find((chain) => chain.id === collection?.network?.chainId);
 		setChainExplorer(chain?.blockExplorers?.etherscan?.url);
-		setProjectTwitterHandle(collection?.twitter_url?.slice(20));
+		setProjectTwitterHandle(twitter);
 		setProjectWebsiteUrl(collection.id);
 	}, [chains, collection]);
 
