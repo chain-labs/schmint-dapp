@@ -1,16 +1,13 @@
 import { useRouter } from 'next/router';
-import { X } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
-import ButtonComp from 'src/components/Button';
 import If from 'src/components/If';
-import Text from 'src/components/Text';
 import { ICollection } from 'src/containers/Explore/projectsStore';
 import Projectpage from 'src/containers/project-page';
 import WrongNetworkAlert from 'src/containers/WrongNetworkAlert';
 import { useAppSelector } from 'src/redux/hooks';
+import { networkSelector } from 'src/redux/network';
 import { userSelector } from 'src/redux/user';
-import theme from 'src/styleguide/theme';
 import { PROJECTS_DIR } from 'src/utils/constants';
 import { useNetwork } from 'wagmi';
 
@@ -22,6 +19,7 @@ const ProjectPage = () => {
 	const { chain } = useNetwork();
 	const user = useAppSelector(userSelector);
 	const [wrongNetwork, setWrongNetwork] = useState(false);
+	const network = useAppSelector(networkSelector);
 
 	const getAllCollections = async () => {
 		const data = await fetch(PROJECTS_DIR);
@@ -30,9 +28,9 @@ const ProjectPage = () => {
 	};
 
 	const getCollection = async () => {
-		collections.map(async (collection) => {
-			if (collection.id.toString() === id) {
-				await setCollection(collection);
+		collections.map((collection) => {
+			if (collection.id === id) {
+				setCollection(collection);
 			}
 		});
 	};
@@ -48,7 +46,7 @@ const ProjectPage = () => {
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			if (collection && user.exists) {
-				if (collection?.network?.chainId !== chain?.id) {
+				if (!network.isValid || collection?.network?.chainId !== chain?.id) {
 					setWrongNetwork(true);
 					return;
 				}

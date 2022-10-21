@@ -2,14 +2,8 @@ import Link from 'next/link';
 import Box from 'src/components/Box';
 import Text from 'src/components/Text';
 import theme from 'src/styleguide/theme';
-import waitlist from '@zootools/waitlist-js';
-import { WAITLIST_ID } from 'src/constants';
 
 const Home = () => {
-	const clickPopup = (e) => {
-		e.preventDefault();
-		waitlist.openPopup(WAITLIST_ID);
-	};
 	return (
 		<Box bg="sky-blue-10" height="100vh" width="100vw" color="simply-black" column justifyContent="center">
 			<Box
@@ -26,7 +20,7 @@ const Home = () => {
 					Schmint helps collectors get a good night’s sleep.
 				</Text>
 				<Box mt="wxs" row alignItems="center">
-					<Link href="/explore">
+					<Link href="/explore" passHref>
 						<Box
 							center
 							bg="blue-40"

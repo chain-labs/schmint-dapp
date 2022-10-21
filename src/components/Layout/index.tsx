@@ -18,6 +18,11 @@ import { GET_USER_SCHEDULER } from 'src/graphql/query/GetUserScheduler';
 import Footer from '../Footer';
 import { networkSelector, setNetwork } from 'src/redux/network';
 import { useNetwork } from 'wagmi';
+import Text from '../Text';
+import ButtonComp from '../Button';
+import Link from 'next/link';
+import WrongNetworkAlert from 'src/containers/WrongNetworkAlert';
+import { TEST_ENV } from 'src/utils/constants';
 
 const Layout = ({ children }) => {
 	const router = useRouter();
@@ -26,7 +31,7 @@ const Layout = ({ children }) => {
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
 	const network = useAppSelector(networkSelector);
 	const { chains, chain } = useNetwork();
-	const [loadScheduler, { called, loading, refetch: refetchScheduler }] = useLazyQuery(GET_USER_SCHEDULER, {
+	const [loadScheduler, { called, loading }] = useLazyQuery(GET_USER_SCHEDULER, {
 		onCompleted: (data) => {
 			const scheduler = data?.schedulers?.[0];
 			if (scheduler && scheduler?.owner?.toLowerCase() === user.address.toLowerCase()) {
@@ -67,11 +72,11 @@ const Layout = ({ children }) => {
 		};
 		window.addEventListener('resize', resize);
 		window.ethereum.on('chainChanged', (chain) => {
-
+			const name = chains.find((c) => c.id === parseInt(chain))?.name;
 			dispatch(
 				setNetwork({
 					chainId: parseInt(chain),
-					name: chains.find((c) => c.id === parseInt(chain)).name,
+					name: name ?? '',
 				})
 			);
 		});
@@ -82,7 +87,7 @@ const Layout = ({ children }) => {
 	}, []);
 
 	useEffect(() => {
-		if (user.address) {
+		if (user.address && network.isValid) {
 			loadScheduler({
 				variables: {
 					id: user.address.toLowerCase(),
@@ -139,6 +144,38 @@ const Layout = ({ children }) => {
 	}
 	return (
 		<Box overflowX="hidden">
+			<Box display={{ mobS: 'block', tabS: 'none' }}>
+				<HomeNavbar />
+				<Box
+					height="100vh"
+					width="100vw"
+					bg="simply-white"
+					zIndex={15}
+					center
+					column
+					position="absolute"
+					top="0"
+					left="0"
+				>
+					<Box position="relative" height="12.5rem" width="12.5rem">
+						<Image
+							src="https://ik.imagekit.io/chainlabs/Schmint/Pause_HydHebOXS.png"
+							layout="fill"
+							objectFit="cover"
+						/>
+					</Box>
+					<Text as="h5" color="gray-50" textAlign="center" maxWidth="32rem" mt="mxl">
+						{
+							"Schmint is currently only available for desktop devices.But don't worry, Schmint for mobile will be available soon."
+						}
+					</Text>
+					<Link href="/" passHref>
+						<ButtonComp bg="primary" mt="wxs" px="wxxs" py="ms">
+							<Text as="btn1">Back to Home</Text>
+						</ButtonComp>
+					</Link>
+				</Box>
+			</Box>
 			<DappNavbar />
 			<Box minHeight="16.8rem" bg={setLayoutStripBg()} width="100vw"></Box>
 			<Box row minHeight={`${windowHeight - 168}px`}>
@@ -162,12 +199,25 @@ const Layout = ({ children }) => {
 				<Box width="29.2rem"></Box>
 				<Box flex={1}>
 					<If
-						condition={!user.exists || (called && !loading)}
+						condition={!user.exists || (called && !loading) || !network.isValid}
 						then={children}
 						else={<Loader msg="Loading..." minHeight={`${windowHeight - 167}px`} />}
 					/>
 				</Box>
 			</Box>
+			<If
+				condition={
+					network.isOnline &&
+					!network.isValid &&
+					(router.asPath === '/explore' || router.asPath === '/my-assets' || router.asPath === '/my-schmints')
+				}
+				then={
+					<WrongNetworkAlert
+						customText="This network is currently not supported. Switch to a supported network."
+						chainTo={TEST_ENV ? 5 : 137}
+					/>
+				}
+			/>
 			<Footer />
 		</Box>
 	);

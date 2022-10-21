@@ -22,20 +22,22 @@ const DeleteModal = ({ schmint, collectionName }) => {
 		watch: true,
 	});
 
-	const [txPrice, setTxPrice] = React.useState('');
 	const [txGas, setTxGas] = React.useState('');
 
 	const handleDelete = async () => {
 		const price = ((await getCoinPrice(chain?.id)) * parseFloat(txGas.toString())).toFixed(2);
+
 		dispatch(
 			showModal({
 				type: MODALS_LIST.CONFIRM_TRANSACTION,
 				props: {
 					title: 'Waiting for Confirmation',
 					subtext: 'Confirm the wallet transaction to proceed.',
-					gasCost: `${parseFloat(txGas).toFixed(6)} ${chain?.nativeCurrency?.symbol} or ${parseFloat(
-						price
-					).toFixed(2)} USD`,
+					gasCost: !isNaN(parseFloat(txGas))
+						? `${parseFloat(txGas).toFixed(6)} ${chain?.nativeCurrency?.symbol} or ${parseFloat(
+								price
+						  ).toFixed(2)} USD`
+						: 'Fetching...',
 				},
 			})
 		);
@@ -49,16 +51,18 @@ const DeleteModal = ({ schmint, collectionName }) => {
 						title: 'Processing...',
 						subtext: 'Please wait while your transaction is being processed.',
 						loader: true,
+						gasCost: 'Fetching...',
 					},
 				})
 			);
 			const receipt = await tx?.wait();
 			if (receipt) {
 				const gas = ethers.utils.formatEther(receipt.gasUsed.mul(receipt.effectiveGasPrice));
+
 				const price = ((await getCoinPrice(chain?.id)) * parseFloat(gas.toString())).toFixed(2);
-				const final = `${parseFloat(gas.toString()).toFixed(6)} ${
-					chain?.nativeCurrency?.symbol
-				} or ${price} USD`;
+				const final = !isNaN(parseFloat(gas.toString()))
+					? `${parseFloat(gas.toString()).toFixed(6)} ${chain?.nativeCurrency?.symbol} or ${price} USD`
+					: 'Fetching...';
 
 				dispatch(
 					replaceModal({
@@ -83,9 +87,6 @@ const DeleteModal = ({ schmint, collectionName }) => {
 		try {
 			const tx = await SchedulerInstance?.connect(signer)?.estimateGas?.cancelSchmint(schmint.schmintId);
 			const totalEstimatedGasPrice = ethers.utils.formatEther(gasFee?.maxFeePerGas.mul(tx));
-			getCoinPrice(chain?.id).then((price) => {
-				setTxPrice(price);
-			});
 			setTxGas(totalEstimatedGasPrice);
 		} catch (err) {
 			console.log({ err });
@@ -103,6 +104,7 @@ const DeleteModal = ({ schmint, collectionName }) => {
 			}
 		};
 	}, []);
+
 	return (
 		<Modal visible>
 			{schmint ? (

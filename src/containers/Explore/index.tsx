@@ -6,7 +6,6 @@ import theme from 'src/styleguide/theme';
 import Filters from './Filters';
 import CollectionsList from './CollectionsList';
 import SearchInput from './SearchInput';
-import Link from 'next/link';
 
 const ExploreComp = () => {
 	return (
@@ -18,7 +17,6 @@ const ExploreComp = () => {
 						Explore
 					</Text>
 				</Box>
-				{/* <Link target href="https://form.jotform.com/222922224502041"> */}
 				<Box
 					alignSelf="flex-end"
 					cursor="pointer"

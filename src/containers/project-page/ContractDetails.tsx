@@ -1,4 +1,3 @@
-import { TwitterFill } from 'akar-icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, GlobeSimple, StarFour, TwitterLogo } from 'phosphor-react';

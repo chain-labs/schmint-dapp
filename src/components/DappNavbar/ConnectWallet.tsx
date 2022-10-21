@@ -30,8 +30,8 @@ const ConnectWallet = ({ networkProps }) => {
 			const validateAddressForInvite = async () => {
 				const checkIfUserisValid = await checkIfUserInvited(user.address);
 				if (!checkIfUserisValid) {
-					disconnect();
 					dispatch(showModal({ type: MODALS_LIST.INVITE_ONLY_MODAL, props: {} }));
+					disconnect();
 					dispatch(removeUser());
 				} else {
 					dispatch(hideModal());

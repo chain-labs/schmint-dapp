@@ -28,7 +28,7 @@ const SchmintCreatedModal = () => {
 			randomNumber = randomNumber % 7;
 			randomNumber += 1;
 			const img = `https://ik.imagekit.io/chainlabs/Schmint/gifs/${randomNumber}.gif`;
-			const placeholder = `https://ik.imagekit.io/chainlabs/Schmint/placeholders/${(randomNumber % 4) + 1}.jpeg`;
+			const placeholder = `https://ik.imagekit.io/chainlabs/Schmint/placeholders/${randomNumber}.jpeg`;
 			setImage(img);
 			setPlaceholder(placeholder);
 		};
@@ -57,7 +57,7 @@ const SchmintCreatedModal = () => {
 				width="38.2rem"
 			>
 				<Box position="relative" width="35rem" height="26.4rem" mb="mxxxl" borderRadius="8px" overflow="hidden">
-					<Image src={image} layout="fill" objectFit="cover" />
+					<Image src={image} layout="fill" objectFit="cover" placeholder="blur" blurDataURL={placeholder} />
 				</Box>
 				<Box width="35rem" column center>
 					<Text as="h5">Congratulations!</Text>

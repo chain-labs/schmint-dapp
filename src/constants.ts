@@ -1,4 +1,4 @@
-import { BLOGS_URL, DOCS_URL } from './utils/constants';
+import { BLOGS_URL } from './utils/constants';
 
 export const TWITTER_URL = 'https://twitter.com/simplrhq';
 export const LINKEDIN_URL = 'https://www.linkedin.com/company/0xchainlabs';

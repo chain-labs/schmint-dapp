@@ -1,4 +1,4 @@
-import { Binoculars, SketchLogo, StarFour, Wallet } from 'phosphor-react';
+import { Binoculars, SketchLogo, StarFour } from 'phosphor-react';
 import React from 'react';
 import { useAppSelector } from 'src/redux/hooks';
 import { userSelector } from 'src/redux/user';

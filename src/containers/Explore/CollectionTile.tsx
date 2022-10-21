@@ -11,7 +11,6 @@ import If from 'src/components/If';
 import Text from 'src/components/Text';
 import { GET_PROJECT_SCHMINTS } from 'src/graphql/query/GetProjectSchmints';
 import theme from 'src/styleguide/theme';
-import { useNetwork } from 'wagmi';
 import { ICollection } from './projectsStore';
 import { chains } from 'src/utils/chains';
 
@@ -24,7 +23,6 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 	useEffect(() => {
 		if (collection?.network?.chainId) {
 			const idx = chains.findIndex((c) => c.chainId === collection?.network?.chainId);
-			const chain = chains?.[idx];
 			setUnit(chains?.[idx]?.nativeCurrency.symbol);
 		}
 	}, [collection]);

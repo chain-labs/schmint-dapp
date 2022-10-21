@@ -1,5 +1,4 @@
 import InputDataDecoder from 'ethereum-input-data-decoder';
-import { ethers } from 'ethers';
 import { getABIType } from '../project-page/utils';
 
 export const getSchmintQuantity = (abi: any, data: string) => {
