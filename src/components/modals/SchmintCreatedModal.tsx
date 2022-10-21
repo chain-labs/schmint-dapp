@@ -9,10 +9,18 @@ import Text from '../Text';
 import Confetti from 'react-confetti';
 import _ from 'lodash';
 
+const TEXTS = [
+	'You can go sleep now',
+	'You can get out of your basement now',
+	'You can go take a walk now',
+	'Go meet some people',
+];
+
 const SchmintCreatedModal = () => {
 	const dispatch = useAppDispatch();
 	const [image, setImage] = React.useState('');
 	const [placeholder, setPlaceholder] = React.useState('');
+	const [text, setText] = React.useState('You can go sleep now');
 
 	useEffect(() => {
 		return () => {
@@ -30,6 +38,7 @@ const SchmintCreatedModal = () => {
 			const img = `https://ik.imagekit.io/chainlabs/Schmint/gifs/${randomNumber}.gif`;
 			const placeholder = `https://ik.imagekit.io/chainlabs/Schmint/placeholders/${randomNumber}.jpeg`;
 			setImage(img);
+			setText(TEXTS[randomNumber % 4]);
 			setPlaceholder(placeholder);
 		};
 
@@ -62,10 +71,7 @@ const SchmintCreatedModal = () => {
 				<Box width="35rem" column center>
 					<Text as="h5">Congratulations!</Text>
 					<Text as="b3" mt="mxs" textAlign="center" color="gray-50">
-						Congratulations! Your Schmint has been successfully created!
-					</Text>
-					<Text as="b3" mt="mxs" textAlign="center" color="gray-50">
-						Note: Your Schmint will be executed as soon as the project sale goes live.
+						{`Your Schmint has been successfully created. ${text}.`}
 					</Text>
 				</Box>
 				<ButtonComp
