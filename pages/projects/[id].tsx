@@ -5,7 +5,9 @@ import If from 'src/components/If';
 import { ICollection } from 'src/containers/Explore/projectsStore';
 import Projectpage from 'src/containers/project-page';
 import WrongNetworkAlert from 'src/containers/WrongNetworkAlert';
-import { useAppSelector } from 'src/redux/hooks';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { showModal } from 'src/redux/modal';
+import { MODALS_LIST } from 'src/redux/modal/types';
 import { networkSelector } from 'src/redux/network';
 import { userSelector } from 'src/redux/user';
 import { PROJECTS_DIR } from 'src/utils/constants';
@@ -20,6 +22,7 @@ const ProjectPage = () => {
 	const user = useAppSelector(userSelector);
 	const [wrongNetwork, setWrongNetwork] = useState(false);
 	const network = useAppSelector(networkSelector);
+	const dispatch = useAppDispatch();
 
 	const getAllCollections = async () => {
 		const data = await fetch(PROJECTS_DIR);

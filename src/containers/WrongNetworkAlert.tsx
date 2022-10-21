@@ -29,6 +29,7 @@ const WrongNetworkAlert = ({ chainTo, setWrongNetwork, customText }: Props) => {
 			row
 			alignItems="center"
 			zIndex={100}
+			boxShadow="shadow-400"
 		>
 			<Text as="c1">
 				{customText ??
