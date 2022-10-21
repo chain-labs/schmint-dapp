@@ -1,0 +1,35 @@
+{
+	"processors": [
+		"stylelint-processor-styled-components"
+	],
+	"extends": [
+		"stylelint-config-recommended"
+	],
+	"plugins": [
+		"stylelint-prettier"
+	],
+	"rules": {
+		"prettier/prettier": true,
+		"indentation": [
+			"tab",
+			{
+				"severity": "warning"
+			}
+		],
+		"block-opening-brace-space-before": "always-single-line",
+		"string-quotes": "single",
+		"property-no-unknown": null,
+		"selector-list-commo-newline-after": "always-multi-line",
+		"at-rule-no-unknown": null,
+		"selector-pseudo-class-no-unknown": [
+			true,
+			{
+				"ignorePseudoClasses": [
+					"global",
+					"local",
+					"export"
+				]
+			}
+		]
+	}
+}

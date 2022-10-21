@@ -1,0 +1,77 @@
+[
+	{
+		"id": "0",
+		"title": "Silicon Valley Avatars",
+		"network": {
+			"chainId": 1,
+			"name": "Ethereum"
+		},
+		"description": "Eget integer turpis montes, ut viverra. Faucibus facilisi scelerisque pretium sodales. Purus in id penatibus tortor id duis. Ullamcorper eu, proin eget sapien sed. Adipiscing amet faucibus amet nisl tristique. Elit amet, ut aliquet velit, amet. Tempus odio arcu nibh sed vel fusce donec vestibulum. Arcu vehicula lobortis dolor feugiat non quisque hac morbi a. Habitant semper sed non tempus urna sit arcu bibendum cras. Enim, lobortis nisl tincidunt morbi odio sed habitant ut magna",
+		"startTimestamp": 1665833304,
+		"supply": 2000,
+		"price": 0,
+		"banner": "https://img.freepik.com/free-vector/cartoon-working-day-scene-illustration_52683-62607.jpg?w=2000&t=st=1663241588~exp=1663242188~hmac=5c15ed5b4182137e616dfd0cae55dbfadf375be1f5c1d8d48c8574a9d7a404d5",
+		"logo": "https://img.freepik.com/free-vector/cartoon-working-day-scene-illustration_52683-62607.jpg?w=2000&t=st=1663241588~exp=1663242188~hmac=5c15ed5b4182137e616dfd0cae55dbfadf375be1f5c1d8d48c8574a9d7a404d5",
+		"website_url": "https://simplrcollection.com"
+	},
+	{
+		"id": "1",
+		"title": "Abstract 3D",
+		"network": {
+			"chainId": 137,
+			"name": "Polygon"
+		},
+		"description": "Eget integer turpis montes, ut viverra. Faucibus facilisi scelerisque pretium sodales. Purus in id penatibus tortor id duis. Ullamcorper eu, proin eget sapien sed. Adipiscing amet faucibus amet nisl tristique. Elit amet, ut aliquet velit, amet. Tempus odio arcu nibh sed vel fusce donec vestibulum. Arcu vehicula lobortis dolor feugiat non quisque hac morbi a. Habitant semper sed non tempus urna sit arcu bibendum cras. Enim, lobortis nisl tincidunt morbi odio sed habitant ut magna",
+		"startTimestamp": 1664467200,
+		"supply": 1000,
+		"price": 0.01,
+		"banner": "https://images.unsplash.com/photo-1646995931586-076b80286a8b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80",
+		"logo": "https://images.unsplash.com/photo-1646995931586-076b80286a8b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2232&q=80",
+		"website_url": "https://simplrcollection.com"
+	},
+	{
+		"id": "2",
+		"title": "Space Puppers",
+		"network": {
+			"chainId": 1,
+			"name": "Ethereum"
+		},
+		"description": "Eget integer turpis montes, ut viverra. Faucibus facilisi scelerisque pretium sodales. Purus in id penatibus tortor id duis. Ullamcorper eu, proin eget sapien sed. Adipiscing amet faucibus amet nisl tristique. Elit amet, ut aliquet velit, amet. Tempus odio arcu nibh sed vel fusce donec vestibulum. Arcu vehicula lobortis dolor feugiat non quisque hac morbi a. Habitant semper sed non tempus urna sit arcu bibendum cras. Enim, lobortis nisl tincidunt morbi odio sed habitant ut magna",
+		"startTimestamp": 1663633800,
+		"supply": 100,
+		"price": 0.014,
+		"banner": "https://pixabay.com/get/g700779b1abb9a5a6bc18ff2b3ecfcbd083968beca733ac1790b78ccbf639d6083f4f8c568638849b2903ecad14e9750f_1280.jpg",
+		"logo": "https://pixabay.com/get/g700779b1abb9a5a6bc18ff2b3ecfcbd083968beca733ac1790b78ccbf639d6083f4f8c568638849b2903ecad14e9750f_1280.jpg",
+		"website_url": "https://simplrcollection.com"
+	},
+	{
+		"id": "3",
+		"title": "Summer of Evil",
+		"network": {
+			"chainId": 1,
+			"name": "Ethereum"
+		},
+		"description": "Eget integer turpis montes, ut viverra. Faucibus facilisi scelerisque pretium sodales. Purus in id penatibus tortor id duis. Ullamcorper eu, proin eget sapien sed. Adipiscing amet faucibus amet nisl tristique. Elit amet, ut aliquet velit, amet. Tempus odio arcu nibh sed vel fusce donec vestibulum. Arcu vehicula lobortis dolor feugiat non quisque hac morbi a. Habitant semper sed non tempus urna sit arcu bibendum cras. Enim, lobortis nisl tincidunt morbi odio sed habitant ut magna",
+		"startTimestamp": 1666808800,
+		"supply": 100,
+		"price": 0.08,
+		"banner": "https://images.unsplash.com/photo-1654619609812-5a47f5fd1c17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
+		"logo": "https://images.unsplash.com/photo-1654619609812-5a47f5fd1c17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
+		"website_url": "https://simplrcollection.com"
+	},
+	{
+		"id": "4",
+		"title": "Playful Friction",
+		"network": {
+			"chainId": 137,
+			"name": "Polygon"
+		},
+		"description": "Eget integer turpis montes, ut viverra. Faucibus facilisi scelerisque pretium sodales. Purus in id penatibus tortor id duis. Ullamcorper eu, proin eget sapien sed. Adipiscing amet faucibus amet nisl tristique. Elit amet, ut aliquet velit, amet. Tempus odio arcu nibh sed vel fusce donec vestibulum. Arcu vehicula lobortis dolor feugiat non quisque hac morbi a. Habitant semper sed non tempus urna sit arcu bibendum cras. Enim, lobortis nisl tincidunt morbi odio sed habitant ut magna",
+		"startTimestamp": 1663408800,
+		"supply": 100,
+		"price": 0.08,
+		"banner": "https://pixabay.com/get/g999e674e50868d1e0d504eac67b2f5ff598ed95ab38a5c76ea668fb1a7fa8339dfa89f50598243e2c8b84ea5b53c44d8_1280.jpg",
+		"logo": "https://pixabay.com/get/g999e674e50868d1e0d504eac67b2f5ff598ed95ab38a5c76ea668fb1a7fa8339dfa89f50598243e2c8b84ea5b53c44d8_1280.jpg",
+		"website_url": "https://simplrcollection.com"
+	}
+]

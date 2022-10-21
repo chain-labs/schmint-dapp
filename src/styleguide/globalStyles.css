@@ -5,10 +5,10 @@ body,
 html {
 	padding: 0;
 	margin: 0;
+	font-family: 'OpenSauceOneRegular', sans-serif;
 	font-size: 62.5%;
-	font-family: 'Inter', sans-serif;
 	overflow-x: hidden;
-	color: white;
+	color: #010211;
 }
 
 div {
@@ -34,6 +34,7 @@ input[type='number'] {
 
 a,
 a:visited {
+	color: inherit;
 	text-decoration: none;
 }
 
