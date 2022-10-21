@@ -42,7 +42,7 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 								Schmint Created!
 							</Text>
 							<Text as="b3" color="gray-50" mt="mxs">
-								You have successfully created a Schmint for Abstract 3D.
+								You have successfully created a Schmint for {collection?.title}.
 							</Text>
 							<Box row>
 								<Link href={`/my-schmints`} passHref>
@@ -133,32 +133,56 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 									maxWidth="100%"
 								>
 									<If
-										condition={collection?.discord_url}
-										then={<Social border status="discord" link={collection?.discord_url} />}
+										condition={collection?.socials?.discord_url}
+										then={
+											<Social border status="discord" link={collection?.socials?.discord_url} />
+										}
 									/>
 									<If
-										condition={collection?.twitter_url}
-										then={<Social border status="twitter" link={collection?.twitter_url} />}
+										condition={collection?.socials?.twitter_url}
+										then={
+											<Social border status="twitter" link={collection?.socials?.twitter_url} />
+										}
 									/>
 									<If
-										condition={collection?.x2y2_url}
-										then={<Social border status="x2y2" link={collection?.x2y2_url} />}
+										condition={collection?.socials?.x2y2_url}
+										then={<Social border status="x2y2" link={collection?.socials?.x2y2_url} />}
 									/>
 									<If
-										condition={collection?.looksrare_url}
-										then={<Social border status="Looksrare" link={collection?.looksrare_url} />}
+										condition={collection?.socials?.looksrare_url}
+										then={
+											<Social
+												border
+												status="Looksrare"
+												link={collection?.socials?.looksrare_url}
+											/>
+										}
 									/>
 									<If
-										condition={collection?.icytools_url}
-										then={<Social border status="icy-tools" link={collection?.icytools_url} />}
+										condition={collection?.socials?.icytools_url}
+										then={
+											<Social
+												border
+												status="icy-tools"
+												link={collection?.socials?.icytools_url}
+											/>
+										}
 									/>
 									<If
-										condition={collection?.rarity_url}
-										then={<Social border status="rarity-tools" link={collection?.rarity_url} />}
+										condition={collection?.socials?.rarity_url}
+										then={
+											<Social
+												border
+												status="rarity-tools"
+												link={collection?.socials?.rarity_url}
+											/>
+										}
 									/>
 									<If
-										condition={collection?.opensea_url}
-										then={<Social border status="OpenSea" link={collection?.opensea_url} />}
+										condition={collection?.socials?.opensea_url}
+										then={
+											<Social border status="OpenSea" link={collection?.socials?.opensea_url} />
+										}
 									/>
 									<Social
 										status="etherscan"
