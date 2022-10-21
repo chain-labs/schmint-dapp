@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { userSelector, setUser } from 'src/redux/user';
 import ReactTooltip from 'react-tooltip';
 import { List } from 'phosphor-react';
-import { FAQ_URL } from 'src/utils/constants';
+import { BLOGS_URL } from 'src/utils/constants';
 import Link from 'next/link';
 import { useAccount, useSigner, useSwitchNetwork } from 'wagmi';
 import If from '../If';
@@ -106,7 +106,7 @@ const DappNavbar = () => {
 							</Link>
 						</Box>
 						<Box row center>
-							<NavItem url={FAQ_URL} text="FAQs" />
+							<NavItem url={BLOGS_URL} text="Blogs" />
 							<ConnectWallet networkProps={networkProps} />
 						</Box>
 					</Box>

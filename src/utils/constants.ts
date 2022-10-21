@@ -17,7 +17,7 @@ export const FAQ_URL = 'https://stonly.com/guide/en/simplr-collection-faqs-56Dsb
 
 export const DOCS_URL = 'https://docs.simplrcollection.com';
 
-export const BLOGS_URL = 'https://blog.chainlabs.in/';
+export const BLOGS_URL = 'https://medium.com/@simplrhq';
 
 export const INVITELIST_URL = process.env.NEXT_PUBLIC_INVITELIST_URL;
 

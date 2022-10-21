@@ -21,6 +21,15 @@ export interface ICollection {
 	maxPurchase: number;
 	maxWallet: number;
 	tokenStandard: string;
+	socials: {
+		twitter_url: string;
+		x2y2_url: string;
+		looksrare_url: string;
+		opensea_url: string;
+		rarity_url: string;
+		icytools_url: string;
+		discord_url: string;
+	};
 	comingSoon?: boolean;
 }
 

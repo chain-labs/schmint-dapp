@@ -9,6 +9,7 @@ import ButtonComp from '../Button';
 import Modal from '../Modal';
 import Text from '../Text';
 import waitlist from '@zootools/waitlist-js';
+import { useDisconnect } from 'wagmi';
 
 const InviteOnlyModal = () => {
 	const dispatch = useAppDispatch();
@@ -16,6 +17,8 @@ const InviteOnlyModal = () => {
 		e.preventDefault();
 		waitlist.openPopup(WAITLIST_ID);
 	};
+	const { disconnect } = useDisconnect();
+
 	return (
 		<Modal visible bg="gray-10">
 			<Box
@@ -30,7 +33,16 @@ const InviteOnlyModal = () => {
 				top="50%"
 				transform="translate(-50%, -50%)"
 			>
-				<Box position="absolute" top="16px" right="24px" onClick={() => dispatch(hideModal())} cursor="pointer">
+				<Box
+					position="absolute"
+					top="16px"
+					right="24px"
+					onClick={() => {
+						disconnect();
+						dispatch(hideModal());
+					}}
+					cursor="pointer"
+				>
 					<X size={24} />
 				</Box>
 				<Box width="40rem">
