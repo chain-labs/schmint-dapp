@@ -254,6 +254,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 					data: buyTx?.data,
 				},
 			];
+			
 			const prevValue = parseFloat(ethers.utils.formatEther(schmint?.value));
 
 			const fundsToBeAdded = ethers.utils.parseEther(
