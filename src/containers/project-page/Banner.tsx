@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowSquareOut } from 'phosphor-react';
 import React from 'react';

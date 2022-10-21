@@ -10,7 +10,7 @@ import Text from './Text';
 
 const HomeNavbar = () => {
 	return (
-		<Box py="mxl" position="fixed" top="0" width="100vw">
+		<Box py="mxl" position="fixed" top="0" width="100vw" zIndex={16}>
 			<Box width={{ mobS: '95vw', deskM: '128rem' }} mx="auto" between>
 				<Link href="/" passHref>
 					<Box

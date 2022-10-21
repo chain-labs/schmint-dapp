@@ -20,19 +20,7 @@ interface props {
 	actionRequired?: boolean;
 }
 
-const InputNumber = ({
-	value,
-	setValue,
-	detailText,
-	errorText,
-	max,
-	min,
-	label,
-	placeholder,
-	required,
-	disabled,
-	actionRequired,
-}: props) => {
+const InputNumber = ({ value, setValue, detailText, errorText, max, min, label, disabled, actionRequired }: props) => {
 	const handleChange = (e) => {
 		e.preventDefault();
 		if (e.target.value === '') {
@@ -54,7 +42,7 @@ const InputNumber = ({
 		setValue(n);
 	};
 
-	const handleBlur = (e) => {
+	const handleBlur = () => {
 		if (value === '') {
 			setValue(min);
 		}

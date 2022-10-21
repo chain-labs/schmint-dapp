@@ -22,12 +22,13 @@ import CounterInput from 'src/components/CounterInput';
 const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, disabled }) => {
 	const [showOptions, setShowOptions] = useState(false);
 	const [nft, setNft] = useState(quantity);
-	const [gasPriceLimit, setGasPriceLimit] = useState('');
+	const [gasPriceLimit, setGasPriceLimit] = useState<number>();
 	const [funds, setFunds] = useState('');
-	const [estimatedGas, setEstimatedGas] = useState(0.001);
+	const [estimatedGas] = useState(collection?.estimatedTransaction ?? 0.02);
 	const [txGas, setTxGas] = useState<string>('');
 	const [txPrice, setTxPrice] = useState<string>('');
 	const [step, setStep] = useState(0);
+	const [saveDisabled, setSaveDisabled] = useState(true);
 	// const [deleteschmint, setDeleteschmint] = useState<boolean>(false);
 	let deleteschmint;
 
@@ -43,8 +44,20 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 	const scheduler = useAppSelector(schedulerSelector);
 	const [editable, setEditable] = useState(false);
 
-	useEffect(() => {
+	const resetEdit = () => {
+		setEditable(false);
 		setNft(quantity);
+		if (schmint?.gasPriceLimit !== '0') {
+			const gpl = schmint?.gasPriceLimit; // Getting Gas Price Limit from Schmint
+			const gplInGwei = ethers.utils.formatUnits(gpl, 'gwei').toString();
+			setGasPriceLimit(parseInt(gplInGwei));
+		} else {
+			setGasPriceLimit(NaN);
+		}
+	};
+
+	useEffect(() => {
+		resetEdit();
 	}, []);
 
 	const TargetInstance = useContract({
@@ -61,6 +74,23 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 		const total = (collection?.price * parseInt(nft) + estimatedGas).toFixed(3);
 		setFunds(total);
 	}, [nft]);
+
+	useEffect(() => {
+		const currentGPL = gasPriceLimit;
+		const schmintGPL = parseInt(ethers.utils.formatUnits(schmint?.gasPriceLimit, 'gwei').toString());
+
+		if (actionRequired) {
+			setSaveDisabled(false);
+		} else if (!editable) {
+			setSaveDisabled(true);
+		} else if (parseInt(nft) !== quantity) {
+			setSaveDisabled(false);
+		} else if (currentGPL !== schmintGPL) {
+			setSaveDisabled(false);
+		} else {
+			setSaveDisabled(true);
+		}
+	}, [actionRequired, gasPriceLimit, nft, editable]);
 
 	const modifySchmint = async (e) => {
 		e.preventDefault();
@@ -113,7 +143,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 				{
 					schmintId: schmint?.schmintId,
 					newValue: buyTx?.value,
-					gasPriceLimit: gasPriceLimit ? ethers.utils.parseUnits(gasPriceLimit, 'gwei') : 0,
+					gasPriceLimit: gasPriceLimit ? ethers.utils.parseUnits(gasPriceLimit.toString(), 'gwei') : 0,
 					data: buyTx?.data,
 				},
 			];
@@ -220,10 +250,11 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 				{
 					schmintId: schmint?.schmintId,
 					newValue: buyTx?.value,
-					gasPriceLimit: gasPriceLimit ? ethers.utils.parseUnits(gasPriceLimit, 'gwei') : 0,
+					gasPriceLimit: gasPriceLimit ? ethers.utils.parseUnits(gasPriceLimit.toString(), 'gwei') : 0,
 					data: buyTx?.data,
 				},
 			];
+
 			const prevValue = parseFloat(ethers.utils.formatEther(schmint?.value));
 
 			const fundsToBeAdded = ethers.utils.parseEther(
@@ -309,7 +340,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 					border={`1px solid ${theme.colors['gray-40']}`}
 					row
 					center
-					onClick={() => setEditable(!editable)}
+					onClick={() => (editable ? resetEdit() : setEditable(true))}
 					disable={disabled}
 				>
 					<If
@@ -365,8 +396,8 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 					then={
 						<Box>
 							<InputBox
-								label="Maximum Gas Price Limit"
-								placeholder={!gasPriceLimit ? 'Not Set' : gasPriceLimit}
+								label="Maximum Gas Limit"
+								placeholder={!gasPriceLimit ? 'Not Set' : gasPriceLimit.toString()}
 								value={gasPriceLimit}
 								setValue={setGasPriceLimit}
 								detailText="Your transaction will not execute if the gas price is more than the set limit."
@@ -437,7 +468,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 					height="4.8rem"
 					borderRadius="64px"
 					onClick={modifySchmint}
-					disable={actionRequired ? false : !editable || (quantity === nft && !gasPriceLimit) || disabled}
+					disable={saveDisabled}
 				>
 					<Text as="btn1">Save Changes</Text>
 				</ButtonComp>

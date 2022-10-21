@@ -2,13 +2,12 @@ import { format } from 'date-fns';
 import { ethers } from 'ethers';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CaretDown } from 'phosphor-react';
 import { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import Text from 'src/components/Text';
 import theme from 'src/styleguide/theme';
-import { useProvider, useTransaction } from 'wagmi';
+import { useProvider } from 'wagmi';
 import { ICollection } from '../Explore/projectsStore';
 import TileBadge from './TileBadge';
 
@@ -26,13 +25,10 @@ interface SchmintTileProps {
 	isCancelled?: boolean;
 }
 
-const SAMPLE_GAS_COST = 0.001;
-
 const SchmintTile = ({
 	collection,
 	quantity,
 	value,
-	createdTimestamp,
 	schmintID,
 	completed,
 	isSchminted,
