@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { TEST_ENV } from 'src/constants';
+import { TEST_ENV } from 'src/utils/constants';
 import { disconnect, setApolloClient, setNetwork } from './actions';
 import { NetworkState } from './types';
 

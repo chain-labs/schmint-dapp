@@ -7,20 +7,30 @@ import {
 	MAINNET_SUBGRAPH_ENDPOINT,
 	MUMBAI_SUBGRAPH_ENDPOINT,
 	POLYGON_SUBGRAPH_ENDPOINT,
+	TEST_ENV,
 } from 'src/utils/constants';
 
+
 const getEndpoint = (chainId) => {
-	switch (chainId) {
-		case 1:
-			return MAINNET_SUBGRAPH_ENDPOINT;
-		case 5:
-			return GOERLI_SUBGRAPH_ENDPOINT;
-		case 80001:
-			return MUMBAI_SUBGRAPH_ENDPOINT;
-		case 137:
-			return POLYGON_SUBGRAPH_ENDPOINT;
-		default:
-			return GOERLI_SUBGRAPH_ENDPOINT;
+	if (TEST_ENV) {
+		switch (chainId) {
+			case 5:
+				return GOERLI_SUBGRAPH_ENDPOINT;
+			case 80001:
+				return MUMBAI_SUBGRAPH_ENDPOINT;
+
+			default:
+				return GOERLI_SUBGRAPH_ENDPOINT;
+		}
+	} else {
+		switch (chainId) {
+			case 1:
+				return MAINNET_SUBGRAPH_ENDPOINT;
+			case 137:
+				return POLYGON_SUBGRAPH_ENDPOINT;
+			default:
+				return POLYGON_SUBGRAPH_ENDPOINT;
+		}
 	}
 };
 
