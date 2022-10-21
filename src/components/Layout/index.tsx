@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { SIMPLR_URL, TEST_ENV } from 'src/constants';
+import { SIMPLR_URL } from 'src/constants';
 import Box from 'components/Box';
 import Avatar from './Avatar';
 import MenuItems from './MenuItems';
@@ -22,6 +22,7 @@ import Text from '../Text';
 import ButtonComp from '../Button';
 import Link from 'next/link';
 import WrongNetworkAlert from 'src/containers/WrongNetworkAlert';
+import { TEST_ENV } from 'src/utils/constants';
 
 const Layout = ({ children }) => {
 	const router = useRouter();

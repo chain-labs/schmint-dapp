@@ -17,6 +17,7 @@ import { networkSelector } from 'src/redux/network';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { SchmintState } from 'src/redux/scheduler/types';
 import { userSelector } from 'src/redux/user';
+import { PROJECTS_DIR } from 'src/utils/constants';
 import { useNetwork } from 'wagmi';
 
 const illustration = 'https://ik.imagekit.io/chainlabs/Schmint/pablo-list-is-empty_1__1__Ux_bWTmMO.svg';
@@ -43,7 +44,7 @@ const Schmint = () => {
 	});
 
 	const getAllCollections = async () => {
-		const data = await fetch('https://chain-labs.github.io/schmint-projects/projects.json');
+		const data = await fetch(PROJECTS_DIR);
 		const res = await data.json();
 		setCollections(res);
 	};
@@ -61,7 +62,7 @@ const Schmint = () => {
 	}, []);
 
 	useEffect(() => {
-		if (scheduler?.schedulerAddress && collections && schmint) {
+		if (scheduler?.schedulerAddress && collections.length && schmint) {
 			getCollection();
 		}
 	}, [id, scheduler?.schedulerAddress, collections, schmint]);

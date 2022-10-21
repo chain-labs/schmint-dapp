@@ -83,7 +83,7 @@ const CostComp = ({
 				<CostItem
 					text="Funds to cover your transaction"
 					tooltip={ESTIMATED_GAS_COST_TOOLTIP}
-					subText={0.001}
+					subText={estimatedGas}
 					unit={chain?.nativeCurrency.symbol}
 					width="100%"
 				/>
