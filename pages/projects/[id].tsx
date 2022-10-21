@@ -44,7 +44,6 @@ const ProjectPage = () => {
 
 	useEffect(() => {
 		getAllCollections();
-		dispatch(showModal({ type: MODALS_LIST.SCHMINT_SUCCESFUL, props: {} }));
 	}, []);
 
 	useEffect(() => {
