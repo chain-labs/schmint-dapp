@@ -45,7 +45,6 @@ const SchmintsList = ({ page, schmints }) => {
 				1
 			);
 		});
-
 		setCompletedSchmints(completedSchmints);
 		setActiveSchmints(activeSchmints);
 	};

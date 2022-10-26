@@ -119,7 +119,15 @@ const SchmintPage = ({ collection, schmint }) => {
 				<Banner collection={collection} schmint />
 				<If
 					condition={status !== ''}
-					then={<AlertBox status={status} schmint={schmint} currPrice={currPrice} prevPrice={prevPrice} />}
+					then={
+						<AlertBox
+							status={status}
+							schmint={schmint}
+							currPrice={currPrice}
+							prevPrice={prevPrice}
+							network={collection.network.chainId}
+						/>
+					}
 				/>
 				<ContractDetails collection={collection} />
 				<If

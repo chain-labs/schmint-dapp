@@ -6,6 +6,8 @@ export const getNetworkShortName = (chain) => {
 			return 'rin';
 		case 5:
 			return 'gor';
+		case 137:
+			return 'matic';
 	}
 };
 

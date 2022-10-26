@@ -6,11 +6,13 @@ import { publicProvider } from 'wagmi/providers/public';
 import { useAppSelector } from 'src/redux/hooks';
 import { userSelector } from 'src/redux/user';
 
+export const ALCHEMY_API = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
+
 const Wagmi = ({ children }) => {
 	const user = useAppSelector(userSelector);
 	const { chains, provider } = configureChains(
 		[chain.mainnet, chain.rinkeby, chain.polygonMumbai, chain.polygon, chain.goerli],
-		[alchemyProvider({ apiKey: 'lqM0WXfur0rGOi8x0lU1amSOH7FR_DQx' }), publicProvider()]
+		[alchemyProvider({ apiKey: ALCHEMY_API }), publicProvider()]
 	);
 
 	const { connectors } = getDefaultWallets({

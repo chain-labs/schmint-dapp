@@ -5,21 +5,15 @@ import ButtonComp from 'src/components/Button';
 import Text from 'src/components/Text';
 import { useAppSelector } from 'src/redux/hooks';
 import { schedulerSelector } from 'src/redux/scheduler';
-import { getAbi } from 'src/utils/contracts';
-import { useContractRead, useNetwork } from 'wagmi';
+import { useNetwork } from 'wagmi';
 import { getGnosisSafeUrl } from '../MyAssets/utils';
 
-const AlertBox = ({ status, schmint, currPrice, prevPrice }) => {
+const AlertBox = ({ status, schmint, currPrice, prevPrice, network }) => {
 	const { chain } = useNetwork();
 	const scheduler = useAppSelector(schedulerSelector);
 	const [date, setDate] = useState('');
 	const [time, setTime] = useState('');
 
-	const { data } = useContractRead({
-		addressOrName: scheduler.schedulerAddress,
-		contractInterface: getAbi(chain?.id, 'SCHEDULER'),
-		functionName: 'avatar',
-	});
 	useEffect(() => {
 		if (schmint.isSchminted) {
 			const date = new Date(schmint.executionTimestamp * 1000);
@@ -91,7 +85,7 @@ const AlertBox = ({ status, schmint, currPrice, prevPrice }) => {
 							Congratulations! This schmint was successfuly executed on {date}, {time}. Click the button
 							to view your NFTs.
 						</Text>
-						<Box as="a" target="_blank" href={getGnosisSafeUrl(chain?.id, `${data}`)}>
+						<Box as="a" target="_blank" href={getGnosisSafeUrl(network, `${scheduler.avatar}`)}>
 							<ButtonComp
 								backgroundColor="white"
 								color="black"

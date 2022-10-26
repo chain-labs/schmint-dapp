@@ -14,10 +14,12 @@ const SchmintReceipt = ({ quantity, schmint, status, network }) => {
 	useEffect(() => {
 		if (status === '1') {
 			provider.getTransactionReceipt(schmint.executionTrxHash).then((receipt) => {
-				const gasUsed = receipt.gasUsed;
-				const gasPrice = schmint.executionGasPrice;
-				const totalGasCost = parseFloat(ethers.utils.formatEther(gasUsed.mul(gasPrice))).toFixed(4);
-				setGasCost(totalGasCost);
+				const gasUsed = receipt?.gasUsed;
+				const gasPrice = schmint?.executionGasPrice;
+				if (gasUsed && gasPrice) {
+					const totalGasCost = parseFloat(ethers.utils.formatEther(gasUsed?.mul(gasPrice))).toFixed(4);
+					setGasCost(totalGasCost);
+				}
 			});
 		}
 	}, [status, schmint]);
