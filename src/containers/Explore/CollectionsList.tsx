@@ -119,7 +119,7 @@ const CollectionsList = () => {
 					<If
 						key="filtered-collection-list"
 						condition={filteredCollections.length === 0}
-						then={<EmptyResultComponent />}
+						then={<EmptyResultComponent subText="Hmm... looks like the project you're looking for doesn't exist on Schmint yet. If you'd like to have it on Schmint, please "/>}
 						else={filteredCollections.map((collection, idx) => (
 							<CollectionTile {...{ collection, idx }} />
 						))}
@@ -127,24 +127,7 @@ const CollectionsList = () => {
 				}
 			/>
 			<If condition={collectionPresent===true && filter.clearAll} then={
-				<Box mt="ws" width="39rem" mx="auto">
-				<Box position="relative" width="100%" height="16.6rem">
-					<Image
-						src="https://ik.imagekit.io/chainlabs/Schmint/pablo-page-not-found-2_1_10AQAQXCo.svg"
-						layout="fill"
-						objectFit="contain"
-						quality={1}
-					/>
-				</Box>
-				<Text mt="mxl" as="b3" color="gray-40" textAlign="center">
-					No active project present
-				</Text>
-				<Box as="a" mt="mxl" center href="https://form.jotform.com/222922224502041" target="_blank">
-					<ButtonComp bg="primary" py="ms" px="mxl" borderRadius="64px"  mx="auto">
-						<Text as="b3" color="white">Submit a Project</Text>
-					</ButtonComp>
-				</Box>
-			</Box>
+				<EmptyResultComponent subText="Schmint is in Alpha and we are only listing projects we love or we vibe with. If you'd like to see a project on Schmint, please " />
 			}/>
 
 		</Box>
