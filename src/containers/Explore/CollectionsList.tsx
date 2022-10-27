@@ -1,6 +1,10 @@
-import React, { useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
+import ButtonComp from 'src/components/Button';
 import If from 'src/components/If';
+import Text from 'src/components/Text';
 import { addSearch, filterSelector } from 'src/redux/filter';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import CollectionTile from './CollectionTile';
@@ -11,6 +15,7 @@ const CollectionsList = () => {
 	const [collections, setCollections] = React.useState<ICollection[]>([]);
 	const [filteredCollections, setFilteredCollections] = React.useState<ICollection[]>([]);
 	const filter = useAppSelector(filterSelector);
+	const [collectionPresent, setCollectionPresent]=useState(false)
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
@@ -21,6 +26,7 @@ const CollectionsList = () => {
 
 	useEffect(() => {
 		if (collections) {
+			setCollectionPresent(true)
 			const { alphabetical, network, price, search } = filter;
 
 			let filteredCollection = [...collections].sort((a, b) => a.startTimestamp - b.startTimestamp);
@@ -92,6 +98,9 @@ const CollectionsList = () => {
 			}
 			setFilteredCollections([...filteredCollection]);
 		}
+		else{
+			setCollectionPresent(false)
+		}
 	}, [filter.alphabetical, filter.network, filter.price, filter.search.query, collections]);
 
 	useEffect(() => {
@@ -117,6 +126,27 @@ const CollectionsList = () => {
 					/>
 				}
 			/>
+			<If condition={collectionPresent===true && filter.clearAll} then={
+				<Box mt="ws" width="39rem" mx="auto">
+				<Box position="relative" width="100%" height="16.6rem">
+					<Image
+						src="https://ik.imagekit.io/chainlabs/Schmint/pablo-page-not-found-2_1_10AQAQXCo.svg"
+						layout="fill"
+						objectFit="contain"
+						quality={1}
+					/>
+				</Box>
+				<Text mt="mxl" as="b3" color="gray-40" textAlign="center">
+					No active project present
+				</Text>
+				<Box as="a" mt="mxl" center href="https://form.jotform.com/222922224502041" target="_blank">
+					<ButtonComp bg="primary" py="ms" px="mxl" borderRadius="64px"  mx="auto">
+						<Text as="b3" color="white">Submit a Project</Text>
+					</ButtonComp>
+				</Box>
+			</Box>
+			}/>
+
 		</Box>
 	);
 };
