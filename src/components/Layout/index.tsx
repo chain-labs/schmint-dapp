@@ -31,6 +31,7 @@ const Layout = ({ children }) => {
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
 	const network = useAppSelector(networkSelector);
 	const { chains, chain } = useNetwork();
+	const [showWrongNetworkAlert, setShowWrongNetworkAlert] = React.useState<boolean>(false);
 	const [loadScheduler, { called, loading }] = useLazyQuery(GET_USER_SCHEDULER, {
 		onCompleted: (data) => {
 			const scheduler = data?.schedulers?.[0];
@@ -63,6 +64,18 @@ const Layout = ({ children }) => {
 	});
 	const dispatch = useAppDispatch();
 
+	useEffect(() => {
+		if (
+			network.isOnline &&
+			!network.isValid &&
+			(router.asPath === '/explore' || router.asPath === '/my-assets' || router.asPath === '/my-schmints')
+		) {
+			setShowWrongNetworkAlert(true);
+		} else {
+			setShowWrongNetworkAlert(false);
+		}
+	}, [network.isOnline, network.isValid, router.asPath]);
+
 	const [windowHeight, setWindowHeight] = React.useState(0);
 
 	useEffect(() => {
@@ -71,7 +84,7 @@ const Layout = ({ children }) => {
 			setWindowHeight(window.innerHeight);
 		};
 		window.addEventListener('resize', resize);
-		window.ethereum.on('chainChanged', (chain) => {
+		window?.ethereum?.on('chainChanged', (chain) => {
 			const name = chains.find((c) => c.id === parseInt(chain))?.name;
 			dispatch(
 				setNetwork({
@@ -206,15 +219,12 @@ const Layout = ({ children }) => {
 				</Box>
 			</Box>
 			<If
-				condition={
-					network.isOnline &&
-					!network.isValid &&
-					(router.asPath === '/explore' || router.asPath === '/my-assets' || router.asPath === '/my-schmints')
-				}
+				condition={showWrongNetworkAlert}
 				then={
 					<WrongNetworkAlert
 						customText="This network is currently not supported. Switch to a supported network."
 						chainTo={TEST_ENV ? 5 : 137}
+						setWrongNetwork={setShowWrongNetworkAlert}
 					/>
 				}
 			/>
