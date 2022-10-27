@@ -33,17 +33,20 @@ const DappNavbar = () => {
 	});
 
 	useEffect(() => {
+		const { ethereum } = window;
 		if (account?.connector?.id === 'metaMask' && process.browser) {
-			window?.ethereum?.on('accountsChanged', (accounts) => {
-				if (dispatch) {
-					dispatch(setUser(accounts[0]));
-				}
-			});
+			if (ethereum) {
+				ethereum?.on('accountsChanged', (accounts) => {
+					if (dispatch) {
+						dispatch(setUser(accounts[0]));
+					}
+				});
 
-			window?.ethereum?.on('chainChanged', (chain) => {
-				const chainId = parseInt(chain);
-				switchNetwork(chainId);
-			});
+				ethereum?.on('chainChanged', (chain) => {
+					const chainId = parseInt(chain);
+					switchNetwork(chainId);
+				});
+			}
 		}
 	}, [account]);
 
