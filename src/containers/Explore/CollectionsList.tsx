@@ -126,7 +126,7 @@ const CollectionsList = () => {
 					/>
 				}
 			/>
-			<If condition={collectionPresent===true && filter.clearAll} then={
+			<If condition={collectionPresent===true && filter.clearAll && filter.search.query===""} then={
 				<EmptyResultComponent subText="Schmint is in Alpha and we are only listing projects we love or we vibe with. If you'd like to see a project on Schmint, please " />
 			}/>
 
