@@ -15,7 +15,7 @@ const CollectionsList = () => {
 	const [collections, setCollections] = React.useState<ICollection[]>([]);
 	const [filteredCollections, setFilteredCollections] = React.useState<ICollection[]>([]);
 	const filter = useAppSelector(filterSelector);
-	const [collectionPresent, setCollectionPresent]=useState(false)
+	const [collectionPresent, setCollectionPresent] = useState(false);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
@@ -26,7 +26,7 @@ const CollectionsList = () => {
 
 	useEffect(() => {
 		if (collections) {
-			setCollectionPresent(true)
+			setCollectionPresent(true);
 			const { alphabetical, network, price, search } = filter;
 
 			let filteredCollection = [...collections].sort((a, b) => a.startTimestamp - b.startTimestamp);
@@ -97,9 +97,8 @@ const CollectionsList = () => {
 				filteredCollection = filteredCollection.sort((a, b) => b.price - a.price);
 			}
 			setFilteredCollections([...filteredCollection]);
-		}
-		else{
-			setCollectionPresent(false)
+		} else {
+			setCollectionPresent(false);
 		}
 	}, [filter.alphabetical, filter.network, filter.price, filter.search.query, collections]);
 
@@ -119,17 +118,21 @@ const CollectionsList = () => {
 					<If
 						key="filtered-collection-list"
 						condition={filteredCollections.length === 0}
-						then={<EmptyResultComponent subText="Hmm... looks like the project you're looking for doesn't exist on Schmint yet. If you'd like to have it on Schmint, please "/>}
+						then={
+							<EmptyResultComponent subText="Hmm... looks like the project you're looking for doesn't exist on Schmint yet. If you'd like to have it on Schmint, please " />
+						}
 						else={filteredCollections.map((collection, idx) => (
 							<CollectionTile {...{ collection, idx }} />
 						))}
 					/>
 				}
 			/>
-			<If condition={collectionPresent===true && filter.clearAll && filter.search.query===""} then={
-				<EmptyResultComponent subText="Schmint is in Alpha and we are only listing projects we love or we vibe with. If you'd like to see a project on Schmint, please " />
-			}/>
-
+			<If
+				condition={collectionPresent === true && filter.clearAll && filter.search.query === ''}
+				then={
+					<EmptyResultComponent subText="Schmint is in Alpha and we are only listing projects we love or we vibe with. If you'd like to see a project on Schmint, please " />
+				}
+			/>
 		</Box>
 	);
 };
