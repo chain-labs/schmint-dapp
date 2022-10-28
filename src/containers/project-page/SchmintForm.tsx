@@ -126,10 +126,10 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 
 				const event = receipt?.events && receipt.events.filter((event) => event.event === 'SchedulerDeployed');
 				if (!event) {
-					console.log('no event found');
+					console.log('no event found'); // eslint-disable-line no-console
 					return;
 				} else {
-					console.log({ event });
+					console.log({ event }); // eslint-disable-line no-console
 					setSchmintCreated(true);
 					setNft(`${1}`);
 					setGasPriceLimit('');
@@ -194,10 +194,10 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 
 				const event = receipt?.events && receipt.events.filter((event) => event.event === 'SchmintCreated');
 				if (!event) {
-					console.log('no event found');
+					console.log('no event found'); // eslint-disable-line no-console
 					return;
 				} else {
-					console.log({ event });
+					console.log({ event }); // eslint-disable-line no-console
 					setSchmintCreated(true);
 					setNft(`${1}`);
 					setGasPriceLimit('');
@@ -325,7 +325,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 				setTxGas(totalEstimatedGasPrice);
 			}
 		} catch (err) {
-			console.log({ err });
+			console.log({ err }); // eslint-disable-line no-console
 		}
 	};
 

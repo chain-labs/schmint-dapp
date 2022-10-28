@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowSquareOut } from 'phosphor-react';
-import React from 'react';
+
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import Text from 'src/components/Text';

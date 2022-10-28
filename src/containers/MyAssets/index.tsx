@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { ArrowUpRight, SketchLogo } from 'phosphor-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import Loader from 'src/components/Loader';

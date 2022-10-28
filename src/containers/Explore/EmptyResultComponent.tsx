@@ -1,8 +1,7 @@
 import Image from 'next/image';
-import React from 'react';
+
 import Box from 'src/components/Box';
 import Text from 'src/components/Text';
-import { CALENDLY_LINK } from 'src/constants';
 import theme from 'src/styleguide/theme';
 
 const EmptyResultComponent = ({ subText }) => {

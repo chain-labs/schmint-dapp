@@ -1,5 +1,4 @@
 import { ArrowUpRight } from 'phosphor-react';
-import React from 'react';
 import theme from 'src/styleguide/theme';
 import Box from '../Box';
 import Text from '../Text';

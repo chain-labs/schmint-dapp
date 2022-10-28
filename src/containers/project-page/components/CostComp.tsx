@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { Question } from 'phosphor-react';
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ReactTooltip from 'react-tooltip';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
@@ -150,6 +150,12 @@ interface cost {
 }
 
 const CostItem = ({ text, subText, width, unit, textColor, fontSize, strikeThrough, tooltip }: cost) => {
+	const [isMounted, setIsMounted] = useState(false);
+
+	useEffect(() => {
+		setIsMounted(true);
+	}, []);
+
 	return (
 		<Box between pt="mxs" width={width}>
 			<Box
@@ -181,13 +187,18 @@ const CostItem = ({ text, subText, width, unit, textColor, fontSize, strikeThrou
 						/>
 					}
 				/>
-				<ReactTooltip
-					id="cost-tooltip"
-					place="bottom"
-					arrowColor="transparent"
-					backgroundColor={theme.colors['blue-10']}
-					textColor={theme.colors['simply-black']}
-					effect="solid"
+				<If
+					condition={isMounted}
+					then={
+						<ReactTooltip
+							id="cost-tooltip"
+							place="bottom"
+							arrowColor="transparent"
+							backgroundColor={theme.colors['blue-10']}
+							textColor={theme.colors['simply-black']}
+							effect="solid"
+						/>
+					}
 				/>
 			</Box>
 			<Text as={fontSize ? fontSize : 'b3'} color={textColor ? textColor : `${theme.colors['gray-60']}`}>

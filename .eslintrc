@@ -4,7 +4,8 @@
         "plugin:react/recommended",
         "plugin:prettier/recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:@next/next/recommended"
+        "plugin:@next/next/recommended",
+        "plugin:react/jsx-runtime"
     ],
     "plugins": [
         "prettier",

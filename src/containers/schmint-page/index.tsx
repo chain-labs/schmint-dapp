@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import ContractDetails from '../project-page/ContractDetails';
 import Banner from '../project-page/Banner';
