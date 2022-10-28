@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, ReactNode } from 'react';
 import theme from 'src/styleguide/theme';
 import Box from './Box';
 
 interface Props {
-	children: React.ReactNode;
+	children: ReactNode;
 	visible: boolean;
 	bg?: string;
 }

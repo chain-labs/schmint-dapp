@@ -1,4 +1,3 @@
-import React from 'react';
 import animationData from '../lottie/loading.json';
 import Lottie from 'react-lottie';
 import Box from './Box';

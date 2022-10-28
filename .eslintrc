@@ -4,7 +4,8 @@
         "plugin:react/recommended",
         "plugin:prettier/recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:@next/next/recommended"
+        "plugin:@next/next/recommended",
+        "plugin:react/jsx-runtime"
     ],
     "plugins": [
         "prettier",
@@ -14,7 +15,7 @@
     ],
     "rules": {
         "eqeqeq": "error",
-        "no-console": "warn",
+        "no-console": "error",
         "no-undef": "off",
         "no-unused-vars": "off",
         "react/display-name": "off",

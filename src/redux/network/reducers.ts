@@ -19,6 +19,7 @@ export const networkReducer = createReducer(initialState, (builder) => {
 			const newState = {
 				...state,
 				chainId,
+				name,
 				unit: getUnit(chainId),
 				isOnline: true,
 				isValid: checkValidNetwork(chainId),

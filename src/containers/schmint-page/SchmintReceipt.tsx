@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import { ethers } from 'ethers';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import Text from 'src/components/Text';

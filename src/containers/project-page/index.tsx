@@ -1,4 +1,3 @@
-import React from 'react';
 import Box from 'src/components/Box';
 import Banner from './Banner';
 import ContractDetails from './ContractDetails';
@@ -8,6 +7,7 @@ import Text from 'src/components/Text';
 import If from 'src/components/If';
 import { ArrowLeft } from 'phosphor-react';
 import { useRouter } from 'next/router';
+import React from 'react';
 
 const Projectpage = ({ collection }) => {
 	const [schmintCreated, setSchmintCreated] = React.useState(false);

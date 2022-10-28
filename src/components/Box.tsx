@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import React from 'react';
 import {
 	color,
 	flexbox,
@@ -28,6 +27,7 @@ import {
 	ResponsiveValue,
 	grid,
 } from 'styled-system';
+import React from 'react';
 
 import { allStyledSystemProps } from 'styleguide/filterStyledSystemProps';
 
