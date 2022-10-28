@@ -10,7 +10,6 @@ import {
 	TEST_ENV,
 } from 'src/utils/constants';
 
-
 const getEndpoint = (chainId) => {
 	if (TEST_ENV) {
 		switch (chainId) {
