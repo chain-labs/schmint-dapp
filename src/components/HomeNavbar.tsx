@@ -2,7 +2,6 @@ import { TwitterFill } from 'akar-icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'phosphor-react';
-import React from 'react';
 import { DISCORD_INVITE, TWITTER_URL } from 'src/constants';
 import theme from 'src/styleguide/theme';
 import Box from './Box';

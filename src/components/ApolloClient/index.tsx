@@ -1,5 +1,5 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { networkSelector, setApolloClient } from 'src/redux/network';
 import {
@@ -36,7 +36,7 @@ const getEndpoint = (chainId) => {
 const ApolloClientProvider = ({ children }) => {
 	const dispatch = useAppDispatch();
 	const network = useAppSelector(networkSelector);
-	const [client, setClient] = React.useState(
+	const [client, setClient] = useState(
 		new ApolloClient({
 			uri: getEndpoint(5),
 			cache: new InMemoryCache(),

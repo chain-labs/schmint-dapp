@@ -1,4 +1,3 @@
-import React from 'react';
 import Box from 'src/components/Box';
 
 const AlertBox = ({ children, color }) => {

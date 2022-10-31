@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { X } from 'phosphor-react';
-import React from 'react';
+
 import { WAITLIST_ID } from 'src/constants';
 import { useAppDispatch } from 'src/redux/hooks';
 import { hideModal } from 'src/redux/modal';

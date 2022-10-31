@@ -1,4 +1,3 @@
-import React from 'react';
 import { useAppSelector } from 'src/redux/hooks';
 import { modalSelector } from 'src/redux/modal';
 import { MODALS, MODALS_LIST } from 'src/redux/modal/types';

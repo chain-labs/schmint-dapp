@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { removeUser, setUser, userSelector } from 'src/redux/user';
-import { useDisconnect, useEnsName } from 'wagmi';
+import { useEnsName } from 'wagmi';
 import Box from '../Box';
 import If from '../If';
 

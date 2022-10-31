@@ -9,7 +9,7 @@ import DappNavbar from 'components/DappNavbar';
 import { userSelector } from 'src/redux/user';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { indexAddress } from './utils';
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import Loader from 'components/Loader';
 import { setScheduler } from 'src/redux/scheduler';
@@ -23,11 +23,12 @@ import ButtonComp from '../Button';
 import Link from 'next/link';
 import WrongNetworkAlert from 'src/containers/WrongNetworkAlert';
 import { TEST_ENV } from 'src/utils/constants';
+import React from 'react';
 
 const Layout = ({ children }) => {
 	const router = useRouter();
 	const user = useAppSelector(userSelector);
-	const [userHasScheduler, setUserHasScheduler] = React.useState(false);
+	const [userHasScheduler, setUserHasScheduler] = useState(false);
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
 	const network = useAppSelector(networkSelector);
 	const { chains, chain } = useNetwork();
@@ -183,9 +184,7 @@ const Layout = ({ children }) => {
 						}
 					</Text>
 					<Link href="/" passHref>
-						<ButtonComp bg="primary" mt="wxs" px="wxxs" py="ms">
-							<Text as="btn1">Back to Home</Text>
-						</ButtonComp>
+						<CustomButtonComponent />
 					</Link>
 				</Box>
 			</Box>
@@ -234,3 +233,9 @@ const Layout = ({ children }) => {
 };
 
 export default Layout;
+
+const CustomButtonComponent = React.forwardRef((ref) => (
+	<ButtonComp bg="primary" mt="wxs" px="wxxs" py="ms" innerRef={ref}>
+		<Text as="btn1">Back to Home</Text>
+	</ButtonComp>
+));

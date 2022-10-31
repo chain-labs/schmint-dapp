@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import React from 'react';
 import Box from './Box';
 import Text from './Text';
 

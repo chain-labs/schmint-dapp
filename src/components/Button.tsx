@@ -1,5 +1,5 @@
-import React from 'react';
 import Box, { BoxProps } from 'components/Box';
+import React from 'react';
 import theme from 'src/styleguide/theme';
 
 export const color = {
@@ -36,9 +36,10 @@ export interface ButtonProps extends BoxProps {
 	onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 	className?: string;
 	type?: string;
+	innerRef?: any;
 }
 
-const ButtonComp = ({ bg, disable, height, children, ...restProps }: ButtonProps): JSX.Element => {
+const ButtonComp = ({ bg, disable, height, children, innerRef, ...restProps }: ButtonProps): JSX.Element => {
 	const buttonColour = color[bg];
 	const hColor = !disable ? hoverColor[bg] : 'simply-white';
 	const bColor = borderColor(bg);
@@ -63,6 +64,7 @@ const ButtonComp = ({ bg, disable, height, children, ...restProps }: ButtonProps
 			`
 			}
 			{...restProps}
+			ref={innerRef}
 		>
 			{children}
 		</Box>

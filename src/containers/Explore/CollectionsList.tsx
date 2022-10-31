@@ -1,10 +1,6 @@
-import Image from 'next/image';
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
-import ButtonComp from 'src/components/Button';
 import If from 'src/components/If';
-import Text from 'src/components/Text';
 import { addSearch, filterSelector } from 'src/redux/filter';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import CollectionTile from './CollectionTile';
@@ -15,7 +11,7 @@ const CollectionsList = () => {
 	const [collections, setCollections] = React.useState<ICollection[]>([]);
 	const [filteredCollections, setFilteredCollections] = React.useState<ICollection[]>([]);
 	const filter = useAppSelector(filterSelector);
-	const [collectionPresent, setCollectionPresent] = useState(false);
+	const [collectionPresent, setCollectionPresent] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
@@ -112,7 +108,7 @@ const CollectionsList = () => {
 				key="collection-list"
 				condition={filter.clearAll && filter.search.query === ''}
 				then={collections.map((collection, idx) => (
-					<CollectionTile {...{ collection, idx }} />
+					<CollectionTile {...{ collection, idx }} key={`${collection.title}-${idx}`} />
 				))}
 				else={
 					<If
@@ -122,13 +118,13 @@ const CollectionsList = () => {
 							<EmptyResultComponent subText="Hmm... looks like the project you're looking for doesn't exist on Schmint yet. If you'd like to have it on Schmint, please " />
 						}
 						else={filteredCollections.map((collection, idx) => (
-							<CollectionTile {...{ collection, idx }} />
+							<CollectionTile {...{ collection, idx }} key={`${collection.title}-${idx}`} />
 						))}
 					/>
 				}
 			/>
 			<If
-				condition={collectionPresent === true && filter.clearAll && filter.search.query === ''}
+				condition={collections.length < 1 && filter.clearAll}
 				then={
 					<EmptyResultComponent subText="Schmint is in Alpha and we are only listing projects we love or we vibe with. If you'd like to see a project on Schmint, please " />
 				}

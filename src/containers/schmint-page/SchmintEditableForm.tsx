@@ -176,14 +176,14 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 			);
 
 			const receipt = await tx?.wait();
-			console.log(receipt);
+			console.log(receipt); // eslint-disable-line no-console
 
 			const event = receipt?.events && receipt.events.filter((event) => event.event === 'SchmintModified');
 			if (!event) {
-				console.log('no event found');
+				console.log('no event found'); // eslint-disable-line no-console
 				return;
 			} else {
-				console.log({ event });
+				console.log({ event }); // eslint-disable-line no-console
 				dispatch(
 					replaceModal({
 						type: MODALS_LIST.STATUS_MODAL,
@@ -200,7 +200,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 				);
 			}
 		} catch (err) {
-			console.log({ err });
+			console.log({ err }); // eslint-disable-line no-console
 
 			dispatch(
 				replaceModal({
@@ -276,7 +276,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 			});
 			setTxGas(totalEstimatedGasPrice);
 		} catch (err) {
-			console.log({ err });
+			console.log({ err }); // eslint-disable-line no-console
 		}
 	};
 
@@ -306,10 +306,10 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 
 				const event = receipt?.events && receipt.events.filter((event) => event.event === 'SchmintCreated');
 				if (!event) {
-					console.log('no event found');
+					console.log('no event found'); // eslint-disable-line no-console
 					return;
 				} else {
-					console.log({ event });
+					console.log({ event }); // eslint-disable-line no-console
 					dispatch(
 						replaceModal({
 							type: MODALS_LIST.STATUS_MODAL,
@@ -322,7 +322,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 					);
 				}
 			} catch (err) {
-				console.log(err);
+				console.log(err); // eslint-disable-line no-console
 			}
 		}
 	};

@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactTooltip from 'react-tooltip';
 import theme from 'src/styleguide/theme';
 import Box from '../Box';
+import If from '../If';
 
 const TooltipPortal = () => {
+	const [isMounted, setIsMounted] = useState(false);
+	useEffect(() => {
+		setIsMounted(true);
+	}, []);
+
 	return (
 		<Box
 			as="div"
@@ -17,13 +23,18 @@ const TooltipPortal = () => {
 			`}
 		>
 			<React.Fragment>
-				<ReactTooltip
-					className="tooltip"
-					place="bottom"
-					arrowColor="transparent"
-					backgroundColor={theme.colors['blue-10']}
-					textColor={theme.colors['simply-black']}
-					effect="solid"
+				<If
+					condition={isMounted}
+					then={
+						<ReactTooltip
+							className="tooltip"
+							place="bottom"
+							arrowColor="transparent"
+							backgroundColor={theme.colors['blue-10']}
+							textColor={theme.colors['simply-black']}
+							effect="solid"
+						/>
+					}
 				/>
 			</React.Fragment>
 		</Box>

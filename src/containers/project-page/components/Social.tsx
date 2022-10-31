@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import React from 'react';
 import Box from 'src/components/Box';
 import theme from 'src/styleguide/theme';
 
