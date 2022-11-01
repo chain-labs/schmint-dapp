@@ -18,7 +18,6 @@ import { schedulerSelector } from 'src/redux/scheduler';
 import { SchmintState } from 'src/redux/scheduler/types';
 import { userSelector } from 'src/redux/user';
 import { PROJECTS_DIR } from 'src/utils/constants';
-import { useNetwork } from 'wagmi';
 
 const illustration = 'https://ik.imagekit.io/chainlabs/Schmint/pablo-list-is-empty_1__1__Ux_bWTmMO.svg';
 
@@ -27,7 +26,6 @@ const Schmint = () => {
 	const { id } = router.query;
 	const [collections, setCollections] = useState([]);
 	const [collection, setCollection] = useState<ICollection>();
-	const { chain } = useNetwork();
 	const user = useAppSelector(userSelector);
 	const scheduler = useAppSelector(schedulerSelector);
 	const [schmint, setSchmint] = useState<SchmintState>();
@@ -77,7 +75,7 @@ const Schmint = () => {
 			}
 			setWrongNetwork(false);
 		}
-	}, [collection, chain, user.exists]);
+	}, [collection, network.chainId, user.exists]);
 
 	if (collection && schmint.id === id) {
 		return (

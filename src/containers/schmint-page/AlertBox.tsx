@@ -5,11 +5,9 @@ import ButtonComp from 'src/components/Button';
 import Text from 'src/components/Text';
 import { useAppSelector } from 'src/redux/hooks';
 import { schedulerSelector } from 'src/redux/scheduler';
-import { useNetwork } from 'wagmi';
 import { getGnosisSafeUrl } from '../MyAssets/utils';
 
 const AlertBox = ({ status, schmint, currPrice, prevPrice, network }) => {
-	const { chain } = useNetwork();
 	const scheduler = useAppSelector(schedulerSelector);
 	const [date, setDate] = useState('');
 	const [time, setTime] = useState('');
@@ -39,9 +37,9 @@ const AlertBox = ({ status, schmint, currPrice, prevPrice, network }) => {
 					<Box>
 						<Text as="b2">Collection Price Changed</Text>
 						<Text as="b3" mt="mxxs">
-							The price of this NFT collection was changed from {prevPrice} {chain?.nativeCurrency.symbol}{' '}
-							to {currPrice} {chain?.nativeCurrency.symbol} per NFT. We have updated the schmint details
-							accordingly but require your consent before applying them.{' '}
+							The price of this NFT collection was changed from {prevPrice} {network.unit} to {currPrice}{' '}
+							{network.unit} per NFT. We have updated the schmint details accordingly but require your
+							consent before applying them.{' '}
 						</Text>
 						<Text as="b3" mt="mxxs">
 							Not applying the changes might cause the schmint to fail.{' '}

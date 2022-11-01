@@ -16,7 +16,7 @@ import { setScheduler } from 'src/redux/scheduler';
 import If from 'components/If';
 import { GET_USER_SCHEDULER } from 'src/graphql/query/GetUserScheduler';
 import Footer from '../Footer';
-import { networkSelector, setNetwork } from 'src/redux/network';
+import { disconnect, networkSelector, setNetwork } from 'src/redux/network';
 import { useNetwork } from 'wagmi';
 import Text from '../Text';
 import ButtonComp from '../Button';
@@ -31,7 +31,8 @@ const Layout = ({ children }) => {
 	const [userHasScheduler, setUserHasScheduler] = useState(false);
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
 	const network = useAppSelector(networkSelector);
-	const { chains, chain } = useNetwork();
+	const { chains } = useNetwork();
+
 	const [loadScheduler, { called, loading }] = useLazyQuery(GET_USER_SCHEDULER, {
 		onCompleted: (data) => {
 			const scheduler = data?.schedulers?.[0];
@@ -81,6 +82,7 @@ const Layout = ({ children }) => {
 				})
 			);
 		});
+		dispatch(disconnect());
 
 		return () => {
 			window.removeEventListener('resize', resize);
@@ -96,12 +98,6 @@ const Layout = ({ children }) => {
 			});
 		}
 	}, [user.address, network.apolloClient]);
-
-	useEffect(() => {
-		if (chain?.id) {
-			dispatch(setNetwork({ chainId: chain?.id, name: chain?.name }));
-		}
-	}, [chain]);
 
 	const getSidebarHeight = () => {
 		const height = windowHeight;

@@ -5,10 +5,11 @@ import toast from 'react-hot-toast';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { showModal } from 'src/redux/modal';
 import { MODALS_LIST } from 'src/redux/modal/types';
+import { networkSelector } from 'src/redux/network';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
-import { useBalance, useNetwork } from 'wagmi';
+import { useBalance } from 'wagmi';
 import Box from '../Box';
 import { condenseAddress } from '../DappNavbar/ConnectWallet';
 import If from '../If';
@@ -20,8 +21,13 @@ const Avatar = () => {
 	const [userNo, setUserNo] = useState(0);
 	const user = useAppSelector(userSelector);
 	const scheduler = useAppSelector(schedulerSelector);
-	const { chain } = useNetwork();
-	const { data: balance } = useBalance({ addressOrName: scheduler.avatar, chainId: chain?.id, watch: true });
+	const network = useAppSelector(networkSelector);
+	const { data: balance } = useBalance({
+		addressOrName: scheduler.avatar,
+		chainId: network.chainId,
+		watch: true,
+		enabled: network.isOnline,
+	});
 
 	const sanitizePfpUrl = () => {
 		return `https://ik.imagekit.io/chainlabs/Schmint/pfps/pfp_${userNo}.svg`;

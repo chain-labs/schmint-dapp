@@ -6,10 +6,10 @@ import If from 'src/components/If';
 import Text from 'src/components/Text';
 import GET_MY_SCHMINTS from 'src/graphql/query/GetMySchmints';
 import { useAppSelector } from 'src/redux/hooks';
+import { networkSelector } from 'src/redux/network';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
-import { useNetwork } from 'wagmi';
 import NoSchmintComponent from './NoSchmintComponent';
 import SchmintsList from './SchmintsList';
 
@@ -23,7 +23,7 @@ const MySchmintComponent = () => {
 	});
 	const user = useAppSelector(userSelector);
 	const scheduler = useAppSelector(schedulerSelector);
-	const { chain } = useNetwork();
+	const network = useAppSelector(networkSelector);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -51,7 +51,7 @@ const MySchmintComponent = () => {
 		return () => {
 			clearInterval(interval);
 		};
-	}, [user.address, chain]);
+	}, [user.address, network.chainId]);
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {

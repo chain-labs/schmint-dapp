@@ -9,14 +9,12 @@ import { useAppSelector } from 'src/redux/hooks';
 import { networkSelector } from 'src/redux/network';
 import { userSelector } from 'src/redux/user';
 import { PROJECTS_DIR } from 'src/utils/constants';
-import { useNetwork } from 'wagmi';
 
 const ProjectPage = () => {
 	const router = useRouter();
 	const { id } = router.query;
 	const [collections, setCollections] = useState([]);
 	const [collection, setCollection] = useState<ICollection>();
-	const { chain } = useNetwork();
 	const user = useAppSelector(userSelector);
 	const [wrongNetwork, setWrongNetwork] = useState(false);
 	const network = useAppSelector(networkSelector);
@@ -46,14 +44,14 @@ const ProjectPage = () => {
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			if (collection && user.exists) {
-				if (!network.isValid || collection?.network?.chainId !== chain?.id) {
+				if (!network.isValid || collection?.network?.chainId !== network.chainId) {
 					setWrongNetwork(true);
 					return;
 				}
 			}
 			setWrongNetwork(false);
 		}
-	}, [collection, chain, user.exists]);
+	}, [collection, network.chainId, user.exists]);
 
 	if (collection) {
 		return (

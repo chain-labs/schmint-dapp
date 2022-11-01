@@ -34,12 +34,13 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 	const [txPrice, setTxPrice] = useState<string>('');
 
 	const { data: signer } = useSigner();
+	const network = useAppSelector(networkSelector);
 	const provider = useProvider();
 	const { data: gasFee } = useFeeData({
 		formatUnits: 'gwei',
 		watch: true,
+		enabled: network.isOnline,
 	});
-	const network = useAppSelector(networkSelector);
 	const user = useAppSelector(userSelector);
 	const scheduler = useAppSelector(schedulerSelector);
 

@@ -28,6 +28,7 @@ const MyApp = ({ Component, pageProps }) => {
 	const [hostname, setHostname] = useState('');
 
 	useEffect(() => {
+
 		// Set a custom CSS Property for Height
 		// See https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
 
@@ -43,10 +44,24 @@ const MyApp = ({ Component, pageProps }) => {
 				document.documentElement.style.setProperty('--vh', `${vh}px`);
 			}, 150);
 
-			window.addEventListener('resize', handleResize);
+			try {
+
+				window.addEventListener('resize', handleResize);
+			} catch (err) {
+				console.log('Error adding resize listener', err);
+
+				// CODE: 101
+			}
 			return () => {
 				if (typeof window !== 'undefined') {
-					window.removeEventListener('resize', handleResize);
+					try {
+
+						window.removeEventListener('resize', handleResize);
+					} catch (err) {
+						console.log('Error removing resize listener', err);
+
+						// CODE: 102
+					}
 				}
 			};
 		}

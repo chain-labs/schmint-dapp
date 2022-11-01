@@ -33,14 +33,15 @@ const DappNavbar = () => {
 	});
 
 	useEffect(() => {
-		if (account?.connector?.id === 'metaMask' && process.browser) {
-			window?.ethereum?.on('accountsChanged', (accounts) => {
+		if (account?.connector?.id === 'metaMask' && typeof window !== 'undefined') {
+			const { ethereum } = window;
+			ethereum?.on('accountsChanged', (accounts) => {
 				if (dispatch) {
 					dispatch(setUser(accounts[0]));
 				}
 			});
 
-			window?.ethereum?.on('chainChanged', (chain) => {
+			ethereum?.on('chainChanged', (chain) => {
 				const chainId = parseInt(chain);
 				switchNetwork(chainId);
 			});

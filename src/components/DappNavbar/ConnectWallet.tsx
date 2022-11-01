@@ -14,6 +14,7 @@ import ButtonComp from '../Button';
 import { hideModal, showModal } from 'src/redux/modal';
 import { MODALS_LIST } from 'src/redux/modal/types';
 import { checkIfUserInvited } from 'src/utils/whitelist';
+import { setNetwork } from 'src/redux/network';
 
 export const condenseAddress = (address) => {
 	if (!address) return null;
@@ -44,6 +45,10 @@ const ConnectWallet = ({ networkProps }) => {
 			{({ account, chain, openConnectModal, openChainModal, openAccountModal }) => {
 				const { data: ens } = useEnsName({
 					address: user.address,
+					onError: (err) => {
+						console.log({ err });
+						// CODE: 411
+					},
 				});
 
 				useEffect(() => {
@@ -60,6 +65,11 @@ const ConnectWallet = ({ networkProps }) => {
 					}
 				}, [account]);
 
+				useEffect(() => {
+					if (user.address) {
+						dispatch(setNetwork({ chainId: chain?.id, name: chain?.name }));
+					}
+				}, [user, chain?.id]);
 				const connected = user.exists;
 
 				if (!connected) {

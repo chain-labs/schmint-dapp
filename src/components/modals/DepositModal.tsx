@@ -7,10 +7,11 @@ import InputBox from 'src/containers/project-page/components/InputBox';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { hideModal, replaceModal, showModal } from 'src/redux/modal';
 import { MODALS_LIST } from 'src/redux/modal/types';
+import { networkSelector } from 'src/redux/network';
 import { schedulerSelector } from 'src/redux/scheduler';
 import theme from 'src/styleguide/theme';
 import { getCoinPrice } from 'src/utils/gasPrices';
-import { useNetwork, useSigner } from 'wagmi';
+import { useSigner } from 'wagmi';
 import Box from '../Box';
 import ButtonComp from '../Button';
 import { condenseAddress } from '../DappNavbar/ConnectWallet';
@@ -22,7 +23,7 @@ const illustration = 'https://ik.imagekit.io/chainlabs/Schmint/pablo-pile-yellow
 const DepositModal = () => {
 	const scheduler = useAppSelector(schedulerSelector);
 	const dispatch = useAppDispatch();
-	const { chain } = useNetwork();
+	const network = useAppSelector(networkSelector);
 	const { data: signer } = useSigner();
 
 	const [funds, setFunds] = useState<number>();
@@ -64,17 +65,15 @@ const DepositModal = () => {
 			if (receipt) {
 				const fundsString = funds;
 				const gas = ethers.utils.formatEther(receipt.gasUsed.mul(receipt.effectiveGasPrice));
-				const price = ((await getCoinPrice(chain?.id)) * parseFloat(gas.toString())).toFixed(2);
-				const final = `${parseFloat(gas.toString()).toFixed(6)} ${
-					chain?.nativeCurrency?.symbol
-				} or ${price} USD`;
+				const price = ((await getCoinPrice(network.chainId)) * parseFloat(gas.toString())).toFixed(2);
+				const final = `${parseFloat(gas.toString()).toFixed(6)} ${network.unit} or ${price} USD`;
 
 				dispatch(
 					replaceModal({
 						type: MODALS_LIST.STATUS_MODAL,
 						props: {
 							success: true,
-							msg: `Successfully deposited ${fundsString} ${chain?.nativeCurrency?.symbol} to your Gnosis Safe.`,
+							msg: `Successfully deposited ${fundsString} ${network.unit} to your Gnosis Safe.`,
 							gas: final,
 							btnText: 'OK',
 						},
@@ -111,7 +110,7 @@ const DepositModal = () => {
 						value={funds}
 						step="0.0001"
 						setValue={setFunds}
-						unit={chain?.nativeCurrency?.symbol}
+						unit={network.unit}
 						width="30rem"
 					/>
 					<Box row alignItems="center">
