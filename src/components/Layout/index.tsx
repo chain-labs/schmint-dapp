@@ -224,7 +224,7 @@ const Layout = ({ children }) => {
 
 export default Layout;
 
-const CustomButtonComponent = React.forwardRef((ref) => (
+const CustomButtonComponent = React.forwardRef((props, ref) => (
 	<ButtonComp bg="primary" mt="wxs" px="wxxs" py="ms" innerRef={ref}>
 		<Text as="btn1">Back to Home</Text>
 	</ButtonComp>
