@@ -1,32 +1,53 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import { addSearch, filterSelector } from 'src/redux/filter';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { PROJECTS_DIR } from 'src/utils/constants';
 import CollectionTile from './CollectionTile';
 import EmptyResultComponent from './EmptyResultComponent';
 import { getCollections, ICollection } from './projectsStore';
 
-const CollectionsList = () => {
-	const [collections, setCollections] = React.useState<ICollection[]>([]);
+const CollectionsList = ({ showPastProjects }) => {
+	const [collections, setCollections] = React.useState([]);
 	const [filteredCollections, setFilteredCollections] = React.useState<ICollection[]>([]);
 	const filter = useAppSelector(filterSelector);
 	const [collectionPresent, setCollectionPresent] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
+		if (showPastProjects === 1) {
+			getPastProjects().then(async (res) => {
+				setCollections(res);
+				console.log(res);
+			});
+		}
 		getCollections().then((res) => {
 			setCollections(res);
+			console.log(res);
 		});
-	}, []);
+	}, [showPastProjects]);
 
+	const getPastProjects = async () => {
+		const PROJECTS_JSON_URL = PROJECTS_DIR;
+		const res = await axios.get(PROJECTS_JSON_URL);
+		let projects = res.data;
+		if (typeof projects === 'string') {
+			projects = JSON.parse(projects);
+		}
+		const schmintStartedCollections = projects.filter(
+			(collection: ICollection) =>
+				collection.startTimestamp !== null && collection.startTimestamp < Date.now() / 1000
+		);
+
+		return schmintStartedCollections;
+	};
 	useEffect(() => {
 		if (collections) {
 			setCollectionPresent(true);
 			const { alphabetical, network, price, search } = filter;
-
 			let filteredCollection = [...collections].sort((a, b) => a.startTimestamp - b.startTimestamp);
-
 			if (search.query !== '') {
 				filteredCollection = filteredCollection
 					.filter((collection) => {
@@ -96,7 +117,7 @@ const CollectionsList = () => {
 		} else {
 			setCollectionPresent(false);
 		}
-	}, [filter.alphabetical, filter.network, filter.price, filter.search.query, collections]);
+	}, [filter.alphabetical, filter.network, filter.price, filter.search.query, collections, showPastProjects]);
 
 	useEffect(() => {
 		dispatch(addSearch({ query: filter.search.query, count: filteredCollections.length }));
@@ -118,7 +139,7 @@ const CollectionsList = () => {
 							<EmptyResultComponent subText="Hmm... looks like the project you're looking for doesn't exist on Schmint yet. If you'd like to have it on Schmint, please " />
 						}
 						else={filteredCollections.map((collection, idx) => (
-							<CollectionTile {...{ collection, idx }} key={`${collection.title}-${idx}`} />
+							<CollectionTile {...{ collection, idx }} key={`${collection?.title}-${idx}`} />
 						))}
 					/>
 				}
