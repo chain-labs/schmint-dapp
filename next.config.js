@@ -1,3 +1,5 @@
+const isProd = process.env.NODE_ENV === "production";
+
 module.exports = {
 	webpack(config) {
 		config.module.rules.push({
@@ -8,9 +10,10 @@ module.exports = {
 	},
 	images: {
 		domains: ['ik.imagekit.io'],
-		loader: 'akamai',
-		path: '',
+		"loader": "akamai",
+		"path": "",
 	},
+	assetPrefix: isProd ? "https://your-domain.com" : "",
 	trailingSlash: true,
 	async rewrites() {
 		return [
