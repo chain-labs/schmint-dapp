@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'phosphor-react';
 import { DISCORD_INVITE, TWITTER_URL } from 'src/constants';
 import theme from 'src/styleguide/theme';
+import { BLOGS_URL, DOCS_URL } from 'src/utils/constants';
+import scrollIntoView from 'src/utils/scrollIntoView';
 import Box from './Box';
 import Text from './Text';
 
 const HomeNavbar = () => {
 	return (
-		<Box py="mxl" position="fixed" top="0" width="100vw" zIndex={16}>
+		<Box py="mxl" position="fixed" top="0" maxWidth="100vw" minWidth="100vw" zIndex={16} bg="gray-10">
 			<Box width={{ mobS: '95vw', deskM: '128rem' }} mx="auto" between>
 				<Link href="/" passHref>
 					<Box
@@ -27,6 +29,67 @@ const HomeNavbar = () => {
 				</Link>
 				<Box row alignItems="center">
 					<Box
+						row
+						alignItems="center"
+						color="simply-black"
+						cursor="pointer"
+						mr={{ mobS: '0', tabS: 'wxs' }}
+						onClick={() => scrollIntoView('faqs')}
+						css={`
+							&:hover {
+								color: ${theme.colors['blue-40']};
+							}
+						`}
+					>
+						<Text as="nav" mr="2px" display={{ mobS: 'none', tabS: 'block' }} row alignItems="center">
+							FAQs
+						</Text>
+					</Box>
+					<Box
+						as="a"
+						href={DOCS_URL}
+						target="_blank"
+						row
+						alignItems="center"
+						color="simply-black"
+						cursor="pointer"
+						mr={{ mobS: '0', tabS: 'wxs' }}
+						css={`
+							&:hover {
+								color: ${theme.colors['blue-40']};
+							}
+						`}
+					>
+						<Text as="nav" mr="2px" display={{ mobS: 'none', tabS: 'block' }} row alignItems="center">
+							Docs
+						</Text>
+						<Box height="16px" display={{ mobS: 'none', tabS: 'block' }}>
+							<ArrowUpRight size={16} weight="bold" />
+						</Box>
+					</Box>
+					<Box
+						as="a"
+						href={BLOGS_URL}
+						target="_blank"
+						row
+						alignItems="center"
+						color="simply-black"
+						cursor="pointer"
+						mr={{ mobS: '0', tabS: 'wxs' }}
+						css={`
+							&:hover {
+								color: ${theme.colors['blue-40']};
+							}
+						`}
+					>
+						<Text as="nav" mr="2px" display={{ mobS: 'none', tabS: 'block' }} row alignItems="center">
+							Blogs
+						</Text>
+						<Box height="16px" display={{ mobS: 'none', tabS: 'block' }}>
+							<ArrowUpRight size={16} weight="bold" />
+						</Box>
+					</Box>
+					<Box
 						as="a"
 						href={TWITTER_URL}
 						target="_blank"
@@ -34,15 +97,13 @@ const HomeNavbar = () => {
 						alignItems="center"
 						color="simply-black"
 						cursor="pointer"
+						mr={{ mobS: '0', tabS: 'wxs' }}
 						css={`
 							&:hover {
 								color: ${theme.colors['blue-40']};
 							}
 						`}
 					>
-						<Box display={{ mobS: 'block', tabS: 'none' }} mr="mxs">
-							<TwitterFill size={25} color={theme.colors['blue-40']} />
-						</Box>
 						<Text as="nav" mr="2px" display={{ mobS: 'none', tabS: 'block' }} row alignItems="center">
 							Twitter
 						</Text>
@@ -54,7 +115,6 @@ const HomeNavbar = () => {
 						as="a"
 						href={DISCORD_INVITE}
 						target="_blank"
-						ml={{ mobS: '0', tabS: 'wxs' }}
 						row
 						alignItems="center"
 						color="simply-black"

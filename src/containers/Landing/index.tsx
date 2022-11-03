@@ -12,6 +12,8 @@ import { BLOGS_API_URL } from 'src/constants';
 import theme from 'src/styleguide/theme';
 import { BLOGS_URL } from 'src/utils/constants';
 import BlogTile, { IBlog } from './BlogTile';
+import { FAQs } from './constants';
+import FAQ from './FAQ';
 
 const getBlogs = async () => {
 	const res = await axios.get(BLOGS_API_URL);
@@ -163,6 +165,33 @@ const LandingPage = () => {
 					<Box position="relative" height="34rem" width="34rem">
 						<Image
 							src="https://ik.imagekit.io/chainlabs/Schmint/community_-m3hb8R1V.svg"
+							layout="fill"
+							objectFit="cover"
+						/>
+					</Box>
+				</Box>
+			</Box>
+			<Box py="wl" borderBottom={`1px solid ${theme.colors['gray-30']}`}>
+				<Box
+					width={{ mobS: '90vw', tabS: '94.4rem', deskM: '128rem' }}
+					mb="wxs"
+					row
+					justifyContent="space-between"
+					mx="auto"
+				>
+					<Box width="76rem">
+						<Text as="h3" mb="wm" id="faqs">
+							Frequently Asked Questions
+						</Text>
+						<Box>
+							{FAQs.map(({ q, a }, idx) => {
+								return <FAQ {...{ q, a, last: idx === FAQs.length - 1 }} key={idx} />;
+							})}
+						</Box>
+					</Box>
+					<Box height="34rem" width="32rem" position="relative" mt="12.8rem">
+						<Image
+							src="https://ik.imagekit.io/chainlabs/Schmint/bulb_fYloMgv8Z.svg"
 							layout="fill"
 							objectFit="cover"
 						/>
