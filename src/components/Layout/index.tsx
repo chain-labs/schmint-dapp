@@ -141,7 +141,7 @@ const Layout = ({ children }) => {
 
 	if (isHome) {
 		return (
-			<Box>
+			<Box overflowX="hidden">
 				{children}
 				<HomeNavbar />
 				<Footer />

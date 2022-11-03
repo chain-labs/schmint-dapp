@@ -10,7 +10,7 @@ const TAG = 'https://ik.imagekit.io/chainlabs/Schmint/simplr-brand_AziSwlVYT.svg
 
 const Footer = () => {
 	return (
-		<Box bg="sky-blue-10" width="100vw" center py="6rem">
+		<Box bg="sky-blue-10" center py="6rem">
 			<Box>
 				<Box row>
 					{FOOTER_LINKS.map((link, idx) => (
