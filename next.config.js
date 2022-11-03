@@ -8,7 +8,10 @@ module.exports = {
 	},
 	images: {
 		domains: ['ik.imagekit.io'],
+		loader: 'akamai',
+		path: '',
 	},
+	trailingSlash: true,
 	async rewrites() {
 		return [
 			{
