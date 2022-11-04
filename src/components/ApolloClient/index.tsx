@@ -45,13 +45,19 @@ const ApolloClientProvider = ({ children }) => {
 
 	useEffect(() => {
 		if (network.isOnline) {
-			const ENDPOINT = getEndpoint(network.chainId);
-			const client = new ApolloClient({
-				uri: ENDPOINT,
-				cache: new InMemoryCache(),
-			});
-			dispatch(setApolloClient({ apolloClient: client }));
-			setClient(client);
+			try {
+				const ENDPOINT = getEndpoint(network.chainId);
+				const client = new ApolloClient({
+					uri: ENDPOINT,
+					cache: new InMemoryCache(),
+				});
+				dispatch(setApolloClient({ apolloClient: client }));
+				setClient(client);
+			} catch (err) {
+				console.log('Error setting Apollo Client to redux', err);
+
+				// CODE: 106
+			}
 		}
 	}, [network.chainId]);
 

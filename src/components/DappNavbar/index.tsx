@@ -34,17 +34,23 @@ const DappNavbar = () => {
 
 	useEffect(() => {
 		if (account?.connector?.id === 'metaMask' && typeof window !== 'undefined') {
-			const { ethereum } = window;
-			ethereum?.on('accountsChanged', (accounts) => {
-				if (dispatch) {
-					dispatch(setUser(accounts[0]));
-				}
-			});
+			try {
+				const { ethereum } = window;
+				ethereum?.on('accountsChanged', (accounts) => {
+					if (dispatch) {
+						dispatch(setUser(accounts[0]));
+					}
+				});
 
-			ethereum?.on('chainChanged', (chain) => {
-				const chainId = parseInt(chain);
-				switchNetwork(chainId);
-			});
+				ethereum?.on('chainChanged', (chain) => {
+					const chainId = parseInt(chain);
+					switchNetwork(chainId);
+				});
+			} catch (err) {
+				console.log('Error in metamask event listener', err);
+
+				// CODE: 107
+			}
 		}
 	}, [account]);
 
@@ -58,18 +64,15 @@ const DappNavbar = () => {
 
 	useEffect(() => {
 		if (signer) {
-			try {
-				signer
-					.getAddress()
-					.then((address) => {
-						dispatch(setUser(address));
-					})
-					.catch((err) => {
-						console.log({ err });
-					});
-			} catch (err) {
-				console.log(err);
-			}
+			signer
+				.getAddress()
+				.then((address) => {
+					dispatch(setUser(address));
+				})
+				.catch((err) => {
+					console.log("Couldn't get address from signer", err);
+					// CODE: 108
+				});
 		}
 	}, [signer]);
 

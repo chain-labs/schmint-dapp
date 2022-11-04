@@ -16,15 +16,23 @@ const Banners = ({ setNetworkProps, networkProps }) => {
 		chainId: network.chainId,
 		formatUnits: 'gwei',
 		watch: true,
-		onError: (error) => console.log('error'),
+		onError: (error) => {
+			console.log('Error fetching feeData', error);
+			// CODE: 110
+		},
 		enabled: network.isOnline,
 	});
 
 	useEffect(() => {
 		const fetch = () => {
-			getCoinPrice(network.chainId).then((price) => {
-				setCoinPrice(price);
-			});
+			getCoinPrice(network.chainId)
+				.then((price) => {
+					setCoinPrice(price);
+				})
+				.catch((err) => {
+					console.log('Error fetching coin price', err);
+					// CODE: 111
+				});
 		};
 
 		if (network.chainId) {
@@ -79,10 +87,10 @@ const Banners = ({ setNetworkProps, networkProps }) => {
 					<Text
 						as="c1"
 						ml="mxs"
-						data-tip={`Source: ${getGasSource(network.chainId)}`}
+						data-tip={`Source: ${getGasSource(network?.chainId)}`}
 						data-offset="{'left': 10, 'top': 2}"
 					>
-						{`${parseFloat(feeData?.data?.formatted.gasPrice).toFixed(0)} Gwei`}
+						{`${parseFloat(feeData?.data?.formatted?.gasPrice).toFixed(0)} Gwei`}
 					</Text>
 					<Box width="1px" bg="simply-black" height="1.2rem" mx="ms" />
 					<Text as="c1" color="simply-blue" mr="mxxs">

@@ -12,7 +12,7 @@ const Wagmi = ({ children }) => {
 	const user = useAppSelector(userSelector);
 	const { chains, provider } = configureChains(
 		[chain.mainnet, chain.rinkeby, chain.polygonMumbai, chain.polygon, chain.goerli],
-		[alchemyProvider({ apiKey: ALCHEMY_API, priority: 0, weight: 1 })]
+		[alchemyProvider({ apiKey: ALCHEMY_API, priority: 0 })]
 	);
 
 	const { connectors } = getDefaultWallets({

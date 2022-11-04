@@ -13,26 +13,38 @@ const Drawer = ({ drawerOpen, setDrawerOpen }) => {
 	const drawerControls = useAnimationControls();
 
 	useEffect(() => {
-		if (drawerOpen) {
-			drawerControls.start('open');
-		} else {
-			drawerControls.start('closed');
-		}
+		try {
+			if (drawerOpen) {
+				drawerControls.start('open');
+			} else {
+				drawerControls.start('closed');
+			}
 
-		return () => {
-			drawerControls.stop();
-		};
+			return () => {
+				drawerControls.stop();
+			};
+		} catch (err) {
+			console.log('Error in drawer animation', err);
+
+			// CODE: 108
+		}
 	}, [drawerOpen]);
 
 	useEffect(() => {
-		if (expandable) {
-			controls.start('open');
-		} else {
-			controls.start('closed');
+		try {
+			if (expandable) {
+				controls.start('open');
+			} else {
+				controls.start('closed');
+			}
+			return () => {
+				controls.stop();
+			};
+		} catch (err) {
+			console.log('Error in Expandable animation', err);
+
+			// CODE: 108
 		}
-		return () => {
-			controls.stop();
-		};
 	}, [expandable]);
 
 	return (

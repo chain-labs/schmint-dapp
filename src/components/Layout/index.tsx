@@ -62,6 +62,11 @@ const Layout = ({ children }) => {
 			}
 		},
 		pollInterval: 8000,
+		onError: (error) => {
+			console.log("Error loading user's scheduler", error);
+
+			// CODE: 103
+		},
 	});
 	const dispatch = useAppDispatch();
 
@@ -73,15 +78,21 @@ const Layout = ({ children }) => {
 			setWindowHeight(window.innerHeight);
 		};
 		window.addEventListener('resize', resize);
-		window.ethereum.on('chainChanged', (chain) => {
-			const name = chains.find((c) => c.id === parseInt(chain))?.name;
-			dispatch(
-				setNetwork({
-					chainId: parseInt(chain),
-					name: name ?? '',
-				})
-			);
-		});
+		try {
+			window?.ethereum?.on('chainChanged', (chain) => {
+				const name = chains.find((c) => c.id === parseInt(chain))?.name;
+				dispatch(
+					setNetwork({
+						chainId: parseInt(chain),
+						name: name ?? '',
+					})
+				);
+			});
+		} catch (err) {
+			console.log("Couldn't connect to ethereum", err);
+
+			// CODE: 104
+		}
 		dispatch(disconnect());
 
 		return () => {

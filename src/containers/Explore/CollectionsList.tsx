@@ -15,9 +15,15 @@ const CollectionsList = () => {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		getCollections().then((res) => {
-			setCollections(res);
-		});
+		getCollections()
+			.then((res) => {
+				setCollections(res);
+			})
+			.catch((err) => {
+				console.log('Error fetching collections', err);
+
+				// CODE: 113
+			});
 	}, []);
 
 	useEffect(() => {
@@ -60,11 +66,11 @@ const CollectionsList = () => {
 			}
 
 			if (price.isFree) {
-				filteredCollection = filteredCollection.filter((collection: ICollection) => collection.price === 0);
+				filteredCollection = filteredCollection?.filter((collection: ICollection) => collection.price === 0);
 			}
 
 			if (alphabetical.isAZ) {
-				filteredCollection = filteredCollection.sort((a, b) => {
+				filteredCollection = filteredCollection?.sort((a, b) => {
 					const x = a.title.toLowerCase();
 					const y = b.title.toLowerCase();
 

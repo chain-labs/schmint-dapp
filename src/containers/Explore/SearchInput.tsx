@@ -12,9 +12,15 @@ const SearchInput = () => {
 	const dispatch = useAppDispatch();
 
 	const handleChange = (e) => {
-		e.preventDefault();
-		setSearch(e.target.value);
-		dispatch(addSearch({ query: e.target.value, count }));
+		try {
+			e.preventDefault();
+			setSearch(e.target.value);
+			dispatch(addSearch({ query: e.target.value, count }));
+		} catch (err) {
+			console.log('Error changing search input', err);
+
+			// CODE: 112
+		}
 	};
 
 	return (
