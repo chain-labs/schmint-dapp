@@ -27,6 +27,10 @@ const Avatar = () => {
 		chainId: network.chainId,
 		watch: true,
 		enabled: network.isOnline,
+		onError: (error) => {
+			console.log('Error loading balance', error);
+			// CODE: 125
+		},
 	});
 
 	const sanitizePfpUrl = () => {

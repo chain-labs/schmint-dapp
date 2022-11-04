@@ -20,6 +20,11 @@ const MySchmintComponent = () => {
 		onCompleted: ({ schmints }) => {
 			setSchmints(schmints);
 		},
+		onError: (error) => {
+			console.log("Error loading user's schmints", error);
+
+			// CODE: 127
+		},
 	});
 	const user = useAppSelector(userSelector);
 	const scheduler = useAppSelector(schedulerSelector);
@@ -63,9 +68,15 @@ const MySchmintComponent = () => {
 	}, []);
 
 	const handleClick = (page) => {
-		setPage(page);
-		if (typeof window !== 'undefined') {
-			window.sessionStorage.setItem('page', page ? '1' : '0');
+		try {
+			setPage(page);
+			if (typeof window !== 'undefined') {
+				window.sessionStorage.setItem('page', page ? '1' : '0');
+			}
+		} catch (err) {
+			console.log('Error setting page', err);
+
+			// CODE: 128
 		}
 	};
 

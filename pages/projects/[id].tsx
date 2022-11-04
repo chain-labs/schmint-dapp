@@ -34,11 +34,17 @@ const ProjectPage = () => {
 	};
 
 	useEffect(() => {
-		getCollection();
+		getCollection().catch((err) => {
+			console.log('Error getting All collections', err);
+			// CODE: 130
+		});
 	}, [id, collections]);
 
 	useEffect(() => {
-		getAllCollections();
+		getAllCollections().catch((err) => {
+			console.log('Error getting All collections', err);
+			// CODE: 130
+		});
 	}, []);
 
 	useEffect(() => {

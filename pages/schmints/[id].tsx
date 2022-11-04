@@ -56,7 +56,10 @@ const Schmint = () => {
 	};
 
 	useEffect(() => {
-		getAllCollections();
+		getAllCollections().catch((err) => {
+			console.log('Error getting All collections', err);
+			// CODE: 130
+		});
 	}, []);
 
 	useEffect(() => {

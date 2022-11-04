@@ -52,19 +52,29 @@ const SchmintTile = ({
 
 	useEffect(() => {
 		if (isSchminted) {
-			getTotalGasCost(executionTrxHash, gasPrice).then((totalGasCost) => {
-				setTotalTransactionCost(totalGasCost);
-			});
+			getTotalGasCost(executionTrxHash, gasPrice)
+				.then((totalGasCost) => {
+					setTotalTransactionCost(totalGasCost);
+				})
+				.catch((err) => {
+					console.log('Error getting total gas cost', err);
+					// CODE: 132
+				});
 		}
 	}, [executionTrxHash, gasPrice]);
 
 	useEffect(() => {
-		if (!completed) {
-			const currentPrice = collection?.price;
-			const txPrice = parseFloat(value) / quantity;
-			if (currentPrice !== txPrice) {
-				setActionRequired(true);
-			} else setActionRequired(false);
+		try {
+			if (!completed) {
+				const currentPrice = collection?.price;
+				const txPrice = parseFloat(value) / quantity;
+				if (currentPrice !== txPrice) {
+					setActionRequired(true);
+				} else setActionRequired(false);
+			}
+		} catch (err) {
+			console.log('Error checking if action required', err);
+			// CODE: 133
 		}
 	}, [collection, quantity, value, completed]);
 

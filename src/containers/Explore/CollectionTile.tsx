@@ -17,13 +17,24 @@ import { chains } from 'src/utils/chains';
 const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollection }) => {
 	const { loading, data: schmintsList } = useQuery(GET_PROJECT_SCHMINTS, {
 		variables: { target: collection.contractAddress },
+		onError: (err) => {
+			console.log('Error fetching Project schmints', err);
+
+			// CODE: 123
+		},
 	});
 	const router = useRouter();
 	const [unit, setUnit] = useState('');
 	useEffect(() => {
 		if (collection?.network?.chainId) {
-			const idx = chains.findIndex((c) => c.chainId === collection?.network?.chainId);
-			setUnit(chains?.[idx]?.nativeCurrency.symbol);
+			try {
+				const idx = chains.findIndex((c) => c.chainId === collection?.network?.chainId);
+				setUnit(chains?.[idx]?.nativeCurrency.symbol);
+			} catch (err) {
+				console.log('Error setting unit', err);
+
+				// CODE: 124
+			}
 		}
 	}, [collection]);
 

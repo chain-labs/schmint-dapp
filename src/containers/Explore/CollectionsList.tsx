@@ -33,70 +33,120 @@ const CollectionsList = () => {
 
 			let filteredCollection = [...collections].sort((a, b) => a.startTimestamp - b.startTimestamp);
 
-			if (search.query !== '') {
-				filteredCollection = filteredCollection
-					.filter((collection) => {
-						return collection.title.toLowerCase().includes(search?.query?.toLowerCase());
-					})
-					.sort((a: ICollection, b: ICollection) => {
-						if (
-							a.title.toLowerCase().indexOf(search.query.toLowerCase(), 0) <
-							b.title.toLowerCase().indexOf(search.query.toLowerCase(), 0)
-						) {
-							return -1;
-						} else if (
-							a.title.toLowerCase().indexOf(search.query.toLowerCase(), 0) >
-							b.title.toLowerCase().indexOf(search.query.toLowerCase(), 0)
-						) {
-							return 1;
-						} else return 0;
+			try {
+				if (search.query !== '') {
+					filteredCollection = filteredCollection
+						.filter((collection) => {
+							return collection.title.toLowerCase().includes(search?.query?.toLowerCase());
+						})
+						.sort((a: ICollection, b: ICollection) => {
+							if (
+								a.title.toLowerCase().indexOf(search.query.toLowerCase(), 0) <
+								b.title.toLowerCase().indexOf(search.query.toLowerCase(), 0)
+							) {
+								return -1;
+							} else if (
+								a.title.toLowerCase().indexOf(search.query.toLowerCase(), 0) >
+								b.title.toLowerCase().indexOf(search.query.toLowerCase(), 0)
+							) {
+								return 1;
+							} else return 0;
+						});
+				}
+			} catch (err) {
+				console.log('Erorr in handling search filter', err);
+
+				// CODE: 114
+			}
+
+			try {
+				if (network.isEthereum && !network.isPolygon) {
+					filteredCollection = filteredCollection.filter(
+						(collection: ICollection) => collection.network.name === 'Ethereum'
+					);
+				}
+			} catch (err) {
+				console.log('Error in handling Ethereum filter', err);
+
+				// CODE: 115
+			}
+
+			try {
+				if (network.isPolygon && !network.isEthereum) {
+					filteredCollection = filteredCollection.filter(
+						(collection: ICollection) => collection.network.name === 'Polygon'
+					);
+				}
+			} catch (err) {
+				console.log('Error in handling Polygon filter', err);
+
+				// CODE: 116
+			}
+
+			try {
+				if (price.isFree) {
+					filteredCollection = filteredCollection?.filter(
+						(collection: ICollection) => collection.price === 0
+					);
+				}
+			} catch (err) {
+				console.log('Error in handling free filter', err);
+
+				// CODE: 117
+			}
+
+			try {
+				if (alphabetical.isAZ) {
+					filteredCollection = filteredCollection?.sort((a, b) => {
+						const x = a.title.toLowerCase();
+						const y = b.title.toLowerCase();
+
+						if (x < y) return -1;
+						if (x > y) return 1;
+						return 0;
 					});
+				}
+			} catch (err) {
+				console.log('Error in handling A-Z filter', err);
+
+				// CODE: 118
 			}
 
-			if (network.isEthereum && !network.isPolygon) {
-				filteredCollection = filteredCollection.filter(
-					(collection: ICollection) => collection.network.name === 'Ethereum'
-				);
+			try {
+				if (alphabetical.isZA) {
+					filteredCollection = filteredCollection.sort((a, b) => {
+						const x = a.title.toLowerCase();
+						const y = b.title.toLowerCase();
+
+						if (x < y) return 1;
+						if (x > y) return -1;
+						return 0;
+					});
+				}
+			} catch (err) {
+				console.log('Error in handling Z-A filter', err);
+
+				// CODE: 119
 			}
 
-			if (network.isPolygon && !network.isEthereum) {
-				filteredCollection = filteredCollection.filter(
-					(collection: ICollection) => collection.network.name === 'Polygon'
-				);
+			try {
+				if (price.isLowToHigh) {
+					filteredCollection = filteredCollection.sort((a, b) => a.price - b.price);
+				}
+			} catch (err) {
+				console.log('Error in handling low to high filter', err);
+
+				// CODE: 120
 			}
 
-			if (price.isFree) {
-				filteredCollection = filteredCollection?.filter((collection: ICollection) => collection.price === 0);
-			}
+			try {
+				if (price.isHighToLow) {
+					filteredCollection = filteredCollection.sort((a, b) => b.price - a.price);
+				}
+			} catch (err) {
+				console.log('Error in handling high to low filter', err);
 
-			if (alphabetical.isAZ) {
-				filteredCollection = filteredCollection?.sort((a, b) => {
-					const x = a.title.toLowerCase();
-					const y = b.title.toLowerCase();
-
-					if (x < y) return -1;
-					if (x > y) return 1;
-					return 0;
-				});
-			}
-
-			if (alphabetical.isZA) {
-				filteredCollection = filteredCollection.sort((a, b) => {
-					const x = a.title.toLowerCase();
-					const y = b.title.toLowerCase();
-
-					if (x < y) return 1;
-					if (x > y) return -1;
-					return 0;
-				});
-			}
-
-			if (price.isLowToHigh) {
-				filteredCollection = filteredCollection.sort((a, b) => a.price - b.price);
-			}
-
-			if (price.isHighToLow) {
-				filteredCollection = filteredCollection.sort((a, b) => b.price - a.price);
+				// CODE: 121
 			}
 			setFilteredCollections([...filteredCollection]);
 		} else {
@@ -105,7 +155,12 @@ const CollectionsList = () => {
 	}, [filter.alphabetical, filter.network, filter.price, filter.search.query, collections]);
 
 	useEffect(() => {
-		dispatch(addSearch({ query: filter.search.query, count: filteredCollections.length }));
+		try {
+			dispatch(addSearch({ query: filter.search.query, count: filteredCollections.length }));
+		} catch (err) {
+			console.log('Error in dispatching search query', err);
+			// CODE: 122
+		}
 	}, [filteredCollections]);
 
 	return (

@@ -28,7 +28,12 @@ const NoSchmintComponent = ({ page = 0 }: { page: number }) => {
 		if (user.exists) {
 			router.push('/explore');
 		} else {
-			openConnectModal();
+			try {
+				openConnectModal();
+			} catch (err) {
+				console.log("Couldn't open connect modal", err);
+				// CODE: 135
+			}
 		}
 	};
 

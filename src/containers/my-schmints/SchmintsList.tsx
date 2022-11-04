@@ -17,13 +17,29 @@ const SchmintsList = ({ page, schmints }) => {
 	const [collections, setCollections] = useState([]);
 	const [activeSchmints, setActiveSchmints] = useState([]);
 	const [completedSchmints, setCompletedSchmints] = useState([]);
-	const [getSuccesfulSchmints] = useLazyQuery(CHECK_FAILED_SCHMINT);
+	const [getSuccesfulSchmints] = useLazyQuery(CHECK_FAILED_SCHMINT, {
+		onError: (error) => {
+			console.log('Error checking failed schmints', error);
+
+			// CODE: 129
+		},
+	});
 	const user = useAppSelector(userSelector);
 
 	useEffect(() => {
-		getAllCollections().then((collection) => setCollections(collection));
+		getAllCollections()
+			.then((collection) => setCollections(collection))
+			.catch((err) => {
+				console.log('Error getting All collections', err);
+				// CODE: 130
+			});
 		const interval = setInterval(() => {
-			getAllCollections().then((collection) => setCollections(collection));
+			getAllCollections()
+				.then((collection) => setCollections(collection))
+				.catch((err) => {
+					console.log('Error getting All collections', err);
+					// CODE: 130
+				});
 		}, 10000);
 
 		return () => {
@@ -31,7 +47,7 @@ const SchmintsList = ({ page, schmints }) => {
 		};
 	}, []);
 
-	const getSchmitsAssigned = async () => {
+	const getSchmintsAssigned = async () => {
 		const activeSchmints: any[] = schmints.filter((schmint) => !schmint.isSchminted && !schmint.isCancelled);
 		const completedSchmints: any[] = schmints.filter((schmint) => schmint.isSchminted || schmint.isCancelled);
 		const targets = activeSchmints.map((schmint) => schmint.target);
@@ -51,7 +67,10 @@ const SchmintsList = ({ page, schmints }) => {
 
 	useEffect(() => {
 		if (schmints.length && collections.length) {
-			getSchmitsAssigned();
+			getSchmintsAssigned().catch((err) => {
+				console.log('Error getting schmints assigned', err);
+				// CODE: 131
+			});
 		}
 	}, [schmints, collections]);
 
@@ -72,19 +91,19 @@ const SchmintsList = ({ page, schmints }) => {
 					>
 						<If
 							condition={!page}
-							then={activeSchmints.map((schmint) => {
-								const collection = collections.find(
+							then={activeSchmints?.map((schmint) => {
+								const collection = collections?.find(
 									(collection) =>
-										collection.contractAddress.toLowerCase() === schmint.target.toLowerCase()
+										collection?.contractAddress?.toLowerCase() === schmint?.target?.toLowerCase()
 								);
 								const quantity = getSchmintQuantity(collection?.abi, schmint?.data);
 								return (
 									<SchmintTile
 										collection={collection}
 										quantity={quantity}
-										value={`${ethers.utils.formatUnits(schmint.value, 'ether')}`}
-										createdTimestamp={schmint.creationTimestamp}
-										schmintID={schmint.id}
+										value={`${ethers.utils.formatUnits(schmint?.value, 'ether')}`}
+										createdTimestamp={schmint?.creationTimestamp}
+										schmintID={schmint?.id}
 									/>
 								);
 							})}

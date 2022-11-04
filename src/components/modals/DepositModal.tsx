@@ -81,8 +81,9 @@ const DepositModal = () => {
 				);
 			}
 		} catch (err) {
-			console.log({ err }); // eslint-disable-line no-console
+			console.log('Error while Depositing Funds to Gnosis Safe', err); // eslint-disable-line no-console
 			dispatch(replaceModal({ type: MODALS_LIST.STATUS_MODAL, props: { success: false } }));
+			// CODE: 126
 		}
 	};
 
