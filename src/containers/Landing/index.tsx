@@ -43,7 +43,7 @@ const LandingPage = () => {
 							Schedule your mints in advance and relax.
 						</Text>
 						<Text as="b1" width={{ mobS: '30.72rem', tabS: '51rem', deskM: '51.67rem' }}>
-							Schmint helps collectors get a good night's sleep.
+							{"Schmint helps collectors get a good night's sleep."}
 						</Text>
 						<Box mt="wxs" row alignItems="center">
 							<Link href="/explore" passHref>
