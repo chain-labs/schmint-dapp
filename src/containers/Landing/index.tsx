@@ -24,7 +24,8 @@ const LandingPage = () => {
 	const blogs = useQuery('blogs', getBlogs, { cacheTime: 0 });
 
 	useEffect(() => {
-		console.log({ blogs: blogs.isLoading });
+		console.log({ blogs: blogs.isLoading, blogs_data: blogs.data });
+		console.log(blogs?.data?.items?.[0]?.thumbnail);
 	}, [blogs]);
 
 	return (
@@ -37,12 +38,25 @@ const LandingPage = () => {
 			pt={{ mobS: '21.6rem', tabS: '22.6rem', deskM: '14rem' }}
 		>
 			<Box width={{ mobS: '90vw', tabS: '94.4rem', deskM: '128rem' }} mx="auto" mb="6rem">
-				<Box row justifyContent="space-between" alignItems="center">
-					<Box width="58.5rem">
-						<Text as="h2" mb={{ mobS: 'mm', deskM: 'mxl' }}>
+				<Box
+					row
+					justifyContent={{ mobS: 'center', deskM: 'space-between' }}
+					alignItems="center"
+					flexDirection={{ mobS: 'column', deskM: 'row' }}
+				>
+					<Box
+						width={{ mobS: '30rem', tabS: '58.5rem' }}
+						column
+						alignItems={{ mobS: 'center', deskM: 'start' }}
+					>
+						<Text as="h2" mb={{ mobS: 'mm', deskM: 'mxl' }} textAlign={{ mobS: 'center', deskM: 'start' }}>
 							Schedule your mints in advance and relax.
 						</Text>
-						<Text as="b1" width={{ mobS: '30.72rem', tabS: '51rem', deskM: '51.67rem' }}>
+						<Text
+							as="b1"
+							width={{ mobS: '30.72rem', tabS: '51rem', deskM: '51.67rem' }}
+							textAlign={{ mobS: 'center', deskM: 'start' }}
+						>
 							{"Schmint helps collectors get a good night's sleep."}
 						</Text>
 						<Box mt="wxs" row alignItems="center">
@@ -55,7 +69,7 @@ const LandingPage = () => {
 									border="none"
 									outline="none"
 									borderRadius="64px"
-									mr="mxl"
+									mr={{ deskM: 'mxl' }}
 									cursor="pointer"
 									css={`
 										&:hover {
@@ -74,23 +88,52 @@ const LandingPage = () => {
 						css={`
 							display: grid;
 							grid-gap: 20px 28px;
-							grid-template-columns: repeat(2, 1fr);
 							grid-template-rows: repeat(2, 1fr);
 						`}
+						gridTemplateColumns={{
+							mobS: 'repeat(1,1fr)',
+							tabS: 'repeat(2, 1fr)',
+							tabL: 'repeat(4,1fr)',
+							deskM: 'repeat(2,1fr)',
+						}}
+						mt={{ mobS: 'wm', deskM: '0' }}
 					>
-						<Tile />
-						<Tile />
-						<Tile />
-						<Tile />
+						<Tile
+							src="https://ik.imagekit.io/chainlabs/Schmint/Schmint_LP_Illustrations/Bolt_Desktop_wVGk9Z2bf.png?ik-sdk-version=javascript-1.4.3&updatedAt=1667553186205"
+							text="Increase your chances of minting by 10 folds."
+							showText="false"
+						/>
+						<Tile
+							src="https://ik.imagekit.io/chainlabs/Schmint/Schmint_LP_Illustrations/Gear_Desktop_eudSmAQ2D.png?ik-sdk-version=javascript-1.4.3&updatedAt=1667553186220"
+							text="More control over how much gas you spend."
+							showText="false"
+						/>
+						<Tile
+							src="https://ik.imagekit.io/chainlabs/Schmint/Schmint_LP_Illustrations/Check_Desktop_uuG72q5Us9.png?ik-sdk-version=javascript-1.4.3&updatedAt=1667553186213"
+							text="All projects are curated but still, DYOR"
+							showText="false"
+						/>
+						<Tile
+							src="https://ik.imagekit.io/chainlabs/Schmint/Schmint_LP_Illustrations/Picture_Desktop_YrxcP2mqa3.png?ik-sdk-version=javascript-1.4.3&updatedAt=1667553186234"
+							text="Schmint for seconadary marketplaces."
+							showText="true"
+						/>
 					</Box>
 				</Box>
 			</Box>
 			<Box py="wl" width={{ mobS: '90vw', tabS: '94.4rem', deskM: '128rem' }} mx="auto">
 				<Box row justifyContent="space-between" alignItems="center" mb="ws">
-					<Text as="h3">
+					<Text as="h3" textAlign={{ mobS: 'center', tabS: 'right' }}>
 						Learn more about <span style={{ color: theme.colors['blue-40'] }}>schmint</span>
 					</Text>
-					<Box row alignItems="center" as="a" href={BLOGS_URL}>
+					<Box
+						row
+						alignItems="center"
+						as="a"
+						target="_blank"
+						href={BLOGS_URL}
+						display={{ mobS: 'none', tabL: 'flex' }}
+					>
 						<Text as="h5" color="blue-40" mr="mxs">
 							Read all
 						</Text>
@@ -101,8 +144,8 @@ const LandingPage = () => {
 					css={`
 						display: grid;
 						grid-column-gap: 36px;
-						grid-template-columns: repeat(3, 1fr);
 					`}
+					gridTemplateColumns={{ mobS: 'repeat(1,1fr)', tabS: 'repeat(3, 1fr)' }}
 				>
 					{/* Could not use map here because of some weird error with the network call */}
 					<If
@@ -139,28 +182,52 @@ const LandingPage = () => {
 						}
 					/>
 				</Box>
+				<Box
+					row
+					alignItems="center"
+					as="a"
+					target="_blank"
+					href={BLOGS_URL}
+					display={{ mobS: 'flex', tabL: 'none' }}
+					mt="wxs"
+					justifyContent="center"
+				>
+					<Text as="h5" color="blue-40" mr="mxs">
+						Read all
+					</Text>
+					<ArrowUpRight size={32} color={theme.colors['blue-40']} />
+				</Box>
 			</Box>
 			<Box bg="sky-blue-20" py="wxxs">
 				<Box
-					width={{ mobS: '90vw', tabS: '94.4rem', deskM: '128rem' }}
+					width={{ mobS: '90vw', tabL: '94.4rem', deskM: '128rem' }}
 					mx="auto"
 					row
 					alignItems="center"
 					justifyContent="space-between"
+					flexDirection={{ mobS: 'column-reverse', tabS: 'row' }}
 				>
-					<Box>
-						<Text as="h3" color="blue-40" mb="mxxxl" maxWidth="63rem">
+					<Box column alignItems={{ mobS: 'center', tabS: 'start' }}>
+						<Text
+							as="h3"
+							color="blue-40"
+							mb="mxxxl"
+							maxWidth="63rem"
+							textAlign={{ mobS: 'center', tabS: 'start' }}
+						>
 							Join a community full of degens who are just as excited about NFTs as you are
 						</Text>
-						<ButtonComp
-							bg="tertiary"
-							px="wxxs"
-							py="mm"
-							border={`1px solid ${theme.colors['gray-40']}`}
-							color="simply-black"
-						>
-							<Text as="btn1">Join Simplr Discord</Text>
-						</ButtonComp>
+						<Box as="a" target="_blank" href="https://discord.gg/tSj3QkRFuW">
+							<ButtonComp
+								bg="tertiary"
+								px="wxxs"
+								py="mm"
+								border={`1px solid ${theme.colors['gray-40']}`}
+								color="simply-black"
+							>
+								<Text as="btn1">Join Simplr Discord</Text>
+							</ButtonComp>
+						</Box>
 					</Box>
 					<Box position="relative" height="34rem" width="34rem">
 						<Image
@@ -176,10 +243,19 @@ const LandingPage = () => {
 					width={{ mobS: '90vw', tabS: '94.4rem', deskM: '128rem' }}
 					mb="wxs"
 					row
-					justifyContent="space-between"
+					justifyContent={{ mobS: 'center', tabS: 'space-between' }}
 					mx="auto"
+					flexDirection={{ mobS: 'column-reverse', tabL: 'row' }}
+					alignItems={{ mobS: 'center', tabL: 'start' }}
 				>
-					<Box width="76rem">
+					<Box
+						width={{ mobS: '32.4rem', tabS: '62rem', deskM: '76rem' }}
+						// display="flex"
+						// flexDirection="column"
+						// justifyContent={{ mobS: 'center', tabL: 'start' }}
+						// alignItems={{ mobS: 'center' }}
+						column
+					>
 						<Text as="h3" mb="wm" id="faqs">
 							Frequently Asked Questions
 						</Text>
@@ -189,7 +265,14 @@ const LandingPage = () => {
 							})}
 						</Box>
 					</Box>
-					<Box height="34rem" width="32rem" position="relative" mt="12.8rem">
+					<Box
+						height={{ mobS: '30rem', deskM: '34rem' }}
+						width={{ mobS: '30rem', deskM: '34rem' }}
+						position="relative"
+						mt="12.8rem"
+						center
+						ml="wxxxl"
+					>
 						<Image
 							src="https://ik.imagekit.io/chainlabs/Schmint/bulb_fYloMgv8Z.svg"
 							layout="fill"
@@ -204,7 +287,7 @@ const LandingPage = () => {
 
 export default LandingPage;
 
-const Tile = () => {
+const Tile = ({ src, text, showText }) => {
 	return (
 		<Box
 			borderRadius="24px"
@@ -232,7 +315,43 @@ const Tile = () => {
 					);
 					backdrop-filter: blur(21px);
 				`}
-			></Box>
+				column
+			>
+				<If
+					condition={showText === 'true'}
+					then={
+						<Box
+							display="flex"
+							justifyContent="flex-end"
+							borderRadius="0px 0px 0px 16px"
+							position="absolute"
+							width="100%"
+						>
+							<Box
+								borderRadius="0px 16px 0px 16px"
+								px="mm"
+								py="mxs"
+								width="13.6rem"
+								backgroundColor="sky-blue-20"
+								alignSelf="flex-end"
+								justifySelf="flex-end"
+							>
+								<Text as="b2" color="blue-40" textAlign="center">
+									Coming Soon
+								</Text>
+							</Box>
+						</Box>
+					}
+				/>
+				<Box center column pt="mxl">
+					<Box position="relative" width="12.4rem" height="12.4rem" px="6.3rem">
+						<Image src={src} layout="fill" objectFit="cover" />
+					</Box>
+					<Text pt="mxl" px="mxl" as="h6" color="blue-40">
+						{text}
+					</Text>
+				</Box>
+			</Box>
 		</Box>
 	);
 };

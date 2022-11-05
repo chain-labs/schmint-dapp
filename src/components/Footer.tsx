@@ -12,10 +12,10 @@ const Footer = () => {
 	return (
 		<Box bg="sky-blue-10" center py="6rem">
 			<Box>
-				<Box row>
+				<Box row flexDirection={{ mobS: 'column', tabS: 'row' }} center>
 					{FOOTER_LINKS.map((link, idx) => (
-						<Box row key={`${link}-${idx}`}>
-							<If condition={idx > 0} then={<Box mr="wxs" />} />
+						<Box row key={`${link}-${idx}`} mt={{ mobS: 'wxs', tabS: '0' }}>
+							<If condition={idx > 0} then={<Box mr={{ tabS: 'wxs' }} />} />
 							<FooterLink title={link.title} url={link.url} />
 						</Box>
 					))}

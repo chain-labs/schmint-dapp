@@ -8,7 +8,11 @@ import theme from 'src/styleguide/theme';
 const FAQ = ({ q, a, last }) => {
 	const [expanded, setExpanded] = useState(false);
 	return (
-		<Box borderBottom={!last ? `1px solid ${theme.colors['gray-20']}` : 'none'} pb="mxl" mb={!last ? 'wxs' : '0'}>
+		<Box
+			borderBottom={!last ? `1px solid ${theme.colors['gray-20']}` : 'none'}
+			pb="mxl"
+			mb={!last ? { mobS: 'mxxxl', deskM: 'wxs' } : '0'}
+		>
 			<Box row alignItems="center" justifyContent="space-between" mb="mxl">
 				<Text as="h5">{q}</Text>
 				<Box cursor="pointer">
@@ -22,7 +26,7 @@ const FAQ = ({ q, a, last }) => {
 			<If
 				condition={expanded}
 				then={
-					<Text as="b1" width="66.4rem" color="gray-40">
+					<Text as="b1" width={{ mobS: '33rem', tabS: '50.6rem', deskM: '66.4rem' }} color="gray-40">
 						{a}
 					</Text>
 				}
