@@ -9,7 +9,7 @@ import CollectionTile from './CollectionTile';
 import EmptyResultComponent from './EmptyResultComponent';
 import { getCollections, ICollection } from './projectsStore';
 
-const CollectionsList = ({ showPastProjects }) => {
+const CollectionsList = () => {
 	const [collections, setCollections] = React.useState([]);
 	const [filteredCollections, setFilteredCollections] = React.useState<ICollection[]>([]);
 	const filter = useAppSelector(filterSelector);
