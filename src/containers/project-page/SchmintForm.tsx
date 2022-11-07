@@ -29,6 +29,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 	const [step, setStep] = useState(0);
 	const [estimatedGas] = useState(collection?.estimatedTransaction ?? 0.02);
 	const [wrongNetwork, setWrongNetwork] = useState(false);
+	const [schmintDisabled, setSchmintDisabled] = useState(false);
 
 	const [txGas, setTxGas] = useState<string>('');
 	const [txPrice, setTxPrice] = useState<string>('');
@@ -57,6 +58,12 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 	});
 
 	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		if (collection?.startTimestamp < Date.now() / 1000) {
+			setSchmintDisabled(true);
+		}
+	}, [collection]);
 
 	const handleCreateSchmint = async (e) => {
 		e.preventDefault();
@@ -374,6 +381,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 				}
 				value={nft}
 				setValue={setNft}
+				disabled={schmintDisabled}
 			/>
 			<Text
 				as="b3"
@@ -402,6 +410,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 								setValue={setGasPriceLimit}
 								detailText="Your transaction will not execute if the gas price is more than the set limit."
 								unit="GWEI"
+								disabled={schmintDisabled}
 							/>
 						</Box>
 					}
@@ -435,7 +444,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 					width="23.4rem"
 					height="4.8rem"
 					borderRadius="64px"
-					disable={!user.exists || wrongNetwork}
+					disable={!user.exists || wrongNetwork || schmintDisabled}
 					onClick={handleCreateSchmint}
 				>
 					<Text as="btn1">Create Schmint</Text>
