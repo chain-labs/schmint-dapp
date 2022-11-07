@@ -17,32 +17,12 @@ const CollectionsList = ({ showPastProjects }) => {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		if (showPastProjects === 1) {
-			getPastProjects().then(async (res) => {
-				setCollections(res);
-				console.log(res);
-			});
-		}
 		getCollections().then((res) => {
 			setCollections(res);
 			console.log(res);
 		});
-	}, [showPastProjects]);
+	}, []);
 
-	const getPastProjects = async () => {
-		const PROJECTS_JSON_URL = PROJECTS_DIR;
-		const res = await axios.get(PROJECTS_JSON_URL);
-		let projects = res.data;
-		if (typeof projects === 'string') {
-			projects = JSON.parse(projects);
-		}
-		const schmintStartedCollections = projects.filter(
-			(collection: ICollection) =>
-				collection.startTimestamp !== null && collection.startTimestamp < Date.now() / 1000
-		);
-
-		return schmintStartedCollections;
-	};
 	useEffect(() => {
 		if (collections) {
 			setCollectionPresent(true);
@@ -117,7 +97,7 @@ const CollectionsList = ({ showPastProjects }) => {
 		} else {
 			setCollectionPresent(false);
 		}
-	}, [filter.alphabetical, filter.network, filter.price, filter.search.query, collections, showPastProjects]);
+	}, [filter.alphabetical, filter.network, filter.price, filter.search.query, collections]);
 
 	useEffect(() => {
 		dispatch(addSearch({ query: filter.search.query, count: filteredCollections.length }));

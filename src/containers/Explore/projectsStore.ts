@@ -40,9 +40,7 @@ export const getCollections = async (): Promise<ICollection[]> => {
 	if (typeof projects === 'string') {
 		projects = JSON.parse(projects);
 	}
-	const collectionsList = projects
-		.filter((collection: ICollection) => collection.startTimestamp > Date.now() / 1000)
-		.sort((a: ICollection, b: ICollection) => a.startTimestamp - b.startTimestamp);
+	const collectionsList = projects.sort((a: ICollection, b: ICollection) => a.startTimestamp - b.startTimestamp);
 
 	const noStartTimeCollections = projects.filter((collection: ICollection) => !collection.startTimestamp);
 
