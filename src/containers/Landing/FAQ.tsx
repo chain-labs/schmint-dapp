@@ -13,7 +13,14 @@ const FAQ = ({ q, a, last }) => {
 			pb="mxl"
 			mb={!last ? { mobS: 'mxxxl', deskM: 'wxs' } : '0'}
 		>
-			<Box row alignItems="center" justifyContent="space-between" mb="mxl">
+			<Box
+				row
+				alignItems="center"
+				justifyContent="space-between"
+				mb="mxl"
+				cursor="pointer"
+				onClick={() => setExpanded(!expanded)}
+			>
 				<Text as="h5">{q}</Text>
 				<Box cursor="pointer">
 					<If
