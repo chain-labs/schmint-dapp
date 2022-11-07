@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import _ from 'lodash';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 const LearnMore = () => {
-	const [image, setImage] = React.useState('');
-	const [placeholder, setPlaceholder] = React.useState('');
+	const [image, setImage] = useState('');
+	const [placeholder, setPlaceholder] = useState('');
 
 	useEffect(() => {
 		const randomize = () => {

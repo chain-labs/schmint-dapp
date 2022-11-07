@@ -25,7 +25,7 @@ interface Props {
 	fontSize?: string;
 	inputType?: string;
 	valueDisable?: boolean;
-	ref?: any;
+	innerRef?: any;
 	actionRequired?: boolean;
 }
 
@@ -45,7 +45,7 @@ const TextInput = ({
 	disableValidation,
 	fontSize,
 	inputType,
-	ref,
+	innerRef,
 	actionRequired,
 }: Props) => {
 	const [validity, setValidity] = useState<'clear' | 'valid' | 'invalid'>('clear');
@@ -129,7 +129,7 @@ const TextInput = ({
 				max={max}
 				step={step}
 				inputType={inputType}
-				ref={ref}
+				ref={innerRef}
 				// backgroundColor={valueDisable ? 'disable-gray' : 'white'}
 			></InputElement>
 

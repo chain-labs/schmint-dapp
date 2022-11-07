@@ -1,5 +1,5 @@
 import { ArrowDown, ArrowUpRight, Confetti, SmileySad, Warning, WarningCircle } from 'phosphor-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import Text from 'src/components/Text';

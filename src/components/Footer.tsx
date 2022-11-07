@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import React from 'react';
 import { FOOTER_LINKS } from 'src/constants';
 import theme from 'src/styleguide/theme';
 import Box from './Box';
@@ -15,7 +14,7 @@ const Footer = () => {
 			<Box>
 				<Box row>
 					{FOOTER_LINKS.map((link, idx) => (
-						<Box row>
+						<Box row key={`${link}-${idx}`}>
 							<If condition={idx > 0} then={<Box mr="wxs" />} />
 							<FooterLink title={link.title} url={link.url} />
 						</Box>
