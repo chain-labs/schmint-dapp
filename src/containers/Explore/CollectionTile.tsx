@@ -24,6 +24,11 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 		if (collection?.network?.chainId) {
 			const idx = chains.findIndex((c) => c.chainId === collection?.network?.chainId);
 			setUnit(chains?.[idx]?.nativeCurrency.symbol);
+			console.log(
+				collection?.startTimestamp,
+				parseInt((Date.now() / 1000).toString()),
+				collection?.startTimestamp < parseInt((Date.now() / 1000).toString())
+			);
 		}
 	}, [collection]);
 
@@ -85,7 +90,8 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 						{collection.title}
 						<Box as="span" ml="mxs">
 							<Text as="c1" color="red-40">
-								{collection?.startTimestamp < Date.now() / 1000 && collection?.startTimestamp
+								{collection?.startTimestamp < parseInt((Date.now() / 1000).toString()) &&
+								collection?.startTimestamp
 									? 'Schminting Disabled'
 									: ''}
 							</Text>

@@ -35,8 +35,8 @@ export interface ICollection {
 
 export const getCollections = async (): Promise<ICollection[]> => {
 	const PROJECTS_JSON_URL = PROJECTS_DIR;
-	const res = await axios.get(PROJECTS_JSON_URL);
-	let projects = res.data;
+	const res = await fetch(PROJECTS_JSON_URL);
+	let projects = await res.json();
 	if (typeof projects === 'string') {
 		projects = JSON.parse(projects);
 	}
