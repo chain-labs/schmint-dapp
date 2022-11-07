@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Box from 'src/components/Box';
 import Text from 'src/components/Text';
+import { useEffect, useState } from 'react';
 
 export interface IBlog {
 	title: string;
@@ -12,11 +13,12 @@ const BlogTile = ({ title, url, image }: IBlog) => {
 	return (
 		<Box
 			as="a"
-			href={url}
 			target="_blank"
+			href={url}
 			mt={{ mobS: 'wxs', tabL: '0' }}
 			width={{ mobS: '30rem', deskM: '40.4rem' }}
 			px="mxs"
+			cursor="pointer"
 		>
 			{/* <Image src={`${image}`} layout="fill" objectFit="cover" onError={(e) => console.log({ e })} /> */}
 			<Box width={{ mobS: '33rem', deskM: '40.4rem' }}>

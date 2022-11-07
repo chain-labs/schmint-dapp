@@ -16,8 +16,8 @@ import { FAQs } from './constants';
 import FAQ from './FAQ';
 
 const getBlogs = async () => {
-	const res = await axios.get(BLOGS_API_URL);
-	return res.data;
+	const res = await fetch(BLOGS_API_URL);
+	return res.json();
 };
 
 const LandingPage = () => {
@@ -153,7 +153,7 @@ const LandingPage = () => {
 						then={
 							<BlogTile
 								title={blogs?.data?.items?.[0]?.title}
-								url={blogs?.data?.items?.[0]?.url}
+								url={blogs?.data?.items?.[0]?.link}
 								image={blogs?.data?.items?.[0]?.thumbnail}
 								key={blogs?.data?.items?.[0]?.guid}
 							/>
@@ -164,7 +164,7 @@ const LandingPage = () => {
 						then={
 							<BlogTile
 								title={blogs?.data?.items?.[1]?.title}
-								url={blogs?.data?.items?.[1]?.url}
+								url={blogs?.data?.items?.[1]?.link}
 								image={blogs?.data?.items?.[1]?.thumbnail}
 								key={blogs?.data?.items?.[1]?.guid}
 							/>
@@ -175,7 +175,7 @@ const LandingPage = () => {
 						then={
 							<BlogTile
 								title={blogs?.data?.items?.[2]?.title}
-								url={blogs?.data?.items?.[2]?.url}
+								url={blogs?.data?.items?.[2]?.link}
 								image={blogs?.data?.items?.[2]?.thumbnail}
 								key={blogs?.data?.items?.[2]?.guid}
 							/>
@@ -248,14 +248,7 @@ const LandingPage = () => {
 					flexDirection={{ mobS: 'column-reverse', tabL: 'row' }}
 					alignItems={{ mobS: 'center', tabL: 'start' }}
 				>
-					<Box
-						width={{ mobS: '32.4rem', tabS: '62rem', deskM: '76rem' }}
-						// display="flex"
-						// flexDirection="column"
-						// justifyContent={{ mobS: 'center', tabL: 'start' }}
-						// alignItems={{ mobS: 'center' }}
-						column
-					>
+					<Box width={{ mobS: '32.4rem', tabS: '62rem', deskM: '76rem' }} column>
 						<Text as="h3" mb="wm" id="faqs">
 							Frequently Asked Questions
 						</Text>
