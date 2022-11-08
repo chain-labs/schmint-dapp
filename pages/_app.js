@@ -80,7 +80,6 @@ const MyApp = ({ Component, pageProps }) => {
 					property="og:image"
 					content="https://ik.imagekit.io/chainlabs/Schmint/Preview_Cxn93vaqi.png?ik-sdk-version=javascript-1.4.3&updatedAt=1663072660516"
 				/>
-				<meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests"></meta>
 				<link rel="canonical" href="https://schmint.simplrhq.com/" />
 				<link
 					rel="stylesheet"
