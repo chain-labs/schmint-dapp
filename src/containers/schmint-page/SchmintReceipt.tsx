@@ -1,17 +1,25 @@
 import { format } from 'date-fns';
 import { ethers } from 'ethers';
 import Image from 'next/image';
+import { ArrowUpRight } from 'phosphor-react';
 import { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import Text from 'src/components/Text';
 import { useProvider } from 'wagmi';
+import { blockExplorer, explorer } from 'src/utils/links';
+import { useAppSelector } from 'src/redux/hooks';
+import { networkSelector } from 'src/redux/network';
+import { userSelector } from 'src/redux/user';
 
 const SchmintReceipt = ({ quantity, schmint, status, network }) => {
 	const [gasCost, setGasCost] = useState<string>();
 	const provider = useProvider();
+	const user = useAppSelector(userSelector);
 
 	useEffect(() => {
+		console.log(network);
+		console.log(explorer(network?.chainId));
 		if (status === '1') {
 			provider.getTransactionReceipt(schmint.executionTrxHash).then((receipt) => {
 				const gasUsed = receipt?.gasUsed;
@@ -22,7 +30,7 @@ const SchmintReceipt = ({ quantity, schmint, status, network }) => {
 				}
 			});
 		}
-	}, [status, schmint]);
+	}, [status, schmint, network]);
 
 	return (
 		<Box bg="gray-10" color="simply-black" borderRadius="8px" p="mm" width="49rem" mt="mm">
@@ -54,6 +62,29 @@ const SchmintReceipt = ({ quantity, schmint, status, network }) => {
 					value={status === '1' ? format(schmint.creationTimestamp * 1000, 'dd-MM-yyyy, p') : 'N/A'}
 					mb="mxxs"
 				/>
+				<DataRow
+					label="Executed on"
+					value={status === '1' ? format(schmint.executionTimestamp * 1000, 'dd-MM-yyyy, p') : 'N/A'}
+					mb="mxxs"
+				/>
+			</Box>
+			<Box
+				as="a"
+				target="_blank"
+				row
+				alignItems="center"
+				color="blue-40"
+				cursor="pointer"
+				href={`${blockExplorer(network?.chainId)}/address/${user?.address}`}
+			>
+				{network ? (
+					<Text as="b3" color="blue-40">
+						View on {explorer(network?.chainId)}
+					</Text>
+				) : (
+					''
+				)}
+				<ArrowUpRight size={16} color="#4743C5" />{' '}
 			</Box>
 		</Box>
 	);

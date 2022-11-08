@@ -1,14 +1,16 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import { addSearch, filterSelector } from 'src/redux/filter';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { PROJECTS_DIR } from 'src/utils/constants';
 import CollectionTile from './CollectionTile';
 import EmptyResultComponent from './EmptyResultComponent';
 import { getCollections, ICollection } from './projectsStore';
 
 const CollectionsList = () => {
-	const [collections, setCollections] = React.useState<ICollection[]>([]);
+	const [collections, setCollections] = React.useState([]);
 	const [filteredCollections, setFilteredCollections] = React.useState<ICollection[]>([]);
 	const filter = useAppSelector(filterSelector);
 	const [collectionPresent, setCollectionPresent] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -17,6 +19,7 @@ const CollectionsList = () => {
 	useEffect(() => {
 		getCollections().then((res) => {
 			setCollections(res);
+			console.log(res);
 		});
 	}, []);
 
@@ -24,9 +27,7 @@ const CollectionsList = () => {
 		if (collections) {
 			setCollectionPresent(true);
 			const { alphabetical, network, price, search } = filter;
-
 			let filteredCollection = [...collections].sort((a, b) => a.startTimestamp - b.startTimestamp);
-
 			if (search.query !== '') {
 				filteredCollection = filteredCollection
 					.filter((collection) => {
@@ -118,7 +119,7 @@ const CollectionsList = () => {
 							<EmptyResultComponent subText="Hmm... looks like the project you're looking for doesn't exist on Schmint yet. If you'd like to have it on Schmint, please " />
 						}
 						else={filteredCollections.map((collection, idx) => (
-							<CollectionTile {...{ collection, idx }} key={`${collection.title}-${idx}`} />
+							<CollectionTile {...{ collection, idx }} key={`${collection?.title}-${idx}`} />
 						))}
 					/>
 				}

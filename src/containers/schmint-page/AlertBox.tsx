@@ -5,14 +5,16 @@ import ButtonComp from 'src/components/Button';
 import Text from 'src/components/Text';
 import { useAppSelector } from 'src/redux/hooks';
 import { schedulerSelector } from 'src/redux/scheduler';
+import { userSelector } from 'src/redux/user';
 import { useNetwork } from 'wagmi';
 import { getGnosisSafeUrl } from '../MyAssets/utils';
 
-const AlertBox = ({ status, schmint, currPrice, prevPrice, network }) => {
+const AlertBox = ({ status, schmint, currPrice, prevPrice, network, reciever }) => {
 	const { chain } = useNetwork();
 	const scheduler = useAppSelector(schedulerSelector);
 	const [date, setDate] = useState('');
 	const [time, setTime] = useState('');
+	const user = useAppSelector(userSelector);
 
 	useEffect(() => {
 		if (schmint.isSchminted) {
@@ -85,7 +87,15 @@ const AlertBox = ({ status, schmint, currPrice, prevPrice, network }) => {
 							Congratulations! This schmint was successfuly executed on {date}, {time}. Click the button
 							to view your NFTs.
 						</Text>
-						<Box as="a" target="_blank" href={getGnosisSafeUrl(network, `${scheduler.avatar}`)}>
+						<Box
+							as="a"
+							target="_blank"
+							href={
+								reciever === user.address
+									? `https://opensea.io/${reciever}`
+									: getGnosisSafeUrl(network, `${scheduler.avatar}`)
+							}
+						>
 							<ButtonComp
 								backgroundColor="white"
 								color="black"
@@ -97,7 +107,7 @@ const AlertBox = ({ status, schmint, currPrice, prevPrice, network }) => {
 								center
 							>
 								<Text as="btn2" fontWeight="bold">
-									View my NFTs
+									{reciever === user.address ? 'View on Opensea' : 'View my NFTs'}
 								</Text>
 								<ArrowUpRight size={24} />{' '}
 							</ButtonComp>
