@@ -315,7 +315,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 				switch (getABIType(collection.abi)) {
 					case 1: {
 						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							scheduler.avatar,
+							userAddress,
 							nft,
 							{
 								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
@@ -326,7 +326,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 					case 2: {
 						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
 							nft,
-							scheduler.avatar,
+							userAddress,
 							{
 								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
 							}
