@@ -28,7 +28,7 @@ NProgress.configure({ showSpinner: false });
 const MyApp = ({ Component, pageProps }) => {
 	const [hostname, setHostname] = useState('');
 
-	const queryClient = new QueryClient(); 
+	const queryClient = new QueryClient();
 
 	useEffect(() => {
 		// Set a custom CSS Property for Height
