@@ -141,18 +141,10 @@ const Layout = ({ children }) => {
 
 	if (isHome) {
 		return (
-			<Box>
+			<Box overflowX="hidden">
 				{children}
 				<HomeNavbar />
-				<Box center position="fixed" bottom="0" py="mxl" width="100vw">
-					<Box as="a" href={SIMPLR_URL} target="_blank" position="relative" height="3.3rem" width="11.1rem">
-						<Image
-							src="https://ik.imagekit.io/chainlabs/Schmint/simplr-brand_AziSwlVYT.svg"
-							alt="Simplr"
-							layout="fill"
-						/>
-					</Box>
-				</Box>
+				<Footer />
 			</Box>
 		);
 	}
