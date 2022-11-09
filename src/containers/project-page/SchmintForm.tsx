@@ -29,7 +29,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 	const [gasPriceLimit, setGasPriceLimit] = useState('');
 	const [funds, setFunds] = useState('');
 	const [step, setStep] = useState(0);
-	const [estimatedGas] = useState(collection?.estimatedTransaction ?? 0.02);
+	const [estimatedGas] = useState(collection?.estimatedTransaction ?? 0.04);
 	const [wrongNetwork, setWrongNetwork] = useState(false);
 	const [schmintDisabled, setSchmintDisabled] = useState(false);
 	const [receiveInWallet, setReceiveInWallet] = useState(true);
