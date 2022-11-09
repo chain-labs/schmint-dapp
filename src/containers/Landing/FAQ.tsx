@@ -7,6 +7,27 @@ import theme from 'src/styleguide/theme';
 
 const FAQ = ({ q, a, last }) => {
 	const [expanded, setExpanded] = useState(false);
+	const getFAQLink = (q) => {
+		const leftPart = a.slice(0, a.indexOf('('));
+		const link = a.slice(a.indexOf('(') + 1, a.indexOf(')'));
+		const rightPart = a.slice(a.indexOf(')') + 1, a.length);
+
+		return (
+			<Box>
+				<Text as="b1" width={{ mobS: '33rem', tabS: '50.6rem', deskM: '66.4rem' }} color="gray-40">
+					{leftPart}
+				</Text>
+				<Box as="a" target="_blank" href={link} cursor="pointer">
+					<Text as="b1" width={{ mobS: '33rem', tabS: '50.6rem', deskM: '66.4rem' }} color="blue-40">
+						{link}
+					</Text>
+				</Box>
+				<Text as="b1" width={{ mobS: '33rem', tabS: '50.6rem', deskM: '66.4rem' }} color="gray-40">
+					{rightPart}
+				</Text>
+			</Box>
+		);
+	};
 	return (
 		<Box
 			borderBottom={!last ? `1px solid ${theme.colors['gray-20']}` : 'none'}
@@ -34,7 +55,7 @@ const FAQ = ({ q, a, last }) => {
 				condition={expanded}
 				then={
 					<Text as="b1" width={{ mobS: '33rem', tabS: '50.6rem', deskM: '66.4rem' }} color="gray-40">
-						{a}
+						{a.includes('(') ? getFAQLink(a) : a}
 					</Text>
 				}
 			/>

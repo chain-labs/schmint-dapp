@@ -41,6 +41,22 @@ export const FAQs = [
 	},
 	{
 		q: 'Is Schmint similar to Premint?',
-		a: 'Schmint is quite distinct from Premint, though.',
+		a: 'Schmint is quite distinct from Premint, though. Schmint enables you to pre-order NFTs but does not assist you in applying or managing your allow-list. ',
+	},
+	{
+		q: 'Can I create a project using Schmint?',
+		a: 'Schmint cannot be used to create collections or projects. Simplr Collection (https://simplrcollection.com) can be used to create collections and projects.',
+	},
+	{
+		q: 'How do I get a project listed on Schmint?',
+		a: 'If you want to register a project, you can fill out this form (https://form.jotform.com/222922224502041)',
+	},
+	{
+		q: 'What if the gas Price at the time of mint is very high?',
+		a: 'You are able to select the maximum gas price limit using Schmint. Only when the price of gas falls below or stays within this range does it go into effect. This allows you to take advantage of the brief window when the price of gas drops.',
+	},
+	{
+		q: 'What’s the cost of using Schmint?',
+		a: "Schmint is now free to use. In the future, we will charge a fee for successful execution of Schmint. That is, you only pay if you mint; otherwise, no fee. We haven't settled on the exact fee model, but we're trying to keep them as low as possible.",
 	},
 ];
