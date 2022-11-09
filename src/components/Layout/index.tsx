@@ -9,7 +9,6 @@ import DappNavbar from 'components/DappNavbar';
 import { userSelector } from 'src/redux/user';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { indexAddress } from './utils';
-import React, { useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import Loader from 'components/Loader';
 import { setScheduler } from 'src/redux/scheduler';
@@ -23,10 +22,14 @@ import ButtonComp from '../Button';
 import Link from 'next/link';
 import WrongNetworkAlert from 'src/containers/WrongNetworkAlert';
 import { TEST_ENV } from 'src/utils/constants';
+import React, { useEffect, useState } from 'react';
+import WaitlistComp from 'src/containers/Waitlist';
 
 const Layout = ({ children }) => {
 	const router = useRouter();
 	const user = useAppSelector(userSelector);
+	const [showForm, setShowForm] = useState(false);
+	const { route } = useRouter();
 	const [userHasScheduler, setUserHasScheduler] = React.useState(false);
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
 	const network = useAppSelector(networkSelector);
@@ -62,6 +65,12 @@ const Layout = ({ children }) => {
 		pollInterval: 8000,
 	});
 	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		if (route.includes('check-waitlist')) {
+			setShowForm(true);
+		}
+	}, [route]);
 
 	const [windowHeight, setWindowHeight] = React.useState(0);
 
@@ -144,7 +153,7 @@ const Layout = ({ children }) => {
 	}
 	return (
 		<Box overflowX="hidden">
-			<Box display={{ mobS: 'block', tabS: 'none' }}>
+			<Box display={setShowForm ? { mobS: 'none' } : { mobS: 'block', tabS: 'none' }}>
 				<HomeNavbar />
 				<Box
 					height="100vh"
@@ -176,49 +185,69 @@ const Layout = ({ children }) => {
 					</Link>
 				</Box>
 			</Box>
-			<DappNavbar />
-			<Box minHeight="16.8rem" bg={setLayoutStripBg()} width="100vw"></Box>
-			<Box row minHeight={`${windowHeight - 168}px`}>
+			<Box>
+				<HomeNavbar />
 				<Box
-					position="fixed"
-					left="24px"
-					top="115px"
-					borderRadius="8px"
-					height={`${getSidebarHeight()}rem`}
-					bg="sky-blue-10"
-					width="26.8rem"
-					border="1px solid"
-					borderColor="blue-10"
-					boxShadow="shadow-300"
+					height="100vh"
+					width="100vw"
+					bg="simply-white"
+					zIndex={15}
+					center
 					column
-					px="mxl"
+					position="absolute"
+					top="0"
+					left="0"
 				>
-					<Avatar />
-					<MenuItems userHasScheduler={userHasScheduler} />
-				</Box>
-				<Box width="29.2rem"></Box>
-				<Box flex={1}>
-					<If
-						condition={!user.exists || (called && !loading) || !network.isValid}
-						then={children}
-						else={<Loader msg="Loading..." minHeight={`${windowHeight - 167}px`} />}
-					/>
+					<WaitlistComp />
 				</Box>
 			</Box>
-			<If
-				condition={
-					network.isOnline &&
-					!network.isValid &&
-					(router.asPath === '/explore' || router.asPath === '/my-assets' || router.asPath === '/my-schmints')
-				}
-				then={
-					<WrongNetworkAlert
-						customText="This network is currently not supported. Switch to a supported network."
-						chainTo={TEST_ENV ? 5 : 137}
-					/>
-				}
-			/>
-			<Footer />
+			<Box display={{ mobS: 'none', tabS: 'block' }}>
+				<DappNavbar />
+				<Box minHeight="16.8rem" bg={setLayoutStripBg()} width="100vw"></Box>
+				<Box row minHeight={`${windowHeight - 168}px`}>
+					<Box
+						position="fixed"
+						left="24px"
+						top="115px"
+						borderRadius="8px"
+						height={`${getSidebarHeight()}rem`}
+						bg="sky-blue-10"
+						width="26.8rem"
+						border="1px solid"
+						borderColor="blue-10"
+						boxShadow="shadow-300"
+						column
+						px="mxl"
+					>
+						<Avatar />
+						<MenuItems userHasScheduler={userHasScheduler} />
+					</Box>
+					<Box width="29.2rem"></Box>
+					<Box flex={1}>
+						<If
+							condition={!user.exists || (called && !loading) || !network.isValid}
+							then={children}
+							else={<Loader msg="Loading..." minHeight={`${windowHeight - 167}px`} />}
+						/>
+					</Box>
+				</Box>
+				<If
+					condition={
+						network.isOnline &&
+						!network.isValid &&
+						(router.asPath === '/explore' ||
+							router.asPath === '/my-assets' ||
+							router.asPath === '/my-schmints')
+					}
+					then={
+						<WrongNetworkAlert
+							customText="This network is currently not supported. Switch to a supported network."
+							chainTo={TEST_ENV ? 5 : 137}
+						/>
+					}
+				/>
+				<Footer />
+			</Box>
 		</Box>
 	);
 };
