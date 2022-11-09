@@ -37,10 +37,10 @@ const Projectpage = ({ collection }) => {
 				</Box>
 				<Banner collection={collection} />
 				<If
-					condition={!!collection?.info || collection?.comingSoon}
+					condition={!!collection?.info || collection?.mintTimestampNotDecided}
 					then={
 						<Info
-							title={collection?.comingSoon ? 'Coming Soon!!!' : 'Before you proceed....'}
+							title={collection?.mintTimestampNotDecided ? 'Coming Soon!!!' : 'Before you proceed....'}
 							body={collection?.info}
 						/>
 					}
@@ -48,7 +48,7 @@ const Projectpage = ({ collection }) => {
 				<ContractDetails collection={collection} showDetails schmintCreated={schmintCreated} />
 				<Box borderTop={`1px solid ${theme.colors['gray-20']}`} width="100%" my="wxs" />
 				<If
-					condition={!collection?.comingSoon}
+					condition={!collection?.mintTimestampNotDecided}
 					then={<SchmintForm collection={collection} setSchmintCreated={setSchmintCreated} />}
 				/>
 			</Box>
