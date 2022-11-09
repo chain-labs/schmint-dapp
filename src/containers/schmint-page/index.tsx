@@ -50,7 +50,13 @@ const SchmintPage = ({ collection, schmint }) => {
 			setStatus('1');
 			return;
 		} else if (schmints.length > 0) {
-			setStatus('0');
+			console.log('status collection', collection);
+			//collection timestamp needs to be checked there can be change in starttimestamp
+			if (collection.startTimestamp > Math.floor(Date.now() / 1000)) {
+				setStatus('');
+			} else {
+				setStatus('0');
+			}
 		} else {
 			setStatus('');
 		}

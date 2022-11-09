@@ -18,6 +18,7 @@ const MySchmintComponent = () => {
 	const [schmints, setSchmints] = useState([]);
 	const [getSchmints, { refetch: getSchmintsAgain }] = useLazyQuery(GET_MY_SCHMINTS, {
 		onCompleted: ({ schmints }) => {
+			console.log('schmints from graphql', schmints);
 			setSchmints(schmints);
 		},
 	});
