@@ -169,6 +169,7 @@ const SchmintPage = ({ collection, schmint }) => {
 							schmint={schmint}
 							status={status}
 							network={collection.network}
+							collection={collection}
 						/>
 					}
 				/>

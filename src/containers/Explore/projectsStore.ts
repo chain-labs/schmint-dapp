@@ -44,7 +44,7 @@ export const getCollections = async (): Promise<ICollection[]> => {
 
 	const noStartTimeCollections = projects.filter((collection: ICollection) => !collection.startTimestamp);
 
-	return [...collectionsList, ...noStartTimeCollections];
+	return [...collectionsList];
 };
 
 export const getAllCollections = async (): Promise<ICollection[]> => {

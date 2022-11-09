@@ -13,16 +13,19 @@ import { networkSelector } from 'src/redux/network';
 import { userSelector } from 'src/redux/user';
 import { condenseAddress } from 'src/components/DappNavbar/ConnectWallet';
 import toast from 'react-hot-toast';
+import InputDataDecoder from 'ethereum-input-data-decoder';
 
-const SchmintReceipt = ({ quantity, schmint, status, network }) => {
+const SchmintReceipt = ({ quantity, schmint, status, network, collection }) => {
 	const [gasCost, setGasCost] = useState<string>();
 	const provider = useProvider();
 	const user = useAppSelector(userSelector);
-	const [transferToAccount, setTransferToAccount] = useState(condenseAddress(schmint.target));
+	const [address, setAddress] = useState<string>();
+	const [transferToAccount, setTransferToAccount] = useState('');
 
 	useEffect(() => {
 		console.log(network);
 		console.log(explorer(network?.chainId));
+
 		if (status === '1') {
 			provider.getTransactionReceipt(schmint.executionTrxHash).then((receipt) => {
 				const gasUsed = receipt?.gasUsed;
@@ -34,6 +37,13 @@ const SchmintReceipt = ({ quantity, schmint, status, network }) => {
 			});
 		}
 	}, [status, schmint, network]);
+
+	useEffect(() => {
+		const decoder = new InputDataDecoder(collection?.abi);
+		const res = decoder.decodeData(schmint.data);
+		setAddress('0x' + res.inputs[0]);
+		setTransferToAccount(condenseAddress('0x' + res.inputs[0]));
+	}, [schmint, collection]);
 
 	return (
 		<Box bg="gray-10" color="simply-black" borderRadius="8px" p="mm" width="49rem" mt="mm">
@@ -84,7 +94,7 @@ const SchmintReceipt = ({ quantity, schmint, status, network }) => {
 							navigator.clipboard?.writeText(schmint.target);
 							setTransferToAccount('Copied!');
 							setTimeout(() => {
-								setTransferToAccount(condenseAddress(schmint.target));
+								setTransferToAccount(condenseAddress(address));
 							}, 1000);
 						}}
 					>
