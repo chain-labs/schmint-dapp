@@ -11,11 +11,14 @@ import { blockExplorer, explorer } from 'src/utils/links';
 import { useAppSelector } from 'src/redux/hooks';
 import { networkSelector } from 'src/redux/network';
 import { userSelector } from 'src/redux/user';
+import { condenseAddress } from 'src/components/DappNavbar/ConnectWallet';
+import toast from 'react-hot-toast';
 
 const SchmintReceipt = ({ quantity, schmint, status, network }) => {
 	const [gasCost, setGasCost] = useState<string>();
 	const provider = useProvider();
 	const user = useAppSelector(userSelector);
+	const [transferToAccount, setTransferToAccount] = useState(condenseAddress(schmint.target));
 
 	useEffect(() => {
 		console.log(network);
@@ -67,11 +70,27 @@ const SchmintReceipt = ({ quantity, schmint, status, network }) => {
 					value={status === '1' ? format(schmint.executionTimestamp * 1000, 'dd-MM-yyyy, p') : 'N/A'}
 					mb="mxxs"
 				/>
-				<DataRow
-					label="Executed on"
-					value={status === '1' ? format(schmint.executionTimestamp * 1000, 'dd-MM-yyyy, p') : 'N/A'}
-					mb="mxxs"
-				/>
+				<Box row between mb="mm">
+					<Text as="b2">Transferred to</Text>
+					<Text
+						as="b2"
+						px="16px"
+						py="4px"
+						backgroundColor="blue-20"
+						borderRadius="33px"
+						color="blue-40"
+						cursor="pointer"
+						onClick={() => {
+							navigator.clipboard?.writeText(schmint.target);
+							setTransferToAccount('Copied!');
+							setTimeout(() => {
+								setTransferToAccount(condenseAddress(schmint.target));
+							}, 1000);
+						}}
+					>
+						{transferToAccount}
+					</Text>
+				</Box>
 			</Box>
 			<Box
 				as="a"
@@ -80,7 +99,7 @@ const SchmintReceipt = ({ quantity, schmint, status, network }) => {
 				alignItems="center"
 				color="blue-40"
 				cursor="pointer"
-				href={`${blockExplorer(network?.chainId)}/address/${user?.address}`}
+				href={`${blockExplorer(network?.chainId)}/tx/${schmint?.executionTrxHash}`}
 			>
 				{network ? (
 					<Text as="b3" color="blue-40">
