@@ -50,7 +50,7 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 			cursor="pointer"
 		>
 			<If
-				condition={collection?.comingSoon}
+				condition={collection?.mintTimestampNotDecided}
 				then={
 					<Box
 						position="absolute"
@@ -81,8 +81,16 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 					objectFit="cover"
 				></Box>
 				<Box ml="mm">
-					<Text as="h6" mb="mxxs">
+					<Text as="h6" mb="mxxs" row alignItems="center">
 						{collection.title}
+						<Box as="span" ml="mxs">
+							<Text as="c1" color="red-40">
+								{collection?.startTimestamp < parseInt((Date.now() / 1000).toString()) &&
+								collection?.startTimestamp
+									? 'Schminting Disabled'
+									: ''}
+							</Text>
+						</Box>
 					</Text>
 					<Text as="b3" mb="0.2rem">
 						{'Minting Starts: '}
@@ -148,9 +156,7 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 			</Box>
 			<Box column>
 				<Link href={`/projects/${collection?.id}`} passHref>
-					<ButtonComp bg="primary" color="white" width="11rem" height="3.6rem" borderRadius="64px" mb="ms">
-						<Text as="btn2">View</Text>
-					</ButtonComp>
+					<CustomButtonComponent />
 				</Link>
 				<a href={collection.website_url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
 					<ButtonComp
@@ -180,3 +186,9 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 };
 
 export default CollectionTile;
+
+const CustomButtonComponent = React.forwardRef((props, ref) => (
+	<ButtonComp bg="primary" color="white" width="11rem" height="3.6rem" borderRadius="64px" mb="ms" innerRef={ref}>
+		<Text as="btn2">View</Text>
+	</ButtonComp>
+));

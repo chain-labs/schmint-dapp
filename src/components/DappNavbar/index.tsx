@@ -33,17 +33,20 @@ const DappNavbar = () => {
 	});
 
 	useEffect(() => {
+		const { ethereum } = window;
 		if (account?.connector?.id === 'metaMask' && process.browser) {
-			window?.ethereum?.on('accountsChanged', (accounts) => {
-				if (dispatch) {
-					dispatch(setUser(accounts[0]));
-				}
-			});
+			if (ethereum) {
+				ethereum?.on('accountsChanged', (accounts) => {
+					if (dispatch) {
+						dispatch(setUser(accounts[0]));
+					}
+				});
 
-			window?.ethereum?.on('chainChanged', (chain) => {
-				const chainId = parseInt(chain);
-				switchNetwork(chainId);
-			});
+				ethereum?.on('chainChanged', (chain) => {
+					const chainId = parseInt(chain);
+					switchNetwork(chainId);
+				});
+			}
 		}
 	}, [account]);
 
@@ -101,7 +104,12 @@ const DappNavbar = () => {
 									height={{ mobS: '2.43rem', tabS: '3rem' }}
 									width={{ mobS: '9.7rem', tabS: '12rem' }}
 								>
-									<Image src="/brand.svg" alt="schmint" style={{ cursor: 'pointer' }} layout="fill" />
+									<Image
+										src="https://ik.imagekit.io/chainlabs/Schmint/brand_ast6C-3H3.svg"
+										alt="schmint"
+										style={{ cursor: 'pointer' }}
+										layout="fill"
+									/>
 								</Box>
 							</Link>
 						</Box>

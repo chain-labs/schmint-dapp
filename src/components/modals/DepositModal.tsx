@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import Image from 'next/image';
 import { Copy } from 'phosphor-react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 import InputBox from 'src/containers/project-page/components/InputBox';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
@@ -60,7 +60,7 @@ const DepositModal = () => {
 
 			const receipt = await tx.wait();
 
-			console.log({ receipt });
+			console.log({ receipt }); // eslint-disable-line no-console
 			if (receipt) {
 				const fundsString = funds;
 				const gas = ethers.utils.formatEther(receipt.gasUsed.mul(receipt.effectiveGasPrice));
@@ -82,7 +82,7 @@ const DepositModal = () => {
 				);
 			}
 		} catch (err) {
-			console.log({ err });
+			console.log({ err }); // eslint-disable-line no-console
 			dispatch(replaceModal({ type: MODALS_LIST.STATUS_MODAL, props: { success: false } }));
 		}
 	};

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import ContractDetails from '../project-page/ContractDetails';
 import Banner from '../project-page/Banner';
@@ -29,6 +29,7 @@ const SchmintPage = ({ collection, schmint }) => {
 	const [prevPrice, setPrevPrice] = useState(collection.price);
 	const [getSuccesfulSchmints] = useLazyQuery(CHECK_FAILED_SCHMINT);
 	const user = useAppSelector(userSelector);
+	const [reciever, setReciever] = useState('');
 	const router = useRouter();
 
 	useEffect(() => {
@@ -56,15 +57,21 @@ const SchmintPage = ({ collection, schmint }) => {
 	};
 
 	useEffect(() => {
+		const decoder = new InputDataDecoder(collection.abi);
+		const res = decoder.decodeData(schmint.data);
+		console.log(res);
+
 		if (scheduler?.schedulerAddress && abi && collection) {
 			const value = parseFloat(ethers.utils.formatUnits(schmint?.value, 'ether'));
 			const data = schmint?.data;
 			const decoder = new InputDataDecoder(abi);
 			const res = decoder.decodeData(data);
+
 			let quantity;
 			switch (getABIType(abi)) {
 				case 1: {
 					quantity = parseInt(res.inputs[1]);
+					setReciever('0x' + res.inputs[0]);
 					break;
 				}
 				case 2: {
@@ -126,6 +133,7 @@ const SchmintPage = ({ collection, schmint }) => {
 							currPrice={currPrice}
 							prevPrice={prevPrice}
 							network={collection.network.chainId}
+							reciever={reciever}
 						/>
 					}
 				/>
@@ -161,6 +169,7 @@ const SchmintPage = ({ collection, schmint }) => {
 							schmint={schmint}
 							status={status}
 							network={collection.network}
+							collection={collection}
 						/>
 					}
 				/>

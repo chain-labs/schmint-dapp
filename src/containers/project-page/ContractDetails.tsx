@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, GlobeSimple, StarFour, TwitterLogo } from 'phosphor-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import If from 'src/components/If';

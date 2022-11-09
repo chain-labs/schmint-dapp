@@ -1,6 +1,6 @@
 import { useLazyQuery } from '@apollo/client';
 import { ethers } from 'ethers';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import Loader from 'src/components/Loader';

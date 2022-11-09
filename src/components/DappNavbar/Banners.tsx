@@ -1,5 +1,5 @@
 import { GasPump } from 'phosphor-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import theme from 'src/styleguide/theme';
 import { getCoinPrice, getGasPrice, getGasSource } from 'src/utils/gasPrices';
 import { getNavProps } from 'src/utils/navbarUtils';

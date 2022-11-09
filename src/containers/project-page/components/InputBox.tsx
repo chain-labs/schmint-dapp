@@ -1,4 +1,3 @@
-import React from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import Text from 'src/components/Text';
@@ -18,7 +17,7 @@ interface props {
 	min?: string;
 	errorText?: string;
 	disabled?: boolean;
-	ref?: any;
+	innerRef?: any;
 	step?: string;
 	width?: string;
 	actionRequired?: boolean;
@@ -37,7 +36,7 @@ const InputBox = ({
 	min,
 	errorText,
 	disabled,
-	ref,
+	innerRef,
 	step,
 	width,
 	actionRequired,
@@ -57,7 +56,7 @@ const InputBox = ({
 			</Text>
 			<Box mt="mxs">
 				<TextInput
-					ref={ref}
+					innerRef={innerRef}
 					value={value}
 					placeholder={placeholder}
 					type="number"

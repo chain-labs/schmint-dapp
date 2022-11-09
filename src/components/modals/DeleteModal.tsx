@@ -78,7 +78,7 @@ const DeleteModal = ({ schmint, collectionName }) => {
 				);
 			}
 		} catch (err) {
-			console.log(err);
+			console.log(err); // eslint-disable-line no-console
 			dispatch(replaceModal({ type: MODALS_LIST.STATUS_MODAL, props: { success: false } }));
 		}
 	};
@@ -89,7 +89,7 @@ const DeleteModal = ({ schmint, collectionName }) => {
 			const totalEstimatedGasPrice = ethers.utils.formatEther(gasFee?.maxFeePerGas.mul(tx));
 			setTxGas(totalEstimatedGasPrice);
 		} catch (err) {
-			console.log({ err });
+			console.log({ err }); // eslint-disable-line no-console
 		}
 	};
 

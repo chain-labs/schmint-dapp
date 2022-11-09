@@ -1,11 +1,12 @@
 import { Binoculars } from 'phosphor-react';
-import React from 'react';
+
 import Box from 'src/components/Box';
 import Text from 'src/components/Text';
 import theme from 'src/styleguide/theme';
 import Filters from './Filters';
 import CollectionsList from './CollectionsList';
 import SearchInput from './SearchInput';
+import React, { useEffect, useState } from 'react';
 
 const ExploreComp = () => {
 	return (
@@ -31,6 +32,7 @@ const ExploreComp = () => {
 				{/* </Link> */}
 			</Box>
 			<SearchInput />
+
 			<Filters />
 			<CollectionsList />
 		</Box>

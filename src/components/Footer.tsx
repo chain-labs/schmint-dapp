@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import React from 'react';
 import { FOOTER_LINKS } from 'src/constants';
 import theme from 'src/styleguide/theme';
 import Box from './Box';
@@ -11,12 +10,12 @@ const TAG = 'https://ik.imagekit.io/chainlabs/Schmint/simplr-brand_AziSwlVYT.svg
 
 const Footer = () => {
 	return (
-		<Box bg="sky-blue-10" width="100vw" center py="6rem">
+		<Box bg="sky-blue-10" center py="6rem">
 			<Box>
-				<Box row>
+				<Box row flexDirection={{ mobS: 'column', tabS: 'row' }} center>
 					{FOOTER_LINKS.map((link, idx) => (
-						<Box row>
-							<If condition={idx > 0} then={<Box mr="wxs" />} />
+						<Box row key={`${link}-${idx}`} mt={{ mobS: 'wxs', tabS: '0' }}>
+							<If condition={idx > 0} then={<Box mr={{ tabS: 'wxs' }} />} />
 							<FooterLink title={link.title} url={link.url} />
 						</Box>
 					))}

@@ -1,16 +1,19 @@
-import React, { useEffect } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import { addSearch, filterSelector } from 'src/redux/filter';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { PROJECTS_DIR } from 'src/utils/constants';
 import CollectionTile from './CollectionTile';
 import EmptyResultComponent from './EmptyResultComponent';
 import { getCollections, ICollection } from './projectsStore';
 
 const CollectionsList = () => {
-	const [collections, setCollections] = React.useState<ICollection[]>([]);
+	const [collections, setCollections] = React.useState([]);
 	const [filteredCollections, setFilteredCollections] = React.useState<ICollection[]>([]);
 	const filter = useAppSelector(filterSelector);
+	const [collectionPresent, setCollectionPresent] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
@@ -21,10 +24,9 @@ const CollectionsList = () => {
 
 	useEffect(() => {
 		if (collections) {
+			setCollectionPresent(true);
 			const { alphabetical, network, price, search } = filter;
-
 			let filteredCollection = [...collections].sort((a, b) => a.startTimestamp - b.startTimestamp);
-
 			if (search.query !== '') {
 				filteredCollection = filteredCollection
 					.filter((collection) => {
@@ -91,6 +93,8 @@ const CollectionsList = () => {
 				filteredCollection = filteredCollection.sort((a, b) => b.price - a.price);
 			}
 			setFilteredCollections([...filteredCollection]);
+		} else {
+			setCollectionPresent(false);
 		}
 	}, [filter.alphabetical, filter.network, filter.price, filter.search.query, collections]);
 
@@ -104,17 +108,25 @@ const CollectionsList = () => {
 				key="collection-list"
 				condition={filter.clearAll && filter.search.query === ''}
 				then={collections.map((collection, idx) => (
-					<CollectionTile {...{ collection, idx }} />
+					<CollectionTile {...{ collection, idx }} key={`${collection.title}-${idx}`} />
 				))}
 				else={
 					<If
 						key="filtered-collection-list"
 						condition={filteredCollections.length === 0}
-						then={<EmptyResultComponent />}
+						then={
+							<EmptyResultComponent subText="Hmm... looks like the project you're looking for doesn't exist on Schmint yet. If you'd like to have it on Schmint, please " />
+						}
 						else={filteredCollections.map((collection, idx) => (
-							<CollectionTile {...{ collection, idx }} />
+							<CollectionTile {...{ collection, idx }} key={`${collection?.title}-${idx}`} />
 						))}
 					/>
+				}
+			/>
+			<If
+				condition={collections.length < 1 && filter.clearAll}
+				then={
+					<EmptyResultComponent subText="Schmint is in Alpha and we are only listing projects we love or we vibe with. If you'd like to see a project on Schmint, please " />
 				}
 			/>
 		</Box>

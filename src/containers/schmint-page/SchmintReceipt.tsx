@@ -1,17 +1,31 @@
 import { format } from 'date-fns';
 import { ethers } from 'ethers';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import { ArrowUpRight } from 'phosphor-react';
+import { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import Text from 'src/components/Text';
 import { useProvider } from 'wagmi';
+import { blockExplorer, explorer } from 'src/utils/links';
+import { useAppSelector } from 'src/redux/hooks';
+import { networkSelector } from 'src/redux/network';
+import { userSelector } from 'src/redux/user';
+import { condenseAddress } from 'src/components/DappNavbar/ConnectWallet';
+import toast from 'react-hot-toast';
+import InputDataDecoder from 'ethereum-input-data-decoder';
 
-const SchmintReceipt = ({ quantity, schmint, status, network }) => {
+const SchmintReceipt = ({ quantity, schmint, status, network, collection }) => {
 	const [gasCost, setGasCost] = useState<string>();
 	const provider = useProvider();
+	const user = useAppSelector(userSelector);
+	const [address, setAddress] = useState<string>();
+	const [transferToAccount, setTransferToAccount] = useState('');
 
 	useEffect(() => {
+		console.log(network);
+		console.log(explorer(network?.chainId));
+
 		if (status === '1') {
 			provider.getTransactionReceipt(schmint.executionTrxHash).then((receipt) => {
 				const gasUsed = receipt?.gasUsed;
@@ -22,7 +36,14 @@ const SchmintReceipt = ({ quantity, schmint, status, network }) => {
 				}
 			});
 		}
-	}, [status, schmint]);
+	}, [status, schmint, network]);
+
+	useEffect(() => {
+		const decoder = new InputDataDecoder(collection?.abi);
+		const res = decoder.decodeData(schmint.data);
+		setAddress('0x' + res.inputs[0]);
+		setTransferToAccount(condenseAddress('0x' + res.inputs[0]));
+	}, [schmint, collection]);
 
 	return (
 		<Box bg="gray-10" color="simply-black" borderRadius="8px" p="mm" width="49rem" mt="mm">
@@ -54,6 +75,50 @@ const SchmintReceipt = ({ quantity, schmint, status, network }) => {
 					value={status === '1' ? format(schmint.creationTimestamp * 1000, 'dd-MM-yyyy, p') : 'N/A'}
 					mb="mxxs"
 				/>
+				<DataRow
+					label="Executed on"
+					value={status === '1' ? format(schmint.executionTimestamp * 1000, 'dd-MM-yyyy, p') : 'N/A'}
+					mb="mxxs"
+				/>
+				<Box row between mb="mm">
+					<Text as="b2">Transferred to</Text>
+					<Text
+						as="b2"
+						px="16px"
+						py="4px"
+						backgroundColor="blue-20"
+						borderRadius="33px"
+						color="blue-40"
+						cursor="pointer"
+						onClick={() => {
+							navigator.clipboard?.writeText(schmint.target);
+							setTransferToAccount('Copied!');
+							setTimeout(() => {
+								setTransferToAccount(condenseAddress(address));
+							}, 1000);
+						}}
+					>
+						{transferToAccount}
+					</Text>
+				</Box>
+			</Box>
+			<Box
+				as="a"
+				target="_blank"
+				row
+				alignItems="center"
+				color="blue-40"
+				cursor="pointer"
+				href={`${blockExplorer(network?.chainId)}/tx/${schmint?.executionTrxHash}`}
+			>
+				{network ? (
+					<Text as="b3" color="blue-40">
+						View on {explorer(network?.chainId)}
+					</Text>
+				) : (
+					''
+				)}
+				<ArrowUpRight size={16} color="#4743C5" />{' '}
 			</Box>
 		</Box>
 	);

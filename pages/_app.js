@@ -14,6 +14,7 @@ import If from 'components/If';
 
 import 'styleguide/globalStyles.css';
 import '@rainbow-me/rainbowkit/styles.css';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 Router.onRouteChangeStart = () => {
 	NProgress.start();
@@ -26,6 +27,8 @@ NProgress.configure({ showSpinner: false });
 
 const MyApp = ({ Component, pageProps }) => {
 	const [hostname, setHostname] = useState('');
+
+	const queryClient = new QueryClient();
 
 	useEffect(() => {
 		// Set a custom CSS Property for Height
@@ -119,10 +122,12 @@ const MyApp = ({ Component, pageProps }) => {
 			<ThemeProvider theme={theme}>
 				<Wagmi>
 					<ApolloClientProvider>
-						<Layout>
-							<Component {...pageProps} />
-						</Layout>
-						<ModalHandler />
+						<QueryClientProvider client={queryClient}>
+							<Layout>
+								<Component {...pageProps} />
+							</Layout>
+							<ModalHandler />
+						</QueryClientProvider>
 					</ApolloClientProvider>
 				</Wagmi>
 			</ThemeProvider>

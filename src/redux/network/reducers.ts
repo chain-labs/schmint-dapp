@@ -5,7 +5,7 @@ import { NetworkState } from './types';
 
 const initialState: NetworkState = {
 	isOnline: false,
-	isValid: false,
+	isValid: true,
 	chainId: null,
 	name: '',
 	unit: '',
@@ -19,6 +19,7 @@ export const networkReducer = createReducer(initialState, (builder) => {
 			const newState = {
 				...state,
 				chainId,
+				name,
 				unit: getUnit(chainId),
 				isOnline: true,
 				isValid: checkValidNetwork(chainId),

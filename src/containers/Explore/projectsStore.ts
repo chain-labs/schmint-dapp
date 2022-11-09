@@ -30,28 +30,26 @@ export interface ICollection {
 		icytools_url: string;
 		discord_url: string;
 	};
-	comingSoon?: boolean;
+	mintTimestampNotDecided?: boolean;
 }
 
 export const getCollections = async (): Promise<ICollection[]> => {
 	const PROJECTS_JSON_URL = PROJECTS_DIR;
-	const res = await axios.get(PROJECTS_JSON_URL);
-	let projects = res.data;
+	const res = await fetch(PROJECTS_JSON_URL);
+	let projects = await res.json();
 	if (typeof projects === 'string') {
 		projects = JSON.parse(projects);
 	}
-	const collectionsList = projects
-		.filter((collection: ICollection) => collection.startTimestamp > Date.now() / 1000)
-		.sort((a: ICollection, b: ICollection) => a.startTimestamp - b.startTimestamp);
+	const collectionsList = projects.sort((a: ICollection, b: ICollection) => a.startTimestamp - b.startTimestamp);
 
 	const noStartTimeCollections = projects.filter((collection: ICollection) => !collection.startTimestamp);
 
-	return [...collectionsList, ...noStartTimeCollections];
+	return [...collectionsList];
 };
 
 export const getAllCollections = async (): Promise<ICollection[]> => {
 	const PROJECTS_JSON_URL = PROJECTS_DIR;
-	const res = await axios.get(PROJECTS_JSON_URL);
-	const projects = res.data;
+	const res = await fetch(PROJECTS_JSON_URL);
+	const projects = await res.json();
 	return projects;
 };
