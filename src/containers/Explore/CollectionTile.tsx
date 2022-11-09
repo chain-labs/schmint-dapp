@@ -50,7 +50,7 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 			cursor="pointer"
 		>
 			<If
-				condition={collection?.comingSoon}
+				condition={collection?.mintTimestampNotDecided}
 				then={
 					<Box
 						position="absolute"

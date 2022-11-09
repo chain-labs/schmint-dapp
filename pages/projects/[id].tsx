@@ -60,7 +60,7 @@ const ProjectPage = () => {
 			<Box pb="wl">
 				{collection ? <Projectpage collection={collection} /> : ''}
 				<If
-					condition={wrongNetwork && !collection.comingSoon}
+					condition={wrongNetwork && !collection.mintTimestampNotDecided}
 					then={
 						<WrongNetworkAlert chainTo={collection?.network?.chainId} setWrongNetwork={setWrongNetwork} />
 					}

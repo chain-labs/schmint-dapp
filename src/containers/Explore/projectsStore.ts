@@ -30,7 +30,7 @@ export interface ICollection {
 		icytools_url: string;
 		discord_url: string;
 	};
-	comingSoon?: boolean;
+	mintTimestampNotDecided?: boolean;
 }
 
 export const getCollections = async (): Promise<ICollection[]> => {
@@ -49,7 +49,7 @@ export const getCollections = async (): Promise<ICollection[]> => {
 
 export const getAllCollections = async (): Promise<ICollection[]> => {
 	const PROJECTS_JSON_URL = PROJECTS_DIR;
-	const res = await axios.get(PROJECTS_JSON_URL);
-	const projects = res.data;
+	const res = await fetch(PROJECTS_JSON_URL);
+	const projects = await res.json();
 	return projects;
 };
