@@ -22,7 +22,15 @@ const BlogTile = ({ title, url, image }: IBlog) => {
 		>
 			{/* <Image src={`${image}`} layout="fill" objectFit="cover" onError={(e) => console.log({ e })} /> */}
 			<Box width={{ mobS: '33rem', deskM: '40.4rem' }}>
-				<Box as="img" height="25rem" width="95%" objectFit="fill" borderRadius="24px" src={image}></Box>
+				<Box
+					as="img"
+					height="25rem"
+					width="95%"
+					objectFit="fill"
+					borderRadius="24px"
+					border="0.5px solid blue"
+					src={image}
+				></Box>
 			</Box>
 			<Text as="b1" color="gray-50" mt="mm">
 				{title}

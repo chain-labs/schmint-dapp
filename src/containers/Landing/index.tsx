@@ -17,7 +17,7 @@ import FAQ from './FAQ';
 
 const getBlogs = async () => {
 	const res = await fetch(BLOGS_API_URL);
-	return res.json();
+	return await res.json();
 };
 
 const LandingPage = () => {

@@ -8,9 +8,9 @@ import theme from 'src/styleguide/theme';
 const FAQ = ({ q, a, last }) => {
 	const [expanded, setExpanded] = useState(false);
 	const getFAQLink = (q) => {
-		const leftPart = a.slice(0, a.indexOf('('));
-		const link = a.slice(a.indexOf('(') + 1, a.indexOf(')'));
-		const rightPart = a.slice(a.indexOf(')') + 1, a.length);
+		const leftPart = a.slice(0, a.indexOf('['));
+		const link = a.slice(a.indexOf('[') + 1, a.indexOf(']'));
+		const rightPart = a.slice(a.indexOf(']') + 1, a.length);
 
 		return (
 			<Box>
@@ -55,7 +55,7 @@ const FAQ = ({ q, a, last }) => {
 				condition={expanded}
 				then={
 					<Text as="b1" width={{ mobS: '33rem', tabS: '50.6rem', deskM: '66.4rem' }} color="gray-40">
-						{a.includes('(') ? getFAQLink(a) : a}
+						{a.includes('[') ? getFAQLink(a) : a}
 					</Text>
 				}
 			/>

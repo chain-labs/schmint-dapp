@@ -414,21 +414,26 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 				setValue={setNft}
 				disabled={schmintDisabled}
 			/>
-			<Box mt="mxxxl" row>
-				<Checkbox
-					setValue={setReceiveInWallet}
-					value={receiveInWallet}
-					mr="mm"
-					disabled={!scheduler.avatar && collection?.isReceivableOnWallet}
-				/>
-				<Box column>
-					<Text as="h6">Receive NFTs in your Wallet</Text>
-					<Text as="b3" mt="mxs" color="gray-40">
-						This collection allows you to receive NFTs directly in your wallet. By defalut, NFTs are sent to
-						your gnosis safe except for your first schmint.
-					</Text>
+			{collection?.isReceivableOnWallet ? (
+				<Box mt="mxxxl" row>
+					<Checkbox
+						setValue={setReceiveInWallet}
+						value={receiveInWallet}
+						mr="mm"
+						disabled={!scheduler.avatar && collection?.isReceivableOnWallet}
+					/>
+					<Box column>
+						<Text as="h6">Receive NFTs in your Wallet</Text>
+						<Text as="b3" mt="mxs" color="gray-40">
+							This collection allows you to receive NFTs directly in your wallet. By defalut, NFTs are
+							sent to your gnosis safe except for your first schmint.
+						</Text>
+					</Box>
 				</Box>
-			</Box>
+			) : (
+				''
+			)}
+
 			<Text
 				as="b3"
 				onClick={() => setShowOptions(!showOptions)}
