@@ -46,7 +46,7 @@ const ProjectPage = () => {
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			if (collection && user.exists) {
-				if (!network.isValid || collection?.network?.chainId !== chain?.id) {
+				if (!network.isValid || collection?.network?.chainId !== network.chainId) {
 					setWrongNetwork(true);
 					return;
 				}

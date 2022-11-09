@@ -24,11 +24,6 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 		if (collection?.network?.chainId) {
 			const idx = chains.findIndex((c) => c.chainId === collection?.network?.chainId);
 			setUnit(chains?.[idx]?.nativeCurrency.symbol);
-			console.log(
-				collection?.startTimestamp,
-				parseInt((Date.now() / 1000).toString()),
-				collection?.startTimestamp < parseInt((Date.now() / 1000).toString())
-			);
 		}
 	}, [collection]);
 

@@ -65,7 +65,6 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 		if (collection?.startTimestamp < Date.now() / 1000) {
 			setSchmintDisabled(true);
 		}
-		console.log(scheduler?.avatar);
 	}, [collection]);
 
 	useEffect(() => {
