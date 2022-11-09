@@ -414,6 +414,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 				setValue={setNft}
 				disabled={schmintDisabled}
 			/>
+
 			<Box mt="mxxxl" row>
 				<Checkbox
 					setValue={setReceiveInWallet}

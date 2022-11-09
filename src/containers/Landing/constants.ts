@@ -13,7 +13,7 @@ export const FAQs = [
 	},
 	{
 		q: 'Who is a Schminter?',
-		a: 'Schminters are deges who make use of Schmint to gain an unfair advantage against others.',
+		a: 'Schminters are degens who make use of Schmint to gain an unfair advantage against others.',
 	},
 	{
 		q: 'Can I use schmint to apply for allow-list?',
@@ -37,7 +37,7 @@ export const FAQs = [
 	},
 	{
 		q: 'How are new projects listed on Schmint?',
-		a: 'Currently, Simplr’s team curate the projects that are listed on the platform. We list projects based on Simplr’s community input and when a project applies to be listed on Schmint using this form (https://form.jotform.com/222922224502041). Schmint will open gates in the future so that projects can be registered quickly and automatically.',
+		a: 'Currently, Simplr’s team curates the projects listed on the platform. We list projects based on our community input and the projects which apply using this form: [https://form.jotform.com/222922224502041] Schmint will open gates in the future so that projects can be registered quickly and automatically.',
 	},
 	{
 		q: 'Is Schmint similar to Premint?',
@@ -45,11 +45,11 @@ export const FAQs = [
 	},
 	{
 		q: 'Can I create a project using Schmint?',
-		a: 'Schmint cannot be used to create collections or projects. Simplr Collection (https://simplrcollection.com) can be used to create collections and projects.',
+		a: 'Schmint cannot be used to create collections or projects. Simplr Collection [https://simplrcollection.com] can be used to create collections and projects.',
 	},
 	{
 		q: 'How do I get a project listed on Schmint?',
-		a: 'If you want to register a project, you can fill out this form (https://form.jotform.com/222922224502041)',
+		a: 'If you want to register a project, you can fill out this form [https://form.jotform.com/222922224502041]',
 	},
 	{
 		q: 'What if the gas Price at the time of mint is very high?',

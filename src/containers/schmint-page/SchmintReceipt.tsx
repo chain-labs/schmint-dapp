@@ -67,6 +67,11 @@ const SchmintReceipt = ({ quantity, schmint, status, network }) => {
 					value={status === '1' ? format(schmint.executionTimestamp * 1000, 'dd-MM-yyyy, p') : 'N/A'}
 					mb="mxxs"
 				/>
+				<DataRow
+					label="Executed on"
+					value={status === '1' ? format(schmint.executionTimestamp * 1000, 'dd-MM-yyyy, p') : 'N/A'}
+					mb="mxxs"
+				/>
 			</Box>
 			<Box
 				as="a"
