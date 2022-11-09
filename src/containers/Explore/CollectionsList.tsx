@@ -19,7 +19,6 @@ const CollectionsList = () => {
 	useEffect(() => {
 		getCollections().then((res) => {
 			setCollections(res);
-			console.log(res);
 		});
 	}, []);
 

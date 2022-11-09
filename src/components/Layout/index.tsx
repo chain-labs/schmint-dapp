@@ -180,46 +180,48 @@ const Layout = ({ children }) => {
 					</Link>
 				</Box>
 			</Box>
-			<DappNavbar />
-			<Box minHeight="16.8rem" bg={setLayoutStripBg()} width="100vw"></Box>
-			<Box row minHeight={`${windowHeight - 168}px`}>
-				<Box
-					position="fixed"
-					left="24px"
-					top="115px"
-					borderRadius="8px"
-					height={`${getSidebarHeight()}rem`}
-					bg="sky-blue-10"
-					width="26.8rem"
-					border="1px solid"
-					borderColor="blue-10"
-					boxShadow="shadow-300"
-					column
-					px="mxl"
-				>
-					<Avatar />
-					<MenuItems userHasScheduler={userHasScheduler} />
+			<Box display={{ mobS: 'none', tabS: 'block' }}>
+				<DappNavbar />
+				<Box minHeight="16.8rem" bg={setLayoutStripBg()} width="100vw"></Box>
+				<Box row minHeight={`${windowHeight - 168}px`}>
+					<Box
+						position="fixed"
+						left="24px"
+						top="115px"
+						borderRadius="8px"
+						height={`${getSidebarHeight()}rem`}
+						bg="sky-blue-10"
+						width="26.8rem"
+						border="1px solid"
+						borderColor="blue-10"
+						boxShadow="shadow-300"
+						column
+						px="mxl"
+					>
+						<Avatar />
+						<MenuItems userHasScheduler={userHasScheduler} />
+					</Box>
+					<Box width="29.2rem"></Box>
+					<Box flex={1}>
+						<If
+							condition={!user.exists || (called && !loading) || !network.isValid}
+							then={children}
+							else={<Loader msg="Loading..." minHeight={`${windowHeight - 167}px`} />}
+						/>
+					</Box>
 				</Box>
-				<Box width="29.2rem"></Box>
-				<Box flex={1}>
-					<If
-						condition={!user.exists || (called && !loading) || !network.isValid}
-						then={children}
-						else={<Loader msg="Loading..." minHeight={`${windowHeight - 167}px`} />}
-					/>
-				</Box>
+				<If
+					condition={showWrongNetworkAlert}
+					then={
+						<WrongNetworkAlert
+							customText="This network is currently not supported. Switch to a supported network."
+							chainTo={TEST_ENV ? 5 : 137}
+							setWrongNetwork={setShowWrongNetworkAlert}
+						/>
+					}
+				/>
+				<Footer />
 			</Box>
-			<If
-				condition={showWrongNetworkAlert}
-				then={
-					<WrongNetworkAlert
-						customText="This network is currently not supported. Switch to a supported network."
-						chainTo={TEST_ENV ? 5 : 137}
-						setWrongNetwork={setShowWrongNetworkAlert}
-					/>
-				}
-			/>
-			<Footer />
 		</Box>
 	);
 };

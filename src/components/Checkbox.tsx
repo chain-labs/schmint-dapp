@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Box, { BoxProps } from './Box';
 import { Check } from 'phosphor-react';
 import theme from 'src/styleguide/theme';
@@ -23,7 +23,7 @@ const Checkbox = ({ disabled, value, setValue, ...restProps }: Props) => {
 			display="flex"
 			justifyContent="center"
 			alignItems="center"
-			backgroundColor={disabled ? '#ECF1F4' : value ? 'blue-50' : '#ECF1F4'}
+			backgroundColor={value ? 'blue-50' : '#ECF1F4'}
 			boxShadow="inset 0px 2px 2px -1px rgba(74, 74, 104, 0.1)"
 			borderRadius="8px"
 			border={

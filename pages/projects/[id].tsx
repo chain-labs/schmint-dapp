@@ -46,7 +46,7 @@ const ProjectPage = () => {
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			if (collection && user.exists) {
-				if (!network.isValid || collection?.network?.chainId !== chain?.id) {
+				if (!network.isValid || collection?.network?.chainId !== network.chainId) {
 					setWrongNetwork(true);
 					return;
 				}
@@ -60,7 +60,7 @@ const ProjectPage = () => {
 			<Box pb="wl">
 				{collection ? <Projectpage collection={collection} /> : ''}
 				<If
-					condition={wrongNetwork && !collection.comingSoon}
+					condition={wrongNetwork && !collection.mintTimestampNotDecided}
 					then={
 						<WrongNetworkAlert chainTo={collection?.network?.chainId} setWrongNetwork={setWrongNetwork} />
 					}

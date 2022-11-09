@@ -32,7 +32,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 	const [estimatedGas] = useState(collection?.estimatedTransaction ?? 0.02);
 	const [wrongNetwork, setWrongNetwork] = useState(false);
 	const [schmintDisabled, setSchmintDisabled] = useState(false);
-	const [recieveInWallet, setRecieveInWallet] = useState(false);
+	const [receiveInWallet, setReceiveInWallet] = useState(true);
 	const [txGas, setTxGas] = useState<string>('');
 	const [txPrice, setTxPrice] = useState<string>('');
 	const { data: signer } = useSigner();
@@ -65,22 +65,23 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 		if (collection?.startTimestamp < Date.now() / 1000) {
 			setSchmintDisabled(true);
 		}
-		console.log(scheduler?.avatar);
 	}, [collection]);
 
 	useEffect(() => {
 		if (!scheduler?.avatar && collection?.isReceivableOnWallet) {
-			setRecieveInWallet(true);
+			setReceiveInWallet(true);
+		} else {
+			setReceiveInWallet(false);
 		}
-	}, [scheduler]);
+	}, [scheduler, collection]);
 
 	useEffect(() => {
-		if (recieveInWallet) {
+		if (receiveInWallet) {
 			setUserAddress(user?.address);
 		} else {
 			setUserAddress(scheduler?.avatar);
 		}
-	}, [recieveInWallet]);
+	}, [receiveInWallet]);
 
 	const handleCreateSchmint = async (e) => {
 		e.preventDefault();
@@ -414,7 +415,12 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 				disabled={schmintDisabled}
 			/>
 			<Box mt="mxxxl" row>
-				<Checkbox setValue={setRecieveInWallet} value={recieveInWallet} mr="mm" />
+				<Checkbox
+					setValue={setReceiveInWallet}
+					value={receiveInWallet}
+					mr="mm"
+					disabled={!scheduler.avatar && collection?.isReceivableOnWallet}
+				/>
 				<Box column>
 					<Text as="h6">Receive NFTs in your Wallet</Text>
 					<Text as="b3" mt="mxs" color="gray-40">
