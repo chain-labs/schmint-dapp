@@ -13,7 +13,6 @@ module.exports = {
 		loader: 'akamai',
 		path: '',
 	},
-	assetPrefix: isProd ? 'https://your-domain.com' : '',
 	trailingSlash: true,
 	async rewrites() {
 		return [
