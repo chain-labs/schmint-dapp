@@ -97,13 +97,13 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 						<span style={{ color: theme.colors['gray-50'] }}>
 							{collection.startTimestamp
 								? format(collection.startTimestamp * 1000, 'LLL d yyyy, hh:mm a, OOOO')
-								: 'N/A'}
+								: 'TBA'}
 						</span>
 					</Text>
 					<Box row alignItems="center" mb="0.2rem">
 						<Text as="b3">{'Blockchain: '}</Text>
 						<Text as="b3" ml="mxxs" color="gray-50">
-							{collection?.network?.name ? collection.network.name : 'N/A'}
+							{collection?.network?.name ? collection.network.name : 'TBA'}
 						</Text>
 						<If
 							condition={!!collection?.network?.name}
@@ -127,7 +127,7 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 						<span style={{ color: theme.colors['gray-50'] }}>
 							<If
 								condition={collection?.price === null}
-								then={'N/A'}
+								then={'TBA'}
 								else={
 									<If
 										condition={collection?.price > 0}

@@ -210,7 +210,7 @@ const ContractItem = ({ text, subText, network }: { text?: string; subText?: str
 				{text}
 			</Text>
 			<Text as="b3" color="gray-50" row alignItems="center" mt="mxs">
-				{subText ? subText : parseInt(subText) === 0 ? subText : 'N/A'}
+				{subText ? subText : parseInt(subText) === 0 ? subText : 'TBA'}
 				<If
 					condition={!!network}
 					then={
