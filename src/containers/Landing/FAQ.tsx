@@ -54,9 +54,16 @@ const FAQ = ({ q, a, last }) => {
 			<If
 				condition={expanded}
 				then={
-					<Text as="b1" width={{ mobS: '33rem', tabS: '50.6rem', deskM: '66.4rem' }} color="gray-40">
-						{a.includes('[') ? getFAQLink(a) : a}
-					</Text>
+					<Box
+						css={`
+							animation: rotateMenu 400ms ease-in-out forwards;
+							transform-origin: top center;
+						`}
+					>
+						<Text as="b1" width={{ mobS: '33rem', tabS: '50.6rem', deskM: '66.4rem' }} color="gray-40">
+							{a.includes('[') ? getFAQLink(a) : a}
+						</Text>
+					</Box>
 				}
 			/>
 		</Box>
