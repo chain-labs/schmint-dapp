@@ -111,18 +111,24 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 			</Box>
 			{showDetails ? (
 				<Box>
-					<ReadMore mainText={collection?.description} />
-					<Box mb="mm">
-						<Text as="b2" center>
-							<Box as="span" mr="mxs" center>
-								<GlobeSimple size={24} />
-							</Box>
-							Website:
-							<Box as="span" color="simply-blue" ml="mxs">
-								{collection?.website_url}
-							</Box>
-						</Text>
-					</Box>
+					{collection.description ? <ReadMore mainText={collection?.description} /> : ''}
+					{collection.website_url ? (
+						<Box mb="mm">
+							<Text as="b2" center>
+								<Box as="span" mr="mxs" center>
+									<GlobeSimple size={24} />
+								</Box>
+								Website:
+								<Box as="a" target="_blank" href={collection.website_url}>
+									<Text as="b2" color="simply-blue" ml="mxs">
+										{collection.website_url}
+									</Text>
+								</Box>
+							</Text>
+						</Box>
+					) : (
+						''
+					)}
 					<Box center>
 						<If
 							condition={collection?.contractAddress || collection?.socials}
@@ -210,7 +216,7 @@ const ContractItem = ({ text, subText, network }: { text?: string; subText?: str
 				{text}
 			</Text>
 			<Text as="b3" color="gray-50" row alignItems="center" mt="mxs">
-				{subText ? subText : parseInt(subText) === 0 ? subText : 'To Be Announced'}
+				{subText ? subText : parseInt(subText) === 0 ? subText : 'TBA'}
 				<If
 					condition={!!network}
 					then={
