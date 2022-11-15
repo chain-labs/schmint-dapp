@@ -10,6 +10,7 @@ import { networkSelector } from 'src/redux/network';
 import { userSelector } from 'src/redux/user';
 import { PROJECTS_DIR } from 'src/utils/constants';
 import { useNetwork } from 'wagmi';
+import { format } from 'url';
 
 const ProjectPage = () => {
 	const router = useRouter();
@@ -21,11 +22,18 @@ const ProjectPage = () => {
 	const [wrongNetwork, setWrongNetwork] = useState(false);
 	const network = useAppSelector(networkSelector);
 
+	const { pathname, query } = router;
+
 	const getAllCollections = async () => {
 		const data = await fetch(PROJECTS_DIR);
 		const res = await data.json();
 		setCollections(res);
 	};
+
+	useEffect(() => {
+		console.log(pathname, query);
+		console.log(id);
+	}, [pathname]);
 
 	const getCollection = async () => {
 		collections.map((collection) => {

@@ -13,7 +13,7 @@ module.exports = {
 		loader: 'akamai',
 		path: '',
 	},
-	assetPrefix: 'https://schmint-lp-git-bug-fix-spheron-deployment-chainlabs.vercel.app/',
+	assetPrefix: isProd ? 'https://schmint-lp-git-bug-fix-spheron-deployment-chainlabs.vercel.app/' : '',
 	trailingSlash: true,
 	async rewrites() {
 		return [
