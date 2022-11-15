@@ -13,6 +13,7 @@ module.exports = {
 		loader: 'akamai',
 		path: '',
 	},
+	assetPrefix: isProd ? 'https://schmint-dev.simplrhq.com' : 'https://schmint.simplrhq.com',
 	trailingSlash: true,
 	async rewrites() {
 		return [
