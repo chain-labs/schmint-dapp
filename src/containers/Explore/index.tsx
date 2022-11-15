@@ -6,6 +6,7 @@ import theme from 'src/styleguide/theme';
 import Filters from './Filters';
 import CollectionsList from './CollectionsList';
 import SearchInput from './SearchInput';
+import React, { useEffect, useState } from 'react';
 
 const ExploreComp = () => {
 	return (
@@ -31,6 +32,7 @@ const ExploreComp = () => {
 				{/* </Link> */}
 			</Box>
 			<SearchInput />
+
 			<Filters />
 			<CollectionsList />
 		</Box>

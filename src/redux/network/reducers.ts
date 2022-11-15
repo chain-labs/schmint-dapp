@@ -5,7 +5,7 @@ import { NetworkState } from './types';
 
 const initialState: NetworkState = {
 	isOnline: false,
-	isValid: false,
+	isValid: true,
 	chainId: null,
 	name: '',
 	unit: '',

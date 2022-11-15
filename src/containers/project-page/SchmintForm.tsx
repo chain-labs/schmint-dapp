@@ -1,8 +1,10 @@
+import InputDataDecoder from 'ethereum-input-data-decoder';
 import { ethers } from 'ethers';
 import { CaretDown, CaretUp } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
+import Checkbox from 'src/components/Checkbox';
 import CounterInput from 'src/components/CounterInput';
 import If from 'src/components/If';
 import Text from 'src/components/Text';
@@ -27,15 +29,16 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 	const [gasPriceLimit, setGasPriceLimit] = useState('');
 	const [funds, setFunds] = useState('');
 	const [step, setStep] = useState(0);
-	const [estimatedGas] = useState(collection?.estimatedTransaction ?? 0.02);
+	const [estimatedGas] = useState(collection?.estimatedTransaction ?? 0.04);
 	const [wrongNetwork, setWrongNetwork] = useState(false);
-
+	const [schmintDisabled, setSchmintDisabled] = useState(false);
+	const [receiveInWallet, setReceiveInWallet] = useState(true);
 	const [txGas, setTxGas] = useState<string>('');
 	const [txPrice, setTxPrice] = useState<string>('');
-
 	const { data: signer } = useSigner();
 	const network = useAppSelector(networkSelector);
 	const provider = useProvider();
+	const [userAddress, setUserAddress] = useState<string>('');
 	const { data: gasFee } = useFeeData({
 		formatUnits: 'gwei',
 		watch: true,
@@ -58,6 +61,28 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 	});
 
 	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		if (collection?.startTimestamp < Date.now() / 1000) {
+			setSchmintDisabled(true);
+		}
+	}, [collection]);
+
+	useEffect(() => {
+		if (!scheduler?.avatar && collection?.isReceivableOnWallet) {
+			setReceiveInWallet(true);
+		} else {
+			setReceiveInWallet(false);
+		}
+	}, [scheduler, collection]);
+
+	useEffect(() => {
+		if (receiveInWallet) {
+			setUserAddress(user?.address);
+		} else {
+			setUserAddress(scheduler?.avatar);
+		}
+	}, [receiveInWallet]);
 
 	const handleCreateSchmint = async (e) => {
 		e.preventDefault();
@@ -139,29 +164,42 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 			} else {
 				switch (getABIType(collection.abi)) {
 					case 1: {
+						console.log(userAddress);
 						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							scheduler.avatar,
+							userAddress,
 							nft,
 							{
 								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
 							}
 						);
+						const decoder = new InputDataDecoder(collection.abi);
+						const res = decoder.decodeData(buyTx.data);
+						console.log(buyTx.to, res, buyTx.value);
 						break;
 					}
 					case 2: {
+						console.log(userAddress);
+
 						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
 							nft,
-							scheduler.avatar,
+							userAddress,
 							{
 								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
 							}
 						);
+						const decoder = new InputDataDecoder(collection.abi);
+						const res = decoder.decodeData(buyTx.data);
+						console.log(buyTx.to, res, buyTx.value);
 						break;
 					}
 					case 3: {
 						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](nft, {
 							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
 						});
+						const decoder = new InputDataDecoder(collection.abi);
+						const res = decoder.decodeData(buyTx.data);
+						console.log(buyTx.to, res, buyTx.value);
+
 						break;
 					}
 				}
@@ -279,7 +317,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 				switch (getABIType(collection.abi)) {
 					case 1: {
 						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							scheduler.avatar,
+							userAddress,
 							nft,
 							{
 								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
@@ -290,7 +328,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 					case 2: {
 						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
 							nft,
-							scheduler.avatar,
+							userAddress,
 							{
 								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
 							}
@@ -375,7 +413,28 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 				}
 				value={nft}
 				setValue={setNft}
+				disabled={schmintDisabled}
 			/>
+			{collection?.isReceivableOnWallet ? (
+				<Box mt="mxxxl" row>
+					<Checkbox
+						setValue={setReceiveInWallet}
+						value={receiveInWallet}
+						mr="mm"
+						disabled={!scheduler.avatar && collection?.isReceivableOnWallet}
+					/>
+					<Box column>
+						<Text as="h6">Receive NFTs in your Wallet</Text>
+						<Text as="b3" mt="mxs" color="gray-40">
+							This collection allows you to receive NFTs directly in your wallet. By defalut, NFTs are
+							sent to your gnosis safe except for your first schmint.
+						</Text>
+					</Box>
+				</Box>
+			) : (
+				''
+			)}
+
 			<Text
 				as="b3"
 				onClick={() => setShowOptions(!showOptions)}
@@ -403,6 +462,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 								setValue={setGasPriceLimit}
 								detailText="Your transaction will not execute if the gas price is more than the set limit."
 								unit="GWEI"
+								disabled={schmintDisabled}
 							/>
 						</Box>
 					}
@@ -436,7 +496,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 					width="23.4rem"
 					height="4.8rem"
 					borderRadius="64px"
-					disable={!user.exists || wrongNetwork}
+					disable={!user.exists || wrongNetwork || schmintDisabled}
 					onClick={handleCreateSchmint}
 				>
 					<Text as="btn1">Create Schmint</Text>
@@ -461,8 +521,9 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 								condition={scheduler.avatar === ''}
 								then={
 									<Text as="b3" textAlign="center" color={`${theme.colors['gray-50']}`} mb="mxs">
-										Clicking “Create Schmint” will also create a create for you a pesonal scheduler
-										which will be used to store the schmint.
+										Note: Clicking “Create Schmint” will also create for you a pesonal scheduler
+										which will be used to execute transactions on your behalf. It will cost
+										additonal gas but you only need to do it once.
 									</Text>
 								}
 							/>

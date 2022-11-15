@@ -31,8 +31,8 @@ const Layout = ({ children }) => {
 	const [userHasScheduler, setUserHasScheduler] = useState(false);
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
 	const network = useAppSelector(networkSelector);
-	const { chains } = useNetwork();
-
+	const { chains, chain } = useNetwork();
+	const [showWrongNetworkAlert, setShowWrongNetworkAlert] = React.useState<boolean>(false);
 	const [loadScheduler, { called, loading }] = useLazyQuery(GET_USER_SCHEDULER, {
 		onCompleted: (data) => {
 			const scheduler = data?.schedulers?.[0];
@@ -69,6 +69,18 @@ const Layout = ({ children }) => {
 		},
 	});
 	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		if (
+			network.isOnline &&
+			!network.isValid &&
+			(router.asPath === '/explore' || router.asPath === '/my-assets' || router.asPath === '/my-schmints')
+		) {
+			setShowWrongNetworkAlert(true);
+		} else {
+			setShowWrongNetworkAlert(false);
+		}
+	}, [network.isOnline, network.isValid, router.asPath]);
 
 	const [windowHeight, setWindowHeight] = React.useState(0);
 
@@ -135,18 +147,10 @@ const Layout = ({ children }) => {
 
 	if (isHome) {
 		return (
-			<Box>
+			<Box overflowX="hidden">
 				{children}
 				<HomeNavbar />
-				<Box center position="fixed" bottom="0" py="mxl" width="100vw">
-					<Box as="a" href={SIMPLR_URL} target="_blank" position="relative" height="3.3rem" width="11.1rem">
-						<Image
-							src="https://ik.imagekit.io/chainlabs/Schmint/simplr-brand_AziSwlVYT.svg"
-							alt="Simplr"
-							layout="fill"
-						/>
-					</Box>
-				</Box>
+				<Footer />
 			</Box>
 		);
 	}
@@ -182,49 +186,48 @@ const Layout = ({ children }) => {
 					</Link>
 				</Box>
 			</Box>
-			<DappNavbar />
-			<Box minHeight="16.8rem" bg={setLayoutStripBg()} width="100vw"></Box>
-			<Box row minHeight={`${windowHeight - 168}px`}>
-				<Box
-					position="fixed"
-					left="24px"
-					top="115px"
-					borderRadius="8px"
-					height={`${getSidebarHeight()}rem`}
-					bg="sky-blue-10"
-					width="26.8rem"
-					border="1px solid"
-					borderColor="blue-10"
-					boxShadow="shadow-300"
-					column
-					px="mxl"
-				>
-					<Avatar />
-					<MenuItems userHasScheduler={userHasScheduler} />
+			<Box display={{ mobS: 'none', tabS: 'block' }}>
+				<DappNavbar />
+				<Box minHeight="16.8rem" bg={setLayoutStripBg()} width="100vw"></Box>
+				<Box row minHeight={`${windowHeight - 168}px`}>
+					<Box
+						position="fixed"
+						left="24px"
+						top="115px"
+						borderRadius="8px"
+						height={`${getSidebarHeight()}rem`}
+						bg="sky-blue-10"
+						width="26.8rem"
+						border="1px solid"
+						borderColor="blue-10"
+						boxShadow="shadow-300"
+						column
+						px="mxl"
+					>
+						<Avatar />
+						<MenuItems userHasScheduler={userHasScheduler} />
+					</Box>
+					<Box width="29.2rem"></Box>
+					<Box flex={1}>
+						<If
+							condition={!user.exists || (called && !loading) || !network.isValid}
+							then={children}
+							else={<Loader msg="Loading..." minHeight={`${windowHeight - 167}px`} />}
+						/>
+					</Box>
 				</Box>
-				<Box width="29.2rem"></Box>
-				<Box flex={1}>
-					<If
-						condition={!user.exists || (called && !loading) || !network.isValid}
-						then={children}
-						else={<Loader msg="Loading..." minHeight={`${windowHeight - 167}px`} />}
-					/>
-				</Box>
+				<If
+					condition={showWrongNetworkAlert}
+					then={
+						<WrongNetworkAlert
+							customText="This network is currently not supported. Switch to a supported network."
+							chainTo={TEST_ENV ? 5 : 137}
+							setWrongNetwork={setShowWrongNetworkAlert}
+						/>
+					}
+				/>
+				<Footer />
 			</Box>
-			<If
-				condition={
-					network.isOnline &&
-					!network.isValid &&
-					(router.asPath === '/explore' || router.asPath === '/my-assets' || router.asPath === '/my-schmints')
-				}
-				then={
-					<WrongNetworkAlert
-						customText="This network is currently not supported. Switch to a supported network."
-						chainTo={TEST_ENV ? 5 : 137}
-					/>
-				}
-			/>
-			<Footer />
 		</Box>
 	);
 };

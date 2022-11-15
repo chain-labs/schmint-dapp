@@ -61,7 +61,7 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 			cursor="pointer"
 		>
 			<If
-				condition={collection?.comingSoon}
+				condition={collection?.mintTimestampNotDecided}
 				then={
 					<Box
 						position="absolute"
@@ -92,21 +92,29 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 					objectFit="cover"
 				></Box>
 				<Box ml="mm">
-					<Text as="h6" mb="mxxs">
+					<Text as="h6" mb="mxxs" row alignItems="center">
 						{collection.title}
+						<Box as="span" ml="mxs">
+							<Text as="c1" color="red-40">
+								{collection?.startTimestamp < parseInt((Date.now() / 1000).toString()) &&
+								collection?.startTimestamp
+									? 'Schminting Disabled'
+									: ''}
+							</Text>
+						</Box>
 					</Text>
 					<Text as="b3" mb="0.2rem">
 						{'Minting Starts: '}
 						<span style={{ color: theme.colors['gray-50'] }}>
 							{collection.startTimestamp
 								? format(collection.startTimestamp * 1000, 'LLL d yyyy, hh:mm a, OOOO')
-								: 'N/A'}
+								: 'To Be Announced'}
 						</span>
 					</Text>
 					<Box row alignItems="center" mb="0.2rem">
 						<Text as="b3">{'Blockchain: '}</Text>
 						<Text as="b3" ml="mxxs" color="gray-50">
-							{collection?.network?.name ? collection.network.name : 'N/A'}
+							{collection?.network?.name ? collection.network.name : 'To Be Announced'}
 						</Text>
 						<If
 							condition={!!collection?.network?.name}
@@ -130,7 +138,7 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 						<span style={{ color: theme.colors['gray-50'] }}>
 							<If
 								condition={collection?.price === null}
-								then={'N/A'}
+								then={'To Be Announced'}
 								else={
 									<If
 										condition={collection?.price > 0}
