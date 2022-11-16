@@ -19,6 +19,11 @@ const BlogTile = ({ title, url, image }: IBlog) => {
 			width={{ mobS: '30rem', deskM: '40.4rem' }}
 			px="mxs"
 			cursor="pointer"
+			css={`
+				&:hover {
+					text-decoration: underline;
+				}
+			`}
 		>
 			{/* <Image src={`${image}`} layout="fill" objectFit="cover" onError={(e) => console.log({ e })} /> */}
 			<Box width={{ mobS: '33rem', deskM: '40.4rem' }}>
@@ -32,9 +37,11 @@ const BlogTile = ({ title, url, image }: IBlog) => {
 					src={image}
 				></Box>
 			</Box>
-			<Text as="b1" color="gray-50" mt="mm">
-				{title}
-			</Text>
+			<Box mt="mm">
+				<Text as="b1" color="gray-50">
+					{title}
+				</Text>
+			</Box>
 		</Box>
 	);
 };

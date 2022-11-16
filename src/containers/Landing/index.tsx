@@ -14,6 +14,8 @@ import { BLOGS_URL } from 'src/utils/constants';
 import BlogTile, { IBlog } from './BlogTile';
 import { FAQs } from './constants';
 import FAQ from './FAQ';
+import BottomToUp from './animations/BottomToUp';
+import FadeInReveal from './animations/FadeInReveal';
 
 const getBlogs = async () => {
 	const res = await fetch(BLOGS_API_URL);
@@ -44,46 +46,52 @@ const LandingPage = () => {
 					alignItems="center"
 					flexDirection={{ mobS: 'column', deskM: 'row' }}
 				>
-					<Box
-						width={{ mobS: '30rem', tabS: '58.5rem' }}
-						column
-						alignItems={{ mobS: 'center', deskM: 'start' }}
-					>
-						<Text as="h2" mb={{ mobS: 'mm', deskM: 'mxl' }} textAlign={{ mobS: 'center', deskM: 'start' }}>
-							Schedule your mints in advance and relax.
-						</Text>
-						<Text
-							as="b1"
-							width={{ mobS: '30.72rem', tabS: '51rem', deskM: '51.67rem' }}
-							textAlign={{ mobS: 'center', deskM: 'start' }}
+					<BottomToUp delay={0.4}>
+						<Box
+							width={{ mobS: '30rem', tabS: '58.5rem' }}
+							column
+							alignItems={{ mobS: 'center', deskM: 'start' }}
 						>
-							{"Schmint helps collectors get a good night's sleep."}
-						</Text>
-						<Box mt="wxs" row alignItems="center">
-							<Link href="/explore" passHref>
-								<Box
-									center
-									bg="blue-40"
-									height={{ mobS: '4.8rem', deskM: '5.6rem' }}
-									px={{ mobS: 'mxxxl', deskM: 'wxs' }}
-									border="none"
-									outline="none"
-									borderRadius="64px"
-									mr={{ deskM: 'mxl' }}
-									cursor="pointer"
-									css={`
-										&:hover {
-											background: ${theme.colors['blue-50']};
-										}
-									`}
-								>
-									<Text as="b1" color="simply-white">
-										Start Schminting
-									</Text>
-								</Box>
-							</Link>
+							<Text
+								as="h2"
+								mb={{ mobS: 'mm', deskM: 'mxl' }}
+								textAlign={{ mobS: 'center', deskM: 'start' }}
+							>
+								Schedule your mints in advance and relax.
+							</Text>
+							<Text
+								as="b1"
+								width={{ mobS: '30.72rem', tabS: '51rem', deskM: '51.67rem' }}
+								textAlign={{ mobS: 'center', deskM: 'start' }}
+							>
+								{"Schmint helps collectors get a good night's sleep."}
+							</Text>
+							<Box mt="wxs" row alignItems="center">
+								<Link href="/explore" passHref>
+									<Box
+										center
+										bg="blue-40"
+										height={{ mobS: '4.8rem', deskM: '5.6rem' }}
+										px={{ mobS: 'mxxxl', deskM: 'wxs' }}
+										border="none"
+										outline="none"
+										borderRadius="64px"
+										mr={{ deskM: 'mxl' }}
+										cursor="pointer"
+										css={`
+											&:hover {
+												background: ${theme.colors['blue-50']};
+											}
+										`}
+									>
+										<Text as="b1" color="simply-white">
+											Start Schminting
+										</Text>
+									</Box>
+								</Link>
+							</Box>
 						</Box>
-					</Box>
+					</BottomToUp>
 					<Box
 						css={`
 							display: grid;
@@ -98,26 +106,34 @@ const LandingPage = () => {
 						}}
 						mt={{ mobS: 'wm', deskM: '0' }}
 					>
-						<Tile
-							src="https://ik.imagekit.io/chainlabs/Schmint/Schmint_LP_Illustrations/Bolt_Desktop_wVGk9Z2bf.png?ik-sdk-version=javascript-1.4.3&updatedAt=1667553186205"
-							text="Increase your chances of minting by 10 folds."
-							showText="false"
-						/>
-						<Tile
-							src="https://ik.imagekit.io/chainlabs/Schmint/Schmint_LP_Illustrations/Gear_Desktop_eudSmAQ2D.png?ik-sdk-version=javascript-1.4.3&updatedAt=1667553186220"
-							text="More control over how much gas you spend."
-							showText="false"
-						/>
-						<Tile
-							src="https://ik.imagekit.io/chainlabs/Schmint/Schmint_LP_Illustrations/Check_Desktop_uuG72q5Us9.png?ik-sdk-version=javascript-1.4.3&updatedAt=1667553186213"
-							text="All projects are curated but still, DYOR"
-							showText="false"
-						/>
-						<Tile
-							src="https://ik.imagekit.io/chainlabs/Schmint/Schmint_LP_Illustrations/Picture_Desktop_YrxcP2mqa3.png?ik-sdk-version=javascript-1.4.3&updatedAt=1667553186234"
-							text="Schmint for seconadary marketplaces."
-							showText="true"
-						/>
+						<FadeInReveal delay={0.1}>
+							<Tile
+								src="https://ik.imagekit.io/chainlabs/Schmint/Schmint_LP_Illustrations/Bolt_Desktop_wVGk9Z2bf.png?ik-sdk-version=javascript-1.4.3&updatedAt=1667553186205"
+								text="Increase your chances of minting by 10 folds."
+								showText="false"
+							/>
+						</FadeInReveal>
+						<FadeInReveal delay={0.4}>
+							<Tile
+								src="https://ik.imagekit.io/chainlabs/Schmint/Schmint_LP_Illustrations/Gear_Desktop_eudSmAQ2D.png?ik-sdk-version=javascript-1.4.3&updatedAt=1667553186220"
+								text="More control over how much gas you spend."
+								showText="false"
+							/>
+						</FadeInReveal>
+						<FadeInReveal delay={0.8}>
+							<Tile
+								src="https://ik.imagekit.io/chainlabs/Schmint/Schmint_LP_Illustrations/Check_Desktop_uuG72q5Us9.png?ik-sdk-version=javascript-1.4.3&updatedAt=1667553186213"
+								text="All projects are curated but still, DYOR"
+								showText="false"
+							/>
+						</FadeInReveal>
+						<FadeInReveal delay={1.2}>
+							<Tile
+								src="https://ik.imagekit.io/chainlabs/Schmint/Schmint_LP_Illustrations/Picture_Desktop_YrxcP2mqa3.png?ik-sdk-version=javascript-1.4.3&updatedAt=1667553186234"
+								text="Schmint for seconadary marketplaces."
+								showText="true"
+							/>
+						</FadeInReveal>
 					</Box>
 				</Box>
 			</Box>
