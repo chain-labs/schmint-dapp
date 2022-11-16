@@ -26,9 +26,8 @@ const BlogTile = ({ title, url, image }: IBlog) => {
 					as="img"
 					height="25rem"
 					width="95%"
-					objectFit="contain"
 					borderRadius="24px"
-					border="0.5px solid blue"
+					// border="0.5px solid blue"
 					src={image}
 				></Box>
 			</Box>
