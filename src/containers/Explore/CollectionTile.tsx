@@ -183,6 +183,7 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 			</Box>
 		</Box>
 	);
+	//Hi
 };
 
 export default CollectionTile;
