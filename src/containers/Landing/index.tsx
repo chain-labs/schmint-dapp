@@ -138,7 +138,7 @@ const LandingPage = () => {
 				</Box>
 			</Box>
 			<Box py="wl" width={{ mobS: '90vw', tabS: '94.4rem', deskM: '128rem' }} mx="auto">
-				<Box row justifyContent="space-between" alignItems="center" mb="ws">
+				<Box row justifyContent="space-between" alignItems="center" mb="ws" px={{ deskM: 'mm' }}>
 					<Text as="h3" textAlign={{ mobS: 'center', tabS: 'right' }}>
 						Learn more about <span style={{ color: theme.colors['blue-40'] }}>schmint</span>
 					</Text>
@@ -157,10 +157,9 @@ const LandingPage = () => {
 					</Box>
 				</Box>
 				<Box
-					css={`
-						display: grid;
-						grid-column-gap: 36px;
-					`}
+					display={{ mobS: 'flex', tabL: 'grid' }}
+					flexDirection="column"
+					center
 					gridTemplateColumns={{ mobS: 'repeat(1,1fr)', tabS: 'repeat(3, 1fr)' }}
 				>
 					{/* Could not use map here because of some weird error with the network call */}
