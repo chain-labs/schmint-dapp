@@ -1,8 +1,6 @@
-import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'phosphor-react';
-import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
@@ -11,7 +9,7 @@ import Text from 'src/components/Text';
 import { BLOGS_API_URL } from 'src/constants';
 import theme from 'src/styleguide/theme';
 import { BLOGS_URL } from 'src/utils/constants';
-import BlogTile, { IBlog } from './BlogTile';
+import BlogTile from './BlogTile';
 import { FAQs } from './constants';
 import FAQ from './FAQ';
 
@@ -22,12 +20,6 @@ const getBlogs = async () => {
 
 const LandingPage = () => {
 	const blogs = useQuery('blogs', getBlogs, { cacheTime: 0 });
-
-	useEffect(() => {
-		console.log({ blogs: blogs.isLoading, blogs_data: blogs.data });
-		console.log(blogs?.data?.items?.[0]?.thumbnail);
-	}, [blogs]);
-
 	return (
 		<Box
 			bg="gray-10"

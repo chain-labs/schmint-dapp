@@ -1,13 +1,14 @@
 import { GasPump } from 'phosphor-react';
 import { useEffect, useState } from 'react';
 import theme from 'src/styleguide/theme';
-import { getCoinPrice, getGasPrice, getGasSource } from 'src/utils/gasPrices';
+import { getCoinPrice, getGasSource } from 'src/utils/gasPrices';
 import { getNavProps } from 'src/utils/navbarUtils';
 import { useFeeData } from 'wagmi';
 import Box from 'components/Box';
 import Text from 'components/Text';
 import { useAppSelector } from 'src/redux/hooks';
 import { networkSelector } from 'src/redux/network';
+import { sendLog } from 'src/utils/logging';
 
 const Banners = ({ setNetworkProps, networkProps }) => {
 	const [coinPrice, setCoinPrice] = useState('');
@@ -17,8 +18,9 @@ const Banners = ({ setNetworkProps, networkProps }) => {
 		formatUnits: 'gwei',
 		watch: true,
 		onError: (error) => {
-			console.log('Error fetching feeData', error);
+			console.log('Error fetching feeData', error); // eslint-disable-line no-console
 			// CODE: 110
+			sendLog(110, error, { network: network.chainId });
 		},
 		enabled: network.isOnline,
 	});
@@ -30,8 +32,9 @@ const Banners = ({ setNetworkProps, networkProps }) => {
 					setCoinPrice(price);
 				})
 				.catch((err) => {
-					console.log('Error fetching coin price', err);
+					console.log('Error fetching coin price', err); // eslint-disable-line no-console
 					// CODE: 111
+					sendLog(111, err, { network: network.chainId });
 				});
 		};
 

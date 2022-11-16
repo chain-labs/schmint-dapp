@@ -1,10 +1,9 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Box from 'src/components/Box';
 import If from 'src/components/If';
 import { addSearch, filterSelector } from 'src/redux/filter';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { PROJECTS_DIR } from 'src/utils/constants';
+import { sendLog } from 'src/utils/logging';
 import CollectionTile from './CollectionTile';
 import EmptyResultComponent from './EmptyResultComponent';
 import { getCollections, ICollection } from './projectsStore';
@@ -22,9 +21,10 @@ const CollectionsList = () => {
 				setCollections(res);
 			})
 			.catch((err) => {
-				console.log('Error fetching collections', err);
+				console.log('Error fetching collections', err); // eslint-disable-line no-console
 
 				// CODE: 113
+				sendLog(113, err);
 			});
 	}, []);
 
@@ -55,9 +55,10 @@ const CollectionsList = () => {
 						});
 				}
 			} catch (err) {
-				console.log('Erorr in handling search filter', err);
+				console.log('Erorr in handling search filter', err); // eslint-disable-line no-console
 
 				// CODE: 114
+				sendLog(114, err);
 			}
 
 			try {
@@ -67,9 +68,10 @@ const CollectionsList = () => {
 					);
 				}
 			} catch (err) {
-				console.log('Error in handling Ethereum filter', err);
+				console.log('Error in handling Ethereum filter', err); // eslint-disable-line no-console
 
 				// CODE: 115
+				sendLog(115, err);
 			}
 
 			try {
@@ -79,9 +81,10 @@ const CollectionsList = () => {
 					);
 				}
 			} catch (err) {
-				console.log('Error in handling Polygon filter', err);
+				console.log('Error in handling Polygon filter', err); // eslint-disable-line no-console
 
 				// CODE: 116
+				sendLog(116, err);
 			}
 
 			try {
@@ -91,9 +94,10 @@ const CollectionsList = () => {
 					);
 				}
 			} catch (err) {
-				console.log('Error in handling free filter', err);
+				console.log('Error in handling free filter', err); // eslint-disable-line no-console
 
 				// CODE: 117
+				sendLog(117, err);
 			}
 
 			try {
@@ -108,9 +112,10 @@ const CollectionsList = () => {
 					});
 				}
 			} catch (err) {
-				console.log('Error in handling A-Z filter', err);
+				console.log('Error in handling A-Z filter', err); // eslint-disable-line no-console
 
 				// CODE: 118
+				sendLog(118, err);
 			}
 
 			try {
@@ -125,9 +130,10 @@ const CollectionsList = () => {
 					});
 				}
 			} catch (err) {
-				console.log('Error in handling Z-A filter', err);
+				console.log('Error in handling Z-A filter', err); // eslint-disable-line no-console
 
 				// CODE: 119
+				sendLog(119, err);
 			}
 
 			try {
@@ -135,9 +141,10 @@ const CollectionsList = () => {
 					filteredCollection = filteredCollection.sort((a, b) => a.price - b.price);
 				}
 			} catch (err) {
-				console.log('Error in handling low to high filter', err);
+				console.log('Error in handling low to high filter', err); // eslint-disable-line no-console
 
 				// CODE: 120
+				sendLog(120, err);
 			}
 
 			try {
@@ -145,9 +152,10 @@ const CollectionsList = () => {
 					filteredCollection = filteredCollection.sort((a, b) => b.price - a.price);
 				}
 			} catch (err) {
-				console.log('Error in handling high to low filter', err);
+				console.log('Error in handling high to low filter', err); // eslint-disable-line no-console
 
 				// CODE: 121
+				sendLog(121, err);
 			}
 			setFilteredCollections([...filteredCollection]);
 		} else {
@@ -159,8 +167,9 @@ const CollectionsList = () => {
 		try {
 			dispatch(addSearch({ query: filter.search.query, count: filteredCollections.length }));
 		} catch (err) {
-			console.log('Error in dispatching search query', err);
+			console.log('Error in dispatching search query', err); // eslint-disable-line no-console
 			// CODE: 122
+			sendLog(122, err);
 		}
 	}, [filteredCollections]);
 

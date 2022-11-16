@@ -18,6 +18,7 @@ import { schedulerSelector } from 'src/redux/scheduler';
 import { SchmintState } from 'src/redux/scheduler/types';
 import { userSelector } from 'src/redux/user';
 import { PROJECTS_DIR } from 'src/utils/constants';
+import { sendLog } from 'src/utils/logging';
 
 const illustration = 'https://ik.imagekit.io/chainlabs/Schmint/pablo-list-is-empty_1__1__Ux_bWTmMO.svg';
 
@@ -57,8 +58,9 @@ const Schmint = () => {
 
 	useEffect(() => {
 		getAllCollections().catch((err) => {
-			console.log('Error getting All collections', err);
+			console.log('Error getting All collections', err); // eslint-disable-line no-console
 			// CODE: 130
+			sendLog(130, err, { schmintId: id });
 		});
 	}, []);
 

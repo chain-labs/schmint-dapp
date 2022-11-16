@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { INVITELIST_URL } from './constants';
+import { sendLog } from './logging';
 
 export const checkIfUserInvited = async (address: string): Promise<boolean> => {
 	if (INVITELIST_URL) {
@@ -13,9 +14,10 @@ export const checkIfUserInvited = async (address: string): Promise<boolean> => {
 				} else return false;
 			} else return true;
 		} catch (err) {
-			console.log('Error in checking if user invited', err);
+			console.log('Error in checking if user invited', err); // eslint-disable-line no-console
 
 			// CODE: 109
+			sendLog(109, err, { INVITELIST_URL });
 		}
 	} else {
 		return true;

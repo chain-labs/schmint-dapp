@@ -1,4 +1,5 @@
 import InputDataDecoder from 'ethereum-input-data-decoder';
+import { sendLog } from 'src/utils/logging';
 import { getABIType } from '../project-page/utils';
 
 export const getSchmintQuantity = (abi: any, data: string) => {
@@ -17,7 +18,8 @@ export const getSchmintQuantity = (abi: any, data: string) => {
 			}
 		}
 	} catch (err) {
-		console.log('Error in getting schmint quantity', err);
+		console.log('Error in getting schmint quantity', err); // eslint-disable-line no-console
 		// CODE: 134
+		sendLog(134, err);
 	}
 };

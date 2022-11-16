@@ -5,6 +5,7 @@ import theme from 'src/styleguide/theme';
 import { FAQ_URL, DOCS_URL } from 'src/utils/constants';
 import Box from 'components/Box';
 import Text from 'components/Text';
+import { sendLog } from 'src/utils/logging';
 
 const Drawer = ({ drawerOpen, setDrawerOpen }) => {
 	const [expandable] = useState(false);
@@ -24,9 +25,10 @@ const Drawer = ({ drawerOpen, setDrawerOpen }) => {
 				drawerControls.stop();
 			};
 		} catch (err) {
-			console.log('Error in drawer animation', err);
+			console.log('Error in drawer animation', err); // eslint-disable-line no-console
 
-			// CODE: 108
+			// CODE: 137
+			sendLog(137, err);
 		}
 	}, [drawerOpen]);
 
@@ -41,9 +43,10 @@ const Drawer = ({ drawerOpen, setDrawerOpen }) => {
 				controls.stop();
 			};
 		} catch (err) {
-			console.log('Error in Expandable animation', err);
+			console.log('Error in Expandable animation', err); // eslint-disable-line no-console
 
-			// CODE: 108
+			// CODE: 136
+			sendLog(136, err);
 		}
 	}, [expandable]);
 

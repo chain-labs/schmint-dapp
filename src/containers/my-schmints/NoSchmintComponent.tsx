@@ -8,6 +8,7 @@ import If from 'src/components/If';
 import Text from 'src/components/Text';
 import { useAppSelector } from 'src/redux/hooks';
 import { userSelector } from 'src/redux/user';
+import { sendLog } from 'src/utils/logging';
 
 const illustration = 'https://ik.imagekit.io/chainlabs/Schmint/pablo-list-is-empty_1__1__Ux_bWTmMO.svg';
 
@@ -31,8 +32,9 @@ const NoSchmintComponent = ({ page = 0 }: { page: number }) => {
 			try {
 				openConnectModal();
 			} catch (err) {
-				console.log("Couldn't open connect modal", err);
+				console.log("Couldn't open connect modal", err); // eslint-disable-line no-console
 				// CODE: 135
+				sendLog(135, err);
 			}
 		}
 	};

@@ -1,4 +1,3 @@
-import InputDataDecoder from 'ethereum-input-data-decoder';
 import { ethers } from 'ethers';
 import { CaretDown, CaretUp } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
@@ -17,6 +16,7 @@ import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
 import { getAbi, getContractAddress } from 'src/utils/contracts';
 import { getCoinPrice } from 'src/utils/gasPrices';
+import { sendLog } from 'src/utils/logging';
 import { useContract, useFeeData, useProvider, useSigner } from 'wagmi';
 import CostComp from './components/CostComp';
 import InputBox from './components/InputBox';
@@ -164,7 +164,6 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 			} else {
 				switch (getABIType(collection.abi)) {
 					case 1: {
-						console.log(userAddress);
 						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
 							userAddress,
 							nft,
@@ -172,14 +171,9 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
 							}
 						);
-						const decoder = new InputDataDecoder(collection.abi);
-						const res = decoder.decodeData(buyTx.data);
-						console.log(buyTx.to, res, buyTx.value);
 						break;
 					}
 					case 2: {
-						console.log(userAddress);
-
 						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
 							nft,
 							userAddress,
@@ -187,19 +181,12 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
 							}
 						);
-						const decoder = new InputDataDecoder(collection.abi);
-						const res = decoder.decodeData(buyTx.data);
-						console.log(buyTx.to, res, buyTx.value);
 						break;
 					}
 					case 3: {
 						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](nft, {
 							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
 						});
-						const decoder = new InputDataDecoder(collection.abi);
-						const res = decoder.decodeData(buyTx.data);
-						console.log(buyTx.to, res, buyTx.value);
-
 						break;
 					}
 				}
@@ -252,6 +239,13 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 					},
 				})
 			);
+
+			console.log('Error in creating schmint'); // eslint-disable-line no-console
+
+			if (err?.code !== 'ACTION_REJECTED') {
+				// CODE: 141
+				sendLog(141, err, { collectionID: collection.id, numberOfNFTs: nft, gasPriceLimit });
+			}
 		}
 	};
 

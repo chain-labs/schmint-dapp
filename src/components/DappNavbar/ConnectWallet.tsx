@@ -6,7 +6,6 @@ import { useAccount, useEnsName } from 'wagmi';
 import Box from '../Box';
 import If from '../If';
 
-import PolygonSVG from 'src/../public/static/images/svgs/polygon.svg';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import theme from 'src/styleguide/theme';
 import Text from '../Text';
@@ -53,8 +52,7 @@ const ConnectWallet = ({ networkProps }) => {
 				const { data: ens } = useEnsName({
 					address: user.address,
 					onError: (err) => {
-						console.log({ err });
-						// CODE: 411
+						console.log("Error getting user's ENS name", err); // eslint-disable-line no-console
 					},
 				});
 
@@ -117,11 +115,28 @@ const ConnectWallet = ({ networkProps }) => {
 								<Box position="relative" height="2.4rem" width="2.4rem" center>
 									<If
 										condition={chain?.id === 1 || chain?.id === 5 || chain?.id === 4}
-										then={<Image src="/static/images/svgs/eth.svg" layout="fill" />}
+										then={
+											<Image
+												src="https://ik.imagekit.io/chainlabs/Schmint/eth_MhN722_5zH.svg"
+												layout="fill"
+											/>
+										}
 										else={
-											<Box color={chain?.id === 137 ? 'simply-white' : 'simply-purple'} center>
-												<PolygonSVG />
-											</Box>
+											<If
+												condition={chain?.id === 137}
+												then={
+													<Image
+														src="https://ik.imagekit.io/chainlabs/Schmint/polygon-white_3vl1XbwDI.svg"
+														layout="fill"
+													/>
+												}
+												else={
+													<Image
+														src="https://ik.imagekit.io/chainlabs/Schmint/polygon-color_NzzPwZ2jGX.svg"
+														layout="fill"
+													/>
+												}
+											/>
 										}
 									/>
 								</Box>

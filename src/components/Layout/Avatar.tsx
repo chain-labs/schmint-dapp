@@ -9,6 +9,7 @@ import { networkSelector } from 'src/redux/network';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
+import { sendLog } from 'src/utils/logging';
 import { useBalance } from 'wagmi';
 import Box from '../Box';
 import { condenseAddress } from '../DappNavbar/ConnectWallet';
@@ -28,8 +29,10 @@ const Avatar = () => {
 		watch: true,
 		enabled: network.isOnline,
 		onError: (error) => {
-			console.log('Error loading balance', error);
+			console.log('Error loading balance', error); // eslint-disable-line no-console
 			// CODE: 125
+
+			sendLog(125, error, { network: network.chainId });
 		},
 	});
 

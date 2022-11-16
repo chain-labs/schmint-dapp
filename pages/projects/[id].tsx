@@ -9,6 +9,7 @@ import { useAppSelector } from 'src/redux/hooks';
 import { networkSelector } from 'src/redux/network';
 import { userSelector } from 'src/redux/user';
 import { PROJECTS_DIR } from 'src/utils/constants';
+import { sendLog } from 'src/utils/logging';
 
 const ProjectPage = () => {
 	const router = useRouter();
@@ -35,15 +36,17 @@ const ProjectPage = () => {
 
 	useEffect(() => {
 		getCollection().catch((err) => {
-			console.log('Error getting All collections', err);
+			console.log('Error getting All collections', err); // eslint-disable-line no-console
 			// CODE: 130
+			sendLog(130, err, { projectId: id });
 		});
 	}, [id, collections]);
 
 	useEffect(() => {
 		getAllCollections().catch((err) => {
-			console.log('Error getting All collections', err);
+			console.log('Error getting All collections', err); // eslint-disable-line no-console
 			// CODE: 130
+			sendLog(130, err, { projectId: id });
 		});
 	}, []);
 
@@ -64,7 +67,7 @@ const ProjectPage = () => {
 			<Box pb="wl">
 				{collection ? <Projectpage collection={collection} /> : ''}
 				<If
-					condition={wrongNetwork && !collection.mintTimestampNotDecided}
+					condition={wrongNetwork && !collection?.mintTimestampNotDecided}
 					then={
 						<WrongNetworkAlert chainTo={collection?.network?.chainId} setWrongNetwork={setWrongNetwork} />
 					}

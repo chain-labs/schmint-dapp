@@ -8,6 +8,7 @@ import { CHECK_FAILED_SCHMINT } from 'src/graphql/query/CheckFailedSchmint';
 import { useAppSelector } from 'src/redux/hooks';
 import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
+import { sendLog } from 'src/utils/logging';
 import { getAllCollections } from '../Explore/projectsStore';
 import NoSchmintComponent from './NoSchmintComponent';
 import SchmintTile from './SchmintTile';
@@ -19,9 +20,10 @@ const SchmintsList = ({ page, schmints }) => {
 	const [completedSchmints, setCompletedSchmints] = useState([]);
 	const [getSuccesfulSchmints] = useLazyQuery(CHECK_FAILED_SCHMINT, {
 		onError: (error) => {
-			console.log('Error checking failed schmints', error);
+			console.log('Error checking failed schmints', error); // eslint-disable-line no-console
 
 			// CODE: 129
+			sendLog(129, error);
 		},
 	});
 	const user = useAppSelector(userSelector);
@@ -30,15 +32,17 @@ const SchmintsList = ({ page, schmints }) => {
 		getAllCollections()
 			.then((collection) => setCollections(collection))
 			.catch((err) => {
-				console.log('Error getting All collections', err);
+				console.log('Error getting All collections', err); // eslint-disable-line no-console
 				// CODE: 130
+				sendLog(130, err);
 			});
 		const interval = setInterval(() => {
 			getAllCollections()
 				.then((collection) => setCollections(collection))
 				.catch((err) => {
-					console.log('Error getting All collections', err);
+					console.log('Error getting All collections', err); // eslint-disable-line no-console
 					// CODE: 130
+					sendLog(130, err);
 				});
 		}, 10000);
 
@@ -57,14 +61,13 @@ const SchmintsList = ({ page, schmints }) => {
 		const FilteredActiveSchmints: any[] = schmints.filter(
 			(schmint) => !schmint.isSchminted && !schmint.isCancelled
 		);
-		const FilteredCompletedSchmints: any[] = schmints.filter((schmint, idx) => {
+		const FilteredCompletedSchmints: any[] = schmints.filter((schmint) => {
 			return schmint.isSchminted || schmint.isCancelled;
 		});
 		// console.log('completed schmint in getSchmitsAssigned', FilteredCompletedSchmints);
 		const targets = FilteredActiveSchmints.map((schmint) => schmint.target);
 		const data = await getSuccesfulSchmints({ variables: { target: targets, owner: user.address } });
 		3;
-		console.log('data after successful schmints', data);
 		for (let i = 0; i < data.data.schmints.length; i++) {
 			const s = data.data.schmints[i];
 			const idx = FilteredActiveSchmints.findIndex((a) => a.target === s.target);
@@ -112,8 +115,9 @@ const SchmintsList = ({ page, schmints }) => {
 	useEffect(() => {
 		if (schmints.length && collections.length) {
 			getSchmitsAssigned().catch((err) => {
-				console.log('Error getting schmints assigned', err);
+				console.log('Error getting schmints assigned', err); // eslint-disable-line no-console
 				// CODE: 131
+				sendLog(131, err);
 			});
 		}
 	}, [schmints, collections]);
@@ -174,7 +178,7 @@ const SchmintsList = ({ page, schmints }) => {
 									quantity = getSchmintQuantity(collection.abi, schmint.data);
 									// console.log('quantity', quantity);
 								} catch (e) {
-									console.log('err', e);
+									console.log('err', e); // eslint-disable-line no-console
 									throw e;
 								}
 								return (

@@ -6,6 +6,7 @@ import { networkSelector } from 'src/redux/network';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { userSelector } from 'src/redux/user';
 import { getAbi } from 'src/utils/contracts';
+import { sendLog } from 'src/utils/logging';
 
 const useScheduler = () => {
 	const user = useAppSelector(userSelector);
@@ -16,11 +17,18 @@ const useScheduler = () => {
 
 	useEffect(() => {
 		if (user.exists && scheduler.schedulerAddress) {
-			const SchedulerInstance = new ethers.Contract(
-				scheduler.schedulerAddress,
-				getAbi(network.isValid ? network?.chainId : 4, 'SCHEDULER')
-			);
-			setContract(SchedulerInstance);
+			try {
+				const SchedulerInstance = new ethers.Contract(
+					scheduler.schedulerAddress,
+					getAbi(network.isValid ? network?.chainId : 4, 'SCHEDULER')
+				);
+				setContract(SchedulerInstance);
+			} catch (err) {
+				console.log('Error generating Scheduler Instance'); // eslint-disable-line no-console
+
+				// CODE: 140
+				sendLog(140, err, { network: network.chainId });
+			}
 		} else {
 			setContract(null);
 		}

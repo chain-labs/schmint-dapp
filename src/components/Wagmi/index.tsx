@@ -1,7 +1,6 @@
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
 import { useAppSelector } from 'src/redux/hooks';
 import { userSelector } from 'src/redux/user';
 import React from 'react';
@@ -58,7 +57,7 @@ class ErrorBoundary extends React.Component<MyProps, MyState> {
 	}
 
 	componentDidCatch(error, errorInfo) {
-		console.log({ error, errorInfo });
+		console.log({ error, errorInfo }); // eslint-disable-line no-console
 	}
 
 	render() {

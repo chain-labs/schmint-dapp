@@ -15,6 +15,7 @@ import If from 'components/If';
 import 'styleguide/globalStyles.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { sendLog } from 'src/utils/logging';
 
 Router.onRouteChangeStart = () => {
 	NProgress.start();
@@ -31,7 +32,6 @@ const MyApp = ({ Component, pageProps }) => {
 	const queryClient = new QueryClient();
 
 	useEffect(() => {
-
 		// Set a custom CSS Property for Height
 		// See https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
 
@@ -48,22 +48,22 @@ const MyApp = ({ Component, pageProps }) => {
 			}, 150);
 
 			try {
-
 				window.addEventListener('resize', handleResize);
 			} catch (err) {
-				console.log('Error adding resize listener', err);
+				console.log('Error adding resize listener', err); // eslint-disable-line no-console
 
 				// CODE: 101
+				sendLog(101, err);
 			}
 			return () => {
 				if (typeof window !== 'undefined') {
 					try {
-
 						window.removeEventListener('resize', handleResize);
 					} catch (err) {
-						console.log('Error removing resize listener', err);
+						console.log('Error removing resize listener', err); // eslint-disable-line no-console
 
 						// CODE: 102
+						sendLog(102, err);
 					}
 				}
 			};

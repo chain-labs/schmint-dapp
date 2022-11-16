@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { SIMPLR_URL } from 'src/constants';
 import Box from 'components/Box';
 import Avatar from './Avatar';
 import MenuItems from './MenuItems';
@@ -24,6 +23,7 @@ import Link from 'next/link';
 import WrongNetworkAlert from 'src/containers/WrongNetworkAlert';
 import { TEST_ENV } from 'src/utils/constants';
 import React from 'react';
+import { sendLog } from 'src/utils/logging';
 
 const Layout = ({ children }) => {
 	const router = useRouter();
@@ -31,7 +31,7 @@ const Layout = ({ children }) => {
 	const [userHasScheduler, setUserHasScheduler] = useState(false);
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
 	const network = useAppSelector(networkSelector);
-	const { chains, chain } = useNetwork();
+	const { chains } = useNetwork();
 	const [showWrongNetworkAlert, setShowWrongNetworkAlert] = React.useState<boolean>(false);
 	const [loadScheduler, { called, loading }] = useLazyQuery(GET_USER_SCHEDULER, {
 		onCompleted: (data) => {
@@ -63,9 +63,10 @@ const Layout = ({ children }) => {
 		},
 		pollInterval: 8000,
 		onError: (error) => {
-			console.log("Error loading user's scheduler", error);
+			console.log("Error loading user's scheduler", error); // eslint-disable-line no-console
 
 			// CODE: 103
+			sendLog(103, error, { network: network.chainId, endpoint: network.subgraphUrl });
 		},
 	});
 	const dispatch = useAppDispatch();
@@ -101,9 +102,10 @@ const Layout = ({ children }) => {
 				);
 			});
 		} catch (err) {
-			console.log("Couldn't connect to ethereum", err);
+			console.log('Error handling chain change (metamask)', err); // eslint-disable-line no-console
 
 			// CODE: 104
+			sendLog(104, err);
 		}
 		dispatch(disconnect());
 

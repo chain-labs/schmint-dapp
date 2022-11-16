@@ -11,6 +11,7 @@ import { networkSelector } from 'src/redux/network';
 import { schedulerSelector } from 'src/redux/scheduler';
 import theme from 'src/styleguide/theme';
 import { getCoinPrice } from 'src/utils/gasPrices';
+import { sendLog } from 'src/utils/logging';
 import { useSigner } from 'wagmi';
 import Box from '../Box';
 import ButtonComp from '../Button';
@@ -83,7 +84,10 @@ const DepositModal = () => {
 		} catch (err) {
 			console.log('Error while Depositing Funds to Gnosis Safe', err); // eslint-disable-line no-console
 			dispatch(replaceModal({ type: MODALS_LIST.STATUS_MODAL, props: { success: false } }));
-			// CODE: 126
+			if (err?.code !== 'ACTION_REJECTED') {
+				// CODE: 126
+				sendLog(126, err);
+			}
 		}
 	};
 
