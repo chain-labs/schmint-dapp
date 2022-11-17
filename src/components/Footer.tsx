@@ -1,6 +1,8 @@
 import Image from 'next/image';
+import { Router, useRouter } from 'next/router';
 import { FOOTER_LINKS } from 'src/constants';
 import theme from 'src/styleguide/theme';
+import scrollIntoView from 'src/utils/scrollIntoView';
 import Box from './Box';
 import If from './If';
 import Text from './Text';
@@ -16,7 +18,7 @@ const Footer = () => {
 					{FOOTER_LINKS.map((link, idx) => (
 						<Box row key={`${link}-${idx}`} mt={{ mobS: 'wxs', tabS: '0' }}>
 							<If condition={idx > 0} then={<Box mr={{ tabS: 'wxs' }} />} />
-							<FooterLink title={link.title} url={link.url} />
+							<FooterLink title={link.title} url={link.url ? link.url : null} />
 						</Box>
 					))}
 				</Box>
@@ -41,7 +43,7 @@ interface FooterLinkProps {
 }
 const FooterLink = ({ title, url }: FooterLinkProps) => {
 	return (
-		<Box as="a" href={url} target="_blank">
+		<Box as="a" href={title === 'FAQ' ? '/#faqs' : url} target={title !== 'FAQ' ? '_blank' : '_self'}>
 			<Text
 				as="nav"
 				color="gray-50"
