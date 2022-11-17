@@ -20,6 +20,9 @@ export const FOOTER_LINKS = [
 		url: BLOGS_URL,
 	},
 	{
+		title: 'FAQ',
+	},
+	{
 		title: 'Twitter',
 		url: TWITTER_URL,
 	},
