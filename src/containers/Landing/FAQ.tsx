@@ -54,22 +54,7 @@ const FAQ = ({ q, a, last }) => {
 			<If
 				condition={expanded}
 				then={
-					<Box
-						css={`
-						animation-name: reset, fade-in;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: 5;
-    animation-delay: 0, 1s;    	
-						@keyframes reset {
-							0% { opacity: 0; }
-							100% { opacity: 0; }
-						}
-						@keyframes fade-in {
-							0% { opacity: 0; }
-							60% { opacity: 0; }
-							100% { opacity: 1; }
-						`}
-					>
+					<Box>
 						<Text as="b1" width={{ mobS: '33rem', tabS: '50.6rem', deskM: '66.4rem' }} color="gray-40">
 							{a.includes('[') ? getFAQLink(a) : a}
 						</Text>
