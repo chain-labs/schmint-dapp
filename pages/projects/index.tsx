@@ -10,6 +10,7 @@ import { networkSelector } from 'src/redux/network';
 import { userSelector } from 'src/redux/user';
 import { PROJECTS_DIR } from 'src/utils/constants';
 import { useNetwork } from 'wagmi';
+import { format } from 'url';
 
 const ProjectPage = () => {
 	const router = useRouter();
