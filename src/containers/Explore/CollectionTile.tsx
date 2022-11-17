@@ -45,7 +45,7 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 			`}
 			position="relative"
 			onClick={() => {
-				router.push(`/projects/${collection?.id}`);
+				router.push(`/projects?id=${collection?.id}`);
 			}}
 			cursor="pointer"
 		>
@@ -155,7 +155,7 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 				</Box>
 			</Box>
 			<Box column>
-				<Link href={`/projects/${collection?.id}`} passHref>
+				<Link href={`/projects?id=${collection?.id}`} passHref>
 					<CustomButtonComponent />
 				</Link>
 				<a href={collection.website_url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
