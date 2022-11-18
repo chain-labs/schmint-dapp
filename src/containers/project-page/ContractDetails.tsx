@@ -65,7 +65,7 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 									</ButtonComp>
 								</Link>
 								<a
-									href={`https://twitter.com/intent/tweet?text=I%20just%20schminted%20%40${projectTwitterHandle}%27s%20NFT%20using%20%40simplrhq%27s%20Schmint.%0AYou%20can%20schedule%20your%20mint%20on%20Schmint%3A%20https%3A//schmint.simplrhq.com/projects/${projectWebsiteUrl}%0A%23justSchmintIt%20%23NoMoreFomo`}
+									href={`https://twitter.com/intent/tweet?text=I%20just%20schminted%20%40${projectTwitterHandle}%27s%20NFT%20using%20%40simplrhq%27s%20Schmint.%0AYou%20can%20schedule%20your%20mint%20on%20Schmint%3A%20https%3A//schmint.simplrhq.com/projects/?id=${projectWebsiteUrl}%0A%23justSchmintIt%20%23NoMoreFomo`}
 									target="_blank"
 									rel="noreferrer"
 								>

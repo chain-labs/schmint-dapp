@@ -56,11 +56,11 @@ const FAQ = ({ q, a, last }) => {
 				then={
 					<Box
 						css={`
-						animation: rotateMenu 400ms ease-in-out forwards;
+						animation: rotateMenu 0.4s ease-in-out forwards;
 						transform-origin: top center;	
 						@keyframes rotateMenu {
 							0% {
-								transform: rotateX(-90deg)
+								transform: rotateX(+90deg)
 							}
 							70% {
 								transform: rotateX(20deg) 
