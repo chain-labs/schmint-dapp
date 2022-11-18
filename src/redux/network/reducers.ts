@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { TEST_ENV } from 'src/utils/constants';
+import { GOERLI_SUBGRAPH_ENDPOINT, TEST_ENV } from 'src/utils/constants';
 import { disconnect, setApolloClient, setNetwork } from './actions';
 import { NetworkState } from './types';
 
@@ -10,6 +10,7 @@ const initialState: NetworkState = {
 	name: '',
 	unit: '',
 	apolloClient: null,
+	subgraphUrl: GOERLI_SUBGRAPH_ENDPOINT,
 };
 
 export const networkReducer = createReducer(initialState, (builder) => {
@@ -27,15 +28,16 @@ export const networkReducer = createReducer(initialState, (builder) => {
 			return newState;
 		})
 		.addCase(setApolloClient, (state, action) => {
-			const { apolloClient } = action.payload;
+			const { apolloClient, subgraphUrl } = action.payload;
 			const newState = {
 				...state,
 				apolloClient,
+				subgraphUrl,
 			};
 			return newState;
 		})
-		.addCase(disconnect, () => {
-			return initialState;
+		.addCase(disconnect, (state) => {
+			return { ...initialState, subgraphUrl: state.subgraphUrl };
 		});
 });
 

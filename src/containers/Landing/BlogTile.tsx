@@ -1,7 +1,5 @@
-import Image from 'next/image';
 import Box from 'src/components/Box';
 import Text from 'src/components/Text';
-import { useEffect, useState } from 'react';
 
 export interface IBlog {
 	title: string;

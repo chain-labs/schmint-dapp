@@ -222,9 +222,11 @@ const ContractItem = ({ text, subText, network }: { text?: string; subText?: str
 					then={
 						<Box position="relative" height="1.6rem" width="1.6rem" ml="mxxs">
 							<Image
-								src={`/static/images/svgs/${
-									network === 'Ethereum' || network === 'Goerli' ? 'eth' : 'polygon-color'
-								}.svg`}
+								src={
+									network === 'Ethereum' || network === 'Goerli'
+										? 'https://ik.imagekit.io/chainlabs/Schmint/eth_MhN722_5zH.svg'
+										: 'https://ik.imagekit.io/chainlabs/Schmint/polygon-color_NzzPwZ2jGX.svg'
+								}
 								layout="fill"
 							/>
 						</Box>

@@ -7,4 +7,5 @@ export interface NetworkState {
 	name?: string;
 	unit?: string;
 	apolloClient?: ApolloClient<NormalizedCacheObject>;
+	subgraphUrl?: string;
 }

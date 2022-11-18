@@ -6,17 +6,17 @@ import ButtonComp from 'src/components/Button';
 import Loader from 'src/components/Loader';
 import Text from 'src/components/Text';
 import { useAppSelector } from 'src/redux/hooks';
+import { networkSelector } from 'src/redux/network';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
-import { useNetwork } from 'wagmi';
 import { getGnosisSafeUrl } from './utils';
 
 const MyAssetsComponent = () => {
-	const { chain } = useNetwork();
 	const user = useAppSelector(userSelector);
 	const scheduler = useAppSelector(schedulerSelector);
 	const [windowHeight, setWindowHeight] = useState(0);
+	const network = useAppSelector(networkSelector);
 
 	useEffect(() => {
 		setWindowHeight(window.innerHeight);
@@ -50,7 +50,7 @@ const MyAssetsComponent = () => {
 					<Box
 						as="a"
 						borderRadius="64px"
-						href={getGnosisSafeUrl(chain?.id, `${scheduler.avatar}`)}
+						href={getGnosisSafeUrl(network.chainId, `${scheduler.avatar}`)}
 						target="_blank"
 					>
 						<ButtonComp bg="primary" py="ms" px="mxl" borderRadius="64px" row center>

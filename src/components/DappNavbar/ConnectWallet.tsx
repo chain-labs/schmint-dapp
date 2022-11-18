@@ -6,7 +6,6 @@ import { useAccount, useEnsName } from 'wagmi';
 import Box from '../Box';
 import If from '../If';
 
-import PolygonSVG from 'src/../public/static/images/svgs/polygon.svg';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import theme from 'src/styleguide/theme';
 import Text from '../Text';
@@ -14,8 +13,7 @@ import ButtonComp from '../Button';
 import { hideModal, showModal } from 'src/redux/modal';
 import { MODALS_LIST } from 'src/redux/modal/types';
 import { checkIfUserInvited } from 'src/utils/whitelist';
-import { connect } from 'http2';
-import { disconnect, networkSelector, setNetwork } from 'src/redux/network';
+import { setNetwork } from 'src/redux/network';
 
 export const condenseAddress = (address) => {
 	if (!address) return null;
@@ -24,9 +22,8 @@ export const condenseAddress = (address) => {
 
 const ConnectWallet = ({ networkProps }) => {
 	const user = useAppSelector(userSelector);
-	const network = useAppSelector(networkSelector);
 	const dispatch = useAppDispatch();
-	const { address, isConnected, isDisconnected } = useAccount();
+	const { isDisconnected } = useAccount();
 
 	useEffect(() => {
 		if (user.exists) {
@@ -54,6 +51,9 @@ const ConnectWallet = ({ networkProps }) => {
 			{({ account, chain, openConnectModal, openChainModal, openAccountModal }) => {
 				const { data: ens } = useEnsName({
 					address: user.address,
+					onError: (err) => {
+						console.log("Error getting user's ENS name", err); // eslint-disable-line no-console
+					},
 				});
 
 				useEffect(() => {
@@ -70,7 +70,11 @@ const ConnectWallet = ({ networkProps }) => {
 					}
 				}, [account]);
 
-				const connected = user.exists;
+				useEffect(() => {
+					if (user.address) {
+						dispatch(setNetwork({ chainId: chain?.id, name: chain?.name }));
+					}
+				}, [user, chain?.id]);
 
 				if (!user.exists) {
 					return (
@@ -111,11 +115,28 @@ const ConnectWallet = ({ networkProps }) => {
 								<Box position="relative" height="2.4rem" width="2.4rem" center>
 									<If
 										condition={chain?.id === 1 || chain?.id === 5 || chain?.id === 4}
-										then={<Image src="/static/images/svgs/eth.svg" layout="fill" />}
+										then={
+											<Image
+												src="https://ik.imagekit.io/chainlabs/Schmint/eth_MhN722_5zH.svg"
+												layout="fill"
+											/>
+										}
 										else={
-											<Box color={chain?.id === 137 ? 'simply-white' : 'simply-purple'} center>
-												<PolygonSVG />
-											</Box>
+											<If
+												condition={chain?.id === 137}
+												then={
+													<Image
+														src="https://ik.imagekit.io/chainlabs/Schmint/polygon-white_3vl1XbwDI.svg"
+														layout="fill"
+													/>
+												}
+												else={
+													<Image
+														src="https://ik.imagekit.io/chainlabs/Schmint/polygon-color_NzzPwZ2jGX.svg"
+														layout="fill"
+													/>
+												}
+											/>
 										}
 									/>
 								</Box>

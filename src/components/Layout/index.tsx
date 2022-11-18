@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { SIMPLR_URL } from 'src/constants';
 import Box from 'components/Box';
 import Avatar from './Avatar';
 import MenuItems from './MenuItems';
@@ -16,7 +15,7 @@ import { setScheduler } from 'src/redux/scheduler';
 import If from 'components/If';
 import { GET_USER_SCHEDULER } from 'src/graphql/query/GetUserScheduler';
 import Footer from '../Footer';
-import { networkSelector, setNetwork } from 'src/redux/network';
+import { disconnect, networkSelector, setNetwork } from 'src/redux/network';
 import { useNetwork } from 'wagmi';
 import Text from '../Text';
 import ButtonComp from '../Button';
@@ -24,6 +23,7 @@ import Link from 'next/link';
 import WrongNetworkAlert from 'src/containers/WrongNetworkAlert';
 import { TEST_ENV } from 'src/utils/constants';
 import React from 'react';
+import { sendLog } from 'src/utils/logging';
 
 const Layout = ({ children }) => {
 	const router = useRouter();
@@ -31,7 +31,7 @@ const Layout = ({ children }) => {
 	const [userHasScheduler, setUserHasScheduler] = useState(false);
 	const isHome = router.pathname === '/' || router.pathname === '/learn-more';
 	const network = useAppSelector(networkSelector);
-	const { chains, chain } = useNetwork();
+	const { chains } = useNetwork();
 	const [showWrongNetworkAlert, setShowWrongNetworkAlert] = React.useState<boolean>(false);
 	const [loadScheduler, { called, loading }] = useLazyQuery(GET_USER_SCHEDULER, {
 		onCompleted: (data) => {
@@ -62,6 +62,12 @@ const Layout = ({ children }) => {
 			}
 		},
 		pollInterval: 8000,
+		onError: (error) => {
+			console.log("Error loading user's scheduler", error); // eslint-disable-line no-console
+
+			// CODE: 103
+			sendLog(103, error, { network: network.chainId, endpoint: network.subgraphUrl });
+		},
 	});
 	const dispatch = useAppDispatch();
 
@@ -85,15 +91,23 @@ const Layout = ({ children }) => {
 			setWindowHeight(window.innerHeight);
 		};
 		window.addEventListener('resize', resize);
-		window?.ethereum?.on('chainChanged', (chain) => {
-			const name = chains.find((c) => c.id === parseInt(chain))?.name;
-			dispatch(
-				setNetwork({
-					chainId: parseInt(chain),
-					name: name ?? '',
-				})
-			);
-		});
+		try {
+			window?.ethereum?.on('chainChanged', (chain) => {
+				const name = chains.find((c) => c.id === parseInt(chain))?.name;
+				dispatch(
+					setNetwork({
+						chainId: parseInt(chain),
+						name: name ?? '',
+					})
+				);
+			});
+		} catch (err) {
+			console.log('Error handling chain change (metamask)', err); // eslint-disable-line no-console
+
+			// CODE: 104
+			sendLog(104, err);
+		}
+		dispatch(disconnect());
 
 		return () => {
 			window.removeEventListener('resize', resize);
@@ -109,12 +123,6 @@ const Layout = ({ children }) => {
 			});
 		}
 	}, [user.address, network.apolloClient]);
-
-	useEffect(() => {
-		if (chain?.id) {
-			dispatch(setNetwork({ chainId: chain?.id, name: chain?.name }));
-		}
-	}, [chain]);
 
 	const getSidebarHeight = () => {
 		const height = windowHeight;

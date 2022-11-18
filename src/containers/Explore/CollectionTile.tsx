@@ -13,17 +13,31 @@ import { GET_PROJECT_SCHMINTS } from 'src/graphql/query/GetProjectSchmints';
 import theme from 'src/styleguide/theme';
 import { ICollection } from './projectsStore';
 import { chains } from 'src/utils/chains';
+import { sendLog } from 'src/utils/logging';
 
 const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollection }) => {
 	const { loading, data: schmintsList } = useQuery(GET_PROJECT_SCHMINTS, {
 		variables: { target: collection.contractAddress },
+		onError: (err) => {
+			console.log('Error fetching Project schmints', err); // eslint-disable-line no-console
+
+			// CODE: 123
+			sendLog(123, err, { collectionId: collection.id });
+		},
 	});
 	const router = useRouter();
 	const [unit, setUnit] = useState('');
 	useEffect(() => {
 		if (collection?.network?.chainId) {
-			const idx = chains.findIndex((c) => c.chainId === collection?.network?.chainId);
-			setUnit(chains?.[idx]?.nativeCurrency.symbol);
+			try {
+				const idx = chains.findIndex((c) => c.chainId === collection?.network?.chainId);
+				setUnit(chains?.[idx]?.nativeCurrency.symbol);
+			} catch (err) {
+				console.log('Error setting unit', err); // eslint-disable-line no-console
+
+				// CODE: 124
+				sendLog(124, err, { collectionNetwork: collection?.network?.chainId });
+			}
 		}
 	}, [collection]);
 
@@ -110,12 +124,12 @@ const CollectionTile = ({ idx, collection }: { idx: number; collection: ICollect
 							then={
 								<Box position="relative" height="1.6rem" width="1.6rem" ml="mxxs">
 									<Image
-										src={`/static/images/svgs/${
+										src={
 											collection.network.name === 'Ethereum' ||
 											collection.network.name === 'Goerli'
-												? 'eth'
-												: 'polygon-color'
-										}.svg`}
+												? 'https://ik.imagekit.io/chainlabs/Schmint/eth_MhN722_5zH.svg'
+												: 'https://ik.imagekit.io/chainlabs/Schmint/polygon-color_NzzPwZ2jGX.svg'
+										}
 										layout="fill"
 									/>
 								</Box>

@@ -23,9 +23,6 @@ const SchmintReceipt = ({ quantity, schmint, status, network, collection }) => {
 	const [transferToAccount, setTransferToAccount] = useState('');
 
 	useEffect(() => {
-		console.log(network);
-		console.log(explorer(network?.chainId));
-
 		if (status === '1') {
 			provider.getTransactionReceipt(schmint.executionTrxHash).then((receipt) => {
 				const gasUsed = receipt?.gasUsed;
