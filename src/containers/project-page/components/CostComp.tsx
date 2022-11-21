@@ -6,10 +6,11 @@ import Box from 'src/components/Box';
 import If from 'src/components/If';
 import Text from 'src/components/Text';
 import { useAppSelector } from 'src/redux/hooks';
+import { networkSelector } from 'src/redux/network';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
-import { useBalance, useNetwork } from 'wagmi';
+import { useBalance } from 'wagmi';
 import { ESTIMATED_GAS_COST_TOOLTIP } from './copy-constants';
 
 interface props {
@@ -38,11 +39,12 @@ const CostComp = ({
 }: props) => {
 	const scheduler = useAppSelector(schedulerSelector);
 	const user = useAppSelector(userSelector);
-	const { chain } = useNetwork();
+	const network = useAppSelector(networkSelector);
 	const { data: balance, isLoading } = useBalance({
 		addressOrName: scheduler.avatar,
-		chainId: chain?.id,
+		chainId: network.chainId,
 		watch: true,
+		enabled: network.isOnline,
 	});
 
 	useEffect(() => {
@@ -70,21 +72,15 @@ const CostComp = ({
 				<CostItem
 					text={`NFT x${nft}`}
 					subText={parseFloat((collection?.price * nft).toFixed(4))}
-					unit={chain?.nativeCurrency.symbol}
+					unit={network.unit}
 					width="100%"
 				/>
-				<CostItem
-					text="Schmint Fees"
-					subText={estimatedGas}
-					unit={chain?.nativeCurrency.symbol}
-					width="100%"
-					strikeThrough
-				/>
+				<CostItem text="Schmint Fees" subText={estimatedGas} unit={network.unit} width="100%" strikeThrough />
 				<CostItem
 					text="Funds to cover your transaction"
 					tooltip={ESTIMATED_GAS_COST_TOOLTIP}
 					subText={estimatedGas}
-					unit={chain?.nativeCurrency.symbol}
+					unit={network.unit}
 					width="100%"
 				/>
 			</Box>
@@ -98,7 +94,7 @@ const CostComp = ({
 								<CostItem
 									text="Amount Already Added:"
 									subText={value * -1}
-									unit={chain?.nativeCurrency.symbol}
+									unit={network.unit}
 									width="60%"
 									textColor="blue-40"
 									fontSize="b2"
@@ -111,7 +107,7 @@ const CostComp = ({
 								parseFloat((collection?.price * nft + estimatedGas - value).toFixed(4)),
 								0
 							)}
-							unit={chain?.nativeCurrency.symbol}
+							unit={network.unit}
 							width="60%"
 							textColor="blue-40"
 							fontSize="b2"
@@ -122,7 +118,7 @@ const CostComp = ({
 								<CostItem
 									text="Gnosis Safe Balance:"
 									subText={parseFloat(parseFloat(balance?.formatted).toFixed(4))}
-									unit={chain?.nativeCurrency.symbol}
+									unit={network.unit}
 									width="60%"
 									textColor="blue-40"
 									fontSize="b2"

@@ -18,6 +18,7 @@ import { getCoinPrice } from 'src/utils/gasPrices';
 import { replaceModal, showModal } from 'src/redux/modal';
 import { MODALS_LIST } from 'src/redux/modal/types';
 import CounterInput from 'src/components/CounterInput';
+import { sendLog } from 'src/utils/logging';
 
 const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, disabled }) => {
 	const [showOptions, setShowOptions] = useState(false);
@@ -29,8 +30,6 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 	const [txPrice, setTxPrice] = useState<string>('');
 	const [step, setStep] = useState(0);
 	const [saveDisabled, setSaveDisabled] = useState(true);
-	// const [deleteschmint, setDeleteschmint] = useState<boolean>(false);
-	let deleteschmint;
 
 	const { data: signer } = useSigner();
 	const provider = useProvider();
@@ -200,7 +199,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 				);
 			}
 		} catch (err) {
-			console.log({ err }); // eslint-disable-line no-console
+			console.log({ msg: 'Error while editing Schmint', err }); // eslint-disable-line no-console
 
 			dispatch(
 				replaceModal({
@@ -210,6 +209,11 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 					},
 				})
 			);
+
+			if (err?.code !== 'ACTION_REJECTED') {
+				// CODE: 143
+				sendLog(143, err, { schmintId: schmint.schmintid, numberOfNFTs: nft });
+			}
 		}
 	};
 
@@ -297,34 +301,6 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 				},
 			})
 		);
-		if (deleteschmint) {
-			dispatch(replaceModal({ type: MODALS_LIST.CONFIRM_TRANSACTION, props: {} }));
-
-			try {
-				const tx = await SchedulerInstance?.connect(signer)?.cancelSchmint(schmint.schmintId);
-				const receipt = await tx?.wait();
-
-				const event = receipt?.events && receipt.events.filter((event) => event.event === 'SchmintCreated');
-				if (!event) {
-					console.log('no event found'); // eslint-disable-line no-console
-					return;
-				} else {
-					console.log({ event }); // eslint-disable-line no-console
-					dispatch(
-						replaceModal({
-							type: MODALS_LIST.STATUS_MODAL,
-							props: {
-								success: true,
-								msg: 'Your Schmint for Abstract 3D was successfully deleted.',
-								btnText: 'Go Back to My Schmint',
-							},
-						})
-					);
-				}
-			} catch (err) {
-				console.log(err); // eslint-disable-line no-console
-			}
-		}
 	};
 
 	return (

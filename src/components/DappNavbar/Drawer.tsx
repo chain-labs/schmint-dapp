@@ -5,6 +5,7 @@ import theme from 'src/styleguide/theme';
 import { FAQ_URL, DOCS_URL } from 'src/utils/constants';
 import Box from 'components/Box';
 import Text from 'components/Text';
+import { sendLog } from 'src/utils/logging';
 
 const Drawer = ({ drawerOpen, setDrawerOpen }) => {
 	const [expandable] = useState(false);
@@ -13,26 +14,40 @@ const Drawer = ({ drawerOpen, setDrawerOpen }) => {
 	const drawerControls = useAnimationControls();
 
 	useEffect(() => {
-		if (drawerOpen) {
-			drawerControls.start('open');
-		} else {
-			drawerControls.start('closed');
-		}
+		try {
+			if (drawerOpen) {
+				drawerControls.start('open');
+			} else {
+				drawerControls.start('closed');
+			}
 
-		return () => {
-			drawerControls.stop();
-		};
+			return () => {
+				drawerControls.stop();
+			};
+		} catch (err) {
+			console.log('Error in drawer animation', err); // eslint-disable-line no-console
+
+			// CODE: 137
+			sendLog(137, err);
+		}
 	}, [drawerOpen]);
 
 	useEffect(() => {
-		if (expandable) {
-			controls.start('open');
-		} else {
-			controls.start('closed');
+		try {
+			if (expandable) {
+				controls.start('open');
+			} else {
+				controls.start('closed');
+			}
+			return () => {
+				controls.stop();
+			};
+		} catch (err) {
+			console.log('Error in Expandable animation', err); // eslint-disable-line no-console
+
+			// CODE: 136
+			sendLog(136, err);
 		}
-		return () => {
-			controls.stop();
-		};
 	}, [expandable]);
 
 	return (

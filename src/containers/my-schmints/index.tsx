@@ -6,10 +6,11 @@ import If from 'src/components/If';
 import Text from 'src/components/Text';
 import GET_MY_SCHMINTS from 'src/graphql/query/GetMySchmints';
 import { useAppSelector } from 'src/redux/hooks';
+import { networkSelector } from 'src/redux/network';
 import { schedulerSelector } from 'src/redux/scheduler';
 import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
-import { useNetwork } from 'wagmi';
+import { sendLog } from 'src/utils/logging';
 import NoSchmintComponent from './NoSchmintComponent';
 import SchmintsList from './SchmintsList';
 
@@ -18,13 +19,19 @@ const MySchmintComponent = () => {
 	const [schmints, setSchmints] = useState([]);
 	const [getSchmints, { refetch: getSchmintsAgain }] = useLazyQuery(GET_MY_SCHMINTS, {
 		onCompleted: ({ schmints }) => {
-			console.log('schmints from graphql', schmints);
+			console.log('schmints from graphql', schmints); // eslint-disable-line no-console
 			setSchmints(schmints);
+		},
+		onError: (error) => {
+			console.log("Error loading user's schmints", error); // eslint-disable-line no-console
+
+			// CODE: 127
+			sendLog(127, error);
 		},
 	});
 	const user = useAppSelector(userSelector);
 	const scheduler = useAppSelector(schedulerSelector);
-	const { chain } = useNetwork();
+	const network = useAppSelector(networkSelector);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -52,7 +59,7 @@ const MySchmintComponent = () => {
 		return () => {
 			clearInterval(interval);
 		};
-	}, [user.address, chain]);
+	}, [user.address, network.chainId]);
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
@@ -64,9 +71,16 @@ const MySchmintComponent = () => {
 	}, []);
 
 	const handleClick = (page) => {
-		setPage(page);
-		if (typeof window !== 'undefined') {
-			window.sessionStorage.setItem('page', page ? '1' : '0');
+		try {
+			setPage(page);
+			if (typeof window !== 'undefined') {
+				window.sessionStorage.setItem('page', page ? '1' : '0');
+			}
+		} catch (err) {
+			console.log('Error setting page', err); // eslint-disable-line no-console
+
+			// CODE: 128
+			sendLog(128, err, { typeOfWindow: typeof window });
 		}
 	};
 

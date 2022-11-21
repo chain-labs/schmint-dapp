@@ -7,6 +7,7 @@ import Box from 'src/components/Box';
 import If from 'src/components/If';
 import Text from 'src/components/Text';
 import theme from 'src/styleguide/theme';
+import { sendLog } from 'src/utils/logging';
 import { useProvider } from 'wagmi';
 import { ICollection } from '../Explore/projectsStore';
 import TileBadge from './TileBadge';
@@ -52,24 +53,36 @@ const SchmintTile = ({
 
 	useEffect(() => {
 		if (isSchminted) {
-			getTotalGasCost(executionTrxHash, gasPrice).then((totalGasCost) => {
-				setTotalTransactionCost(totalGasCost);
-			});
+			getTotalGasCost(executionTrxHash, gasPrice)
+				.then((totalGasCost) => {
+					setTotalTransactionCost(totalGasCost);
+				})
+				.catch((err) => {
+					console.log('Error getting total gas cost', err); // eslint-disable-line no-console
+					// CODE: 132
+					sendLog(132, err);
+				});
 		}
 	}, [executionTrxHash, gasPrice]);
 
 	useEffect(() => {
-		if (!completed) {
-			const currentPrice = collection?.price;
-			const txPrice = parseFloat(value) / quantity;
-			if (currentPrice !== txPrice) {
-				setActionRequired(true);
-			} else setActionRequired(false);
+		try {
+			if (!completed) {
+				const currentPrice = collection?.price;
+				const txPrice = parseFloat(value) / quantity;
+				if (currentPrice !== txPrice) {
+					setActionRequired(true);
+				} else setActionRequired(false);
+			}
+		} catch (err) {
+			console.log('Error checking if action required', err); // eslint-disable-line no-console
+			// CODE: 133
+			sendLog(133, err, { schmintID });
 		}
 	}, [collection, quantity, value, completed]);
 
 	return (
-		<Link href={`/schmints/${schmintID}`} passHref>
+		<Link href={`/schmints?id=${schmintID}`} passHref>
 			<Box
 				p="ms"
 				borderRadius="8px"
@@ -147,9 +160,11 @@ const PriceRows = ({ text, networkName, value }) => {
 					then={
 						<Box position="relative" height="1.6rem" width="1.6rem" ml="mxxs">
 							<Image
-								src={`/static/images/svgs/${
-									networkName === 'Ethereum' || networkName === 'Goerli' ? 'eth' : 'polygon-color'
-								}.svg`}
+								src={
+									networkName === 'Ethereum' || networkName === 'Goerli'
+										? 'https://ik.imagekit.io/chainlabs/Schmint/eth_MhN722_5zH.svg'
+										: 'https://ik.imagekit.io/chainlabs/Schmint/polygon-color_NzzPwZ2jGX.svg'
+								}
 								layout="fill"
 							/>
 						</Box>

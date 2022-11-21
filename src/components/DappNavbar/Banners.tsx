@@ -1,35 +1,46 @@
 import { GasPump } from 'phosphor-react';
 import { useEffect, useState } from 'react';
 import theme from 'src/styleguide/theme';
-import { getCoinPrice, getGasPrice, getGasSource } from 'src/utils/gasPrices';
+import { getCoinPrice, getGasSource } from 'src/utils/gasPrices';
 import { getNavProps } from 'src/utils/navbarUtils';
-import { useFeeData, useNetwork } from 'wagmi';
+import { useFeeData } from 'wagmi';
 import Box from 'components/Box';
 import Text from 'components/Text';
+import { useAppSelector } from 'src/redux/hooks';
+import { networkSelector } from 'src/redux/network';
+import { sendLog } from 'src/utils/logging';
 
 const Banners = ({ setNetworkProps, networkProps }) => {
-	const [gasPrice, setGasPrice] = useState('');
 	const [coinPrice, setCoinPrice] = useState('');
-	const { chain } = useNetwork();
+	const network = useAppSelector(networkSelector);
 	const feeData = useFeeData({
-		chainId: chain?.id,
+		chainId: network.chainId,
 		formatUnits: 'gwei',
 		watch: true,
+		onError: (error) => {
+			console.log('Error fetching feeData', error); // eslint-disable-line no-console
+			// CODE: 110
+			sendLog(110, error, { network: network.chainId });
+		},
+		enabled: network.isOnline,
 	});
 
 	useEffect(() => {
 		const fetch = () => {
-			getGasPrice(chain?.id).then((price) => {
-				setGasPrice(price);
-			});
-			getCoinPrice(chain?.id).then((price) => {
-				setCoinPrice(price);
-			});
+			getCoinPrice(network.chainId)
+				.then((price) => {
+					setCoinPrice(price);
+				})
+				.catch((err) => {
+					console.log('Error fetching coin price', err); // eslint-disable-line no-console
+					// CODE: 111
+					sendLog(111, err, { network: network.chainId });
+				});
 		};
 
-		if (chain?.id) {
+		if (network.chainId) {
 			fetch();
-			setNetworkProps(getNavProps(chain?.id));
+			setNetworkProps(getNavProps(network.chainId));
 			const timer = setInterval(() => {
 				fetch();
 			}, 10000);
@@ -37,7 +48,7 @@ const Banners = ({ setNetworkProps, networkProps }) => {
 				clearInterval(timer);
 			};
 		}
-	}, [chain]);
+	}, [network.chainId]);
 	return (
 		<Box
 			py="mxxs"
@@ -74,15 +85,15 @@ const Banners = ({ setNetworkProps, networkProps }) => {
 				>
 					{networkProps?.bannerText}
 				</Text>
-				<Box center opacity={gasPrice && coinPrice ? '1' : '0'} zIndex={2}>
+				<Box center opacity={feeData && coinPrice ? '1' : '0'} zIndex={2}>
 					<GasPump color={theme.colors['simply-blue']} size={16} weight="fill" />
 					<Text
 						as="c1"
 						ml="mxs"
-						data-tip={`Source: ${getGasSource(chain?.id)}`}
+						data-tip={`Source: ${getGasSource(network?.chainId)}`}
 						data-offset="{'left': 10, 'top': 2}"
 					>
-						{`${parseFloat(feeData?.data?.formatted.gasPrice).toFixed(0)} Gwei`}
+						{`${parseFloat(feeData?.data?.formatted?.gasPrice).toFixed(0)} Gwei`}
 					</Text>
 					<Box width="1px" bg="simply-black" height="1.2rem" mx="ms" />
 					<Text as="c1" color="simply-blue" mr="mxxs">

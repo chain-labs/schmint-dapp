@@ -124,6 +124,9 @@ const CounterInput = ({ label, bg, helper, max, min, errorText, value, setValue,
 							? () => setValue(parseInt(value))
 							: () => setValue(parseInt(value) + 1)
 					}
+					css={`
+						-webkit-user-select: none;
+					`}
 				>
 					<Plus
 						color={theme.colors[parseInt(value) === max || disabled ? 'disabled-black' : 'blue-40']}
@@ -131,9 +134,11 @@ const CounterInput = ({ label, bg, helper, max, min, errorText, value, setValue,
 					/>
 				</Box>
 			</Box>
-			<Text as="b3" color="gray-50" mt="mxs">
-				{helper}
-			</Text>
+			<Box>
+				<Text as="b3" color="gray-50" mt="mxs">
+					{helper}
+				</Text>
+			</Box>
 			<If
 				condition={errorState}
 				then={

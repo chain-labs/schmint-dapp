@@ -4,7 +4,7 @@ export const FAQs = [
 		a: 'Schmint is an automation platform that allows you (NFT collectors) to pre-order NFT mints and relax. It gives you an unfair advantage over others.',
 	},
 	{
-		q: 'What does Schmint means?',
+		q: 'What does schmint mean?',
 		a: 'Schedule + Mint = Schmint. Schmint is a mint scheduled for future.',
 	},
 	{

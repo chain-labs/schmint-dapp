@@ -23,9 +23,6 @@ const SchmintReceipt = ({ quantity, schmint, status, network, collection }) => {
 	const [transferToAccount, setTransferToAccount] = useState('');
 
 	useEffect(() => {
-		console.log(network);
-		console.log(explorer(network?.chainId));
-
 		if (status === '1') {
 			provider.getTransactionReceipt(schmint.executionTrxHash).then((receipt) => {
 				const gasUsed = receipt?.gasUsed;
@@ -82,44 +79,55 @@ const SchmintReceipt = ({ quantity, schmint, status, network, collection }) => {
 				/>
 				<Box row between mb="mm">
 					<Text as="b2">Transferred to</Text>
-					<Text
-						as="b2"
-						px="16px"
-						py="4px"
-						backgroundColor="blue-20"
-						borderRadius="33px"
-						color="blue-40"
-						cursor="pointer"
-						onClick={() => {
-							navigator.clipboard?.writeText(schmint.target);
-							setTransferToAccount('Copied!');
-							setTimeout(() => {
-								setTransferToAccount(condenseAddress(address));
-							}, 1000);
-						}}
-					>
-						{transferToAccount}
-					</Text>
+					<If
+						condition={status === '1'}
+						then={
+							<Text
+								as="b2"
+								px="16px"
+								py="4px"
+								backgroundColor="blue-20"
+								borderRadius="33px"
+								color="blue-40"
+								cursor="pointer"
+								onClick={() => {
+									navigator.clipboard?.writeText(schmint.target);
+									setTransferToAccount('Copied!');
+									setTimeout(() => {
+										setTransferToAccount(condenseAddress(address));
+									}, 1000);
+								}}
+							>
+								{transferToAccount}
+							</Text>
+						}
+						else={<Text as="b2">N/A</Text>}
+					/>
 				</Box>
 			</Box>
-			<Box
-				as="a"
-				target="_blank"
-				row
-				alignItems="center"
-				color="blue-40"
-				cursor="pointer"
-				href={`${blockExplorer(network?.chainId)}/tx/${schmint?.executionTrxHash}`}
-			>
-				{network ? (
-					<Text as="b3" color="blue-40">
-						View on {explorer(network?.chainId)}
-					</Text>
-				) : (
-					''
-				)}
-				<ArrowUpRight size={16} color="#4743C5" />{' '}
-			</Box>
+			<If
+				condition={status === '1'}
+				then={
+					<Box
+						as="a"
+						target="_blank"
+						row
+						alignItems="center"
+						color="blue-40"
+						cursor="pointer"
+						href={`${blockExplorer(network?.chainId)}/tx/${schmint?.executionTrxHash}`}
+					>
+						{network ? (
+							<Text as="b3" color="blue-40">
+								View on {explorer(network?.chainId)}
+							</Text>
+						) : (
+							''
+						)}
+						<ArrowUpRight size={16} color="#4743C5" />{' '}
+					</Box>
+				}
+			/>
 		</Box>
 	);
 };

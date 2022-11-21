@@ -41,9 +41,9 @@ const AlertBox = ({ status, schmint, currPrice, prevPrice, network, reciever }) 
 					<Box>
 						<Text as="b2">Collection Price Changed</Text>
 						<Text as="b3" mt="mxxs">
-							The price of this NFT collection was changed from {prevPrice} {chain?.nativeCurrency.symbol}{' '}
-							to {currPrice} {chain?.nativeCurrency.symbol} per NFT. We have updated the schmint details
-							accordingly but require your consent before applying them.{' '}
+							The price of this NFT collection was changed from {prevPrice} {network.unit} to {currPrice}{' '}
+							{network.unit} per NFT. We have updated the schmint details accordingly but require your
+							consent before applying them.{' '}
 						</Text>
 						<Text as="b3" mt="mxxs">
 							Not applying the changes might cause the schmint to fail.{' '}

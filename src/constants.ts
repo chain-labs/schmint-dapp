@@ -13,11 +13,15 @@ export const WAITLIST_ID = process.env.NEXT_PUBLIC_WAITLIST_ID;
 export const DISCORD_INVITE = process.env.NEXT_PUBLIC_DISCORD_INVITE;
 export const DISCLAIMER_URL = 'https://chain-labs.github.io/schmint-projects/disclaimer.html';
 export const BLOGS_API_URL = 'https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@simplrhq';
+export const LOGGER_URL = process.env.NEXT_PUBLIC_LOGGER_URL;
 
 export const FOOTER_LINKS = [
 	{
 		title: 'Blogs',
 		url: BLOGS_URL,
+	},
+	{
+		title: 'FAQ',
 	},
 	{
 		title: 'Twitter',

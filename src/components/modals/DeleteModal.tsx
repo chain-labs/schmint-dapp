@@ -11,6 +11,7 @@ import { MODALS_LIST } from 'src/redux/modal/types';
 import { useFeeData, useNetwork, useSigner } from 'wagmi';
 import { ethers } from 'ethers';
 import { getCoinPrice } from 'src/utils/gasPrices';
+import { sendLog } from 'src/utils/logging';
 
 const DeleteModal = ({ schmint, collectionName }) => {
 	const dispatch = useAppDispatch();
@@ -78,8 +79,14 @@ const DeleteModal = ({ schmint, collectionName }) => {
 				);
 			}
 		} catch (err) {
-			console.log(err); // eslint-disable-line no-console
+			console.log('Error deleting Schmint'); // eslint-disable-line no-console
+			console.log({ err }); // eslint-disable-line no-console
 			dispatch(replaceModal({ type: MODALS_LIST.STATUS_MODAL, props: { success: false } }));
+
+			if (err?.code !== 'ACTION_REJECTED') {
+				// CODE: 144
+				sendLog(144, err, { schmintId: schmint.schmintid });
+			}
 		}
 	};
 
