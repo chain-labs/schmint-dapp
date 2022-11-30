@@ -24,7 +24,7 @@ const illustration = 'https://ik.imagekit.io/chainlabs/Schmint/pablo-list-is-emp
 
 const Schmint = () => {
 	const router = useRouter();
-	const { id } = router.query;
+	const { id, c: chain } = router.query;
 	const [collections, setCollections] = useState([]);
 	const [collection, setCollection] = useState<ICollection>();
 	const user = useAppSelector(userSelector);

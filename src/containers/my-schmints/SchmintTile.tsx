@@ -82,7 +82,7 @@ const SchmintTile = ({
 	}, [collection, quantity, value, completed]);
 
 	return (
-		<Link href={`/schmints?id=${schmintID}`} passHref>
+		<Link href={`/schmints?cid=${collection.network.chainId}&id=${schmintID}`} passHref>
 			<Box
 				p="ms"
 				borderRadius="8px"
