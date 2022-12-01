@@ -40,14 +40,17 @@ const SchmintTile = ({
 }: SchmintTileProps) => {
 	const [actionRequired, setActionRequired] = useState(false);
 	const [totalTransactionCost, setTotalTransactionCost] = useState('');
-	const provider = useProvider();
+	const provider = useProvider({
+		chainId: collection.network.chainId,
+	});
 
 	const getTotalGasCost = async (trxHash, gasPrice) => {
 		const receipt = await provider.getTransactionReceipt(trxHash);
-		const gasUsed = receipt.gasUsed;
-		const totalGasCost = (parseFloat(ethers.utils.formatEther(gasUsed.mul(gasPrice))) + parseFloat(value)).toFixed(
+		const gasUsed = receipt?.gasUsed;
+		const totalGasCost = (parseFloat(ethers.utils.formatEther(gasUsed?.mul(gasPrice))) + parseFloat(value)).toFixed(
 			4
 		);
+
 		return totalGasCost;
 	};
 
