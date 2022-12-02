@@ -285,7 +285,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 	};
 
 	useEffect(() => {
-		if (user.exists) {
+		if (user.exists && editable) {
 			getEstimatedGas();
 		}
 	}, [nft, gasPriceLimit, funds, user, gasFee]);
