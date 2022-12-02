@@ -20,7 +20,7 @@ export const getEndpoint = (chainId) => {
 				return MUMBAI_SUBGRAPH_ENDPOINT;
 
 			default:
-				return GOERLI_SUBGRAPH_ENDPOINT;
+				return '';
 		}
 	} else {
 		switch (chainId) {

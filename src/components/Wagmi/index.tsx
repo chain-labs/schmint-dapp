@@ -10,7 +10,7 @@ export const ALCHEMY_API = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 const Wagmi = ({ children }) => {
 	const user = useAppSelector(userSelector);
 	const { chains, provider } = configureChains(
-		[chain.mainnet, chain.rinkeby, chain.polygonMumbai, chain.polygon, chain.goerli],
+		[chain.mainnet, chain.polygonMumbai, chain.polygon, chain.goerli],
 		[alchemyProvider({ apiKey: ALCHEMY_API, priority: 0 })]
 	);
 
