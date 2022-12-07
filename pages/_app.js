@@ -77,7 +77,7 @@ const MyApp = ({ Component, pageProps }) => {
 	}, []);
 
 	useEffect(() => {
-		console.log({ hostname });
+		console.log({ hostname, prod: process.env.NODE_ENV });
 	}, [hostname]);
 
 	return (
