@@ -76,6 +76,10 @@ const MyApp = ({ Component, pageProps }) => {
 		}
 	}, []);
 
+	useEffect(() => {
+		console.log({ hostname });
+	}, [hostname]);
+
 	return (
 		<>
 			<Head>
