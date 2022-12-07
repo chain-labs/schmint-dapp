@@ -64,10 +64,11 @@ const SchmintsList = ({ page, schmints }) => {
 		const FilteredCompletedSchmints: any[] = schmints.filter((schmint) => {
 			return schmint.isSchminted || schmint.isCancelled;
 		});
+
 		// console.log('completed schmint in getSchmitsAssigned', FilteredCompletedSchmints);
 		const targets = FilteredActiveSchmints.map((schmint) => schmint.target);
 		const data = await getSuccesfulSchmints({ variables: { target: targets, owner: user.address } });
-		3;
+
 		for (let i = 0; i < data.data.schmints.length; i++) {
 			const s = data.data.schmints[i];
 			const idx = FilteredActiveSchmints.findIndex((a) => a.target === s.target);
@@ -75,7 +76,7 @@ const SchmintsList = ({ page, schmints }) => {
 			//In previous logic it was pushing undefined schmint with index -1 so we need to break when we get index -1 and push
 			// only when index is not -1
 			if (idx === -1) {
-				break;
+				continue;
 			}
 			//After getting the index correctly we need to check the collection's starttimestamp if its less than current time
 			// then don't push in completed schmint because there is possiblity that we might have changed the time and made it live again
@@ -108,6 +109,7 @@ const SchmintsList = ({ page, schmints }) => {
 		// 		1
 		// 	);
 		// });
+
 		setCompletedSchmints(FilteredCompletedSchmints);
 		setActiveSchmints(FilteredActiveSchmints);
 	};

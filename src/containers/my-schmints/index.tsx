@@ -37,6 +37,8 @@ const MySchmintComponent = () => {
 		const fetch = async () => {
 			if (user.address) {
 				getMySchmints(user.address).then((res) => {
+					console.log({ res });
+
 					setSchmints(res);
 				});
 			} else {
@@ -85,7 +87,7 @@ const MySchmintComponent = () => {
 				</Text>
 			</Box>
 			<If
-				condition={!scheduler.avatar || !user.exists}
+				condition={(!scheduler.avatar || !user.exists) && schmints.length < 1}
 				then={<NoSchmintComponent page={page + 1 ?? 0} />}
 				else={
 					<React.Fragment>
