@@ -16,6 +16,9 @@ export const getSchmintQuantity = (abi: any, data: string) => {
 			case 3: {
 				return parseInt(res.inputs[0]);
 			}
+			case 4: {
+				return parseInt(res.inputs[3]);
+			}
 		}
 	} catch (err) {
 		console.log('Error in getting schmint quantity', err); // eslint-disable-line no-console
