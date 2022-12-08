@@ -64,6 +64,7 @@ const checkValidNetwork = (chainId: number): boolean => {
 		}
 	} else {
 		switch (chainId) {
+			case 1:
 			case 137:
 				return true;
 			default:
