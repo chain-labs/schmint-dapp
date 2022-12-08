@@ -118,31 +118,17 @@ const MyApp = ({ Component, pageProps }) => {
 				}
 				
 				`}</script>
-				<If
-					condition={process.env.NODE_ENV === 'production' && hostname === 'schmint.simplrhq.com'}
-					then={
-						<script
-							type="text/javascript"
-							dangerouslySetInnerHTML={{
-								__html: `(function(c,l,a,r,i,t,y){
+				<script
+					type="text/javascript"
+					dangerouslySetInnerHTML={{
+						__html: `(function(c,l,a,r,i,t,y){
 							c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
 							t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
 							y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 						})(window, document, "clarity", "script", "dn44p6y6mg");`,
-							}}
-						></script>
-					}
-				/>
-				<If
-					condition={process.env.NODE_ENV === 'production' && hostname === 'schmint.simplrhq.com'}
-					then={
-						<script
-							defer
-							data-domain="schmint.simplrhq.com"
-							src="https://plausible.io/js/script.js"
-						></script>
-					}
-				/>
+					}}
+				></script>
+				<script defer data-domain="schmint.simplrhq.com" src="https://plausible.io/js/script.js"></script>
 			</Head>
 			<ThemeProvider theme={theme}>
 				<Wagmi>
