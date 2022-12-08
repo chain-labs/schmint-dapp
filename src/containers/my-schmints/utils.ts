@@ -21,7 +21,7 @@ export const getSchmintQuantity = (abi: any, data: string) => {
 			}
 		}
 	} catch (err) {
-		console.log('Error in getting schmint quantity', err); // eslint-disable-line no-console
+		console.log('Error in getting schmint quantity', { err, abi, data, abiType: getABIType(abi) }); // eslint-disable-line no-console
 		// CODE: 134
 		sendLog(134, err);
 	}
