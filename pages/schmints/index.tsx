@@ -1,7 +1,8 @@
-import { useQuery } from '@apollo/client';
+import { ApolloClient, InMemoryCache, useQuery } from '@apollo/client';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { getEndpoint } from 'src/components/ApolloClient';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import If from 'src/components/If';
@@ -24,7 +25,7 @@ const illustration = 'https://ik.imagekit.io/chainlabs/Schmint/pablo-list-is-emp
 
 const Schmint = () => {
 	const router = useRouter();
-	const { id } = router.query;
+	const { id, cid: chain } = router.query;
 	const [collections, setCollections] = useState([]);
 	const [collection, setCollection] = useState<ICollection>();
 	const user = useAppSelector(userSelector);
@@ -32,15 +33,7 @@ const Schmint = () => {
 	const [schmint, setSchmint] = useState<SchmintState>();
 	const [wrongNetwork, setWrongNetwork] = useState(false);
 	const network = useAppSelector(networkSelector);
-	const { loading } = useQuery(GET_SCHMINT, {
-		variables: {
-			id: id,
-		},
-		pollInterval: 8000,
-		onCompleted: (data) => {
-			setSchmint(data.schmint);
-		},
-	});
+	const [loading, setLoading] = useState(true);
 
 	const getAllCollections = async () => {
 		const data = await fetch(PROJECTS_DIR);
@@ -81,6 +74,15 @@ const Schmint = () => {
 			setWrongNetwork(false);
 		}
 	}, [collection, network.chainId, user.exists]);
+
+	useEffect(() => {
+		if (chain && id) {
+			getSchmint(id, chain).then((data) => {
+				setSchmint(data.schmint);
+				setLoading(false);
+			});
+		}
+	}, [id, chain]);
 
 	if (collection && schmint.id === id) {
 		return (
@@ -128,3 +130,19 @@ const Schmint = () => {
 };
 
 export default Schmint;
+
+const getSchmint = async (id, chain) => {
+	const subgraph_url = getEndpoint(parseInt(chain));
+
+	const client = new ApolloClient({
+		uri: subgraph_url,
+		cache: new InMemoryCache(),
+	});
+
+	const schmint = await client.query({ query: GET_SCHMINT, variables: { id } });
+
+	return {
+		loading: schmint.loading,
+		schmint: schmint.data.schmint,
+	};
+};

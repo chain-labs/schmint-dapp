@@ -40,14 +40,17 @@ const SchmintTile = ({
 }: SchmintTileProps) => {
 	const [actionRequired, setActionRequired] = useState(false);
 	const [totalTransactionCost, setTotalTransactionCost] = useState('');
-	const provider = useProvider();
+	const provider = useProvider({
+		chainId: collection.network.chainId,
+	});
 
 	const getTotalGasCost = async (trxHash, gasPrice) => {
 		const receipt = await provider.getTransactionReceipt(trxHash);
-		const gasUsed = receipt.gasUsed;
-		const totalGasCost = (parseFloat(ethers.utils.formatEther(gasUsed.mul(gasPrice))) + parseFloat(value)).toFixed(
+		const gasUsed = receipt?.gasUsed;
+		const totalGasCost = (parseFloat(ethers.utils.formatEther(gasUsed?.mul(gasPrice))) + parseFloat(value)).toFixed(
 			4
 		);
+
 		return totalGasCost;
 	};
 
@@ -82,7 +85,7 @@ const SchmintTile = ({
 	}, [collection, quantity, value, completed]);
 
 	return (
-		<Link href={`/schmints?id=${schmintID}`} passHref>
+		<Link href={`/schmints?cid=${collection.network.chainId}&id=${schmintID}`} passHref>
 			<Box
 				p="ms"
 				borderRadius="8px"

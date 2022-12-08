@@ -13,7 +13,7 @@ import { useContract, useFeeData, useNetwork, useProvider, useSigner } from 'wag
 import CostComp from '../project-page/components/CostComp';
 import InputBox from '../project-page/components/InputBox';
 import useScheduler from '../project-page/useScheduler';
-import { getABIType } from '../project-page/utils';
+import { feeReceipient, getABIType, nftContract, seaDrop } from '../project-page/utils';
 import { getCoinPrice } from 'src/utils/gasPrices';
 import { replaceModal, showModal } from 'src/redux/modal';
 import { MODALS_LIST } from 'src/redux/modal/types';
@@ -137,6 +137,20 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 					});
 					break;
 				}
+				case 4: {
+					const SeaDropInstance = new ethers.Contract(seaDrop, collection.abi, provider);
+
+					buyTx = await SeaDropInstance?.populateTransaction?.[collection.abi?.[0]?.name](
+						nftContract,
+						feeReceipient,
+						ethers.constants.AddressZero,
+						nft,
+						{
+							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+						}
+					);
+					break;
+				}
 			}
 			const modifySchmintInput = [
 				{
@@ -248,6 +262,20 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 					});
 					break;
 				}
+				case 4: {
+					const SeaDropInstance = new ethers.Contract(seaDrop, collection.abi, provider);
+
+					buyTx = await SeaDropInstance?.populateTransaction?.[collection.abi?.[0]?.name](
+						nftContract,
+						feeReceipient,
+						ethers.constants.AddressZero,
+						nft,
+						{
+							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
+						}
+					);
+					break;
+				}
 			}
 
 			const modifySchmintInput = [
@@ -285,7 +313,7 @@ const SchmintEditableForm = ({ collection, actionRequired, quantity, schmint, di
 	};
 
 	useEffect(() => {
-		if (user.exists) {
+		if (user.exists && editable) {
 			getEstimatedGas();
 		}
 	}, [nft, gasPriceLimit, funds, user, gasFee]);

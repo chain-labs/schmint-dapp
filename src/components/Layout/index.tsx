@@ -33,6 +33,18 @@ const Layout = ({ children }) => {
 	const network = useAppSelector(networkSelector);
 	const { chains } = useNetwork();
 	const [showWrongNetworkAlert, setShowWrongNetworkAlert] = React.useState<boolean>(false);
+
+	const resetScheduler = () => {
+		setUserHasScheduler(false);
+		dispatch(
+			setScheduler({
+				owner: '',
+				schedulerAddress: '',
+				avatar: '',
+				schmints: [],
+			})
+		);
+	};
 	const [loadScheduler, { called, loading }] = useLazyQuery(GET_USER_SCHEDULER, {
 		onCompleted: (data) => {
 			const scheduler = data?.schedulers?.[0];
@@ -47,15 +59,7 @@ const Layout = ({ children }) => {
 					})
 				);
 			} else {
-				setUserHasScheduler(false);
-				dispatch(
-					setScheduler({
-						owner: '',
-						schedulerAddress: '',
-						avatar: '',
-						schmints: [],
-					})
-				);
+				resetScheduler();
 				if (router.pathname === '/my-assets') {
 					router.replace('/explore', undefined, { shallow: true });
 				}
@@ -75,9 +79,10 @@ const Layout = ({ children }) => {
 		if (
 			network.isOnline &&
 			!network.isValid &&
-			(router.asPath === '/explore' || router.asPath === '/my-assets' || router.asPath === '/my-schmints')
+			(router.asPath === '/explore/' || router.asPath === '/my-assets/' || router.asPath === '/my-schmints/')
 		) {
 			setShowWrongNetworkAlert(true);
+			resetScheduler();
 		} else {
 			setShowWrongNetworkAlert(false);
 		}
