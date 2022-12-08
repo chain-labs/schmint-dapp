@@ -85,6 +85,9 @@ const SchmintPage = ({ collection, schmint }) => {
 						quantity = parseInt(res.inputs[0]);
 						break;
 					}
+					case 4: {
+						quantity = parseInt(res.inputs[3]);
+					}
 				}
 				setQuantity(quantity);
 				setActionRequired(!(collection.price === value / quantity));
