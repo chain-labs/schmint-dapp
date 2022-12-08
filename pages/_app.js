@@ -133,6 +133,16 @@ const MyApp = ({ Component, pageProps }) => {
 						></script>
 					}
 				/>
+				<If
+					condition={process.env.NODE_ENV === 'production' && hostname === 'schmint.simplrhq.com'}
+					then={
+						<script
+							defer
+							data-domain="schmint.simplrhq.com"
+							src="https://plausible.io/js/script.js"
+						></script>
+					}
+				/>
 			</Head>
 			<ThemeProvider theme={theme}>
 				<Wagmi>
