@@ -10,6 +10,7 @@ import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
 import { sendLog } from 'src/utils/logging';
 import { getAllCollections } from '../Explore/projectsStore';
+import { getABIType, nftContract, seaDrop } from '../project-page/utils';
 import NoSchmintComponent from './NoSchmintComponent';
 import SchmintTile from './SchmintTile';
 import { getSchmintQuantity } from './utils';
@@ -142,12 +143,14 @@ const SchmintsList = ({ page, schmints }) => {
 						<If
 							condition={!page}
 							then={activeSchmints.map((schmint) => {
-								// console.log('Inside loop active schmints', activeSchmints);
-								const collection = collections.find(
-									(collection) =>
-										collection?.contractAddress?.toLowerCase() === schmint?.target?.toLowerCase()
-								);
-								// console.log(collection);
+								const collection = collections.find((collection) => {
+									if (collection?.contractAddress.toLowerCase() === nftContract.toLowerCase())
+										return schmint?.target?.toLowerCase() === seaDrop.toLowerCase();
+									else
+										return (
+											collection?.contractAddress.toLowerCase() === schmint?.target?.toLowerCase()
+										);
+								});
 								const quantity = getSchmintQuantity(collection?.abi, schmint?.data);
 								return (
 									<SchmintTile
@@ -160,25 +163,19 @@ const SchmintsList = ({ page, schmints }) => {
 								);
 							})}
 							else={completedSchmints.map((schmint) => {
-								const collection = collections.find(
-									(collection) =>
-										collection?.contractAddress.toLowerCase() === schmint?.target?.toLowerCase()
-								);
-								// collections.map((c) => {
-								// 	console.log('collection', c);
-								// 	console.log('schmint', schmint);
-								// 	console.log(
-								// 		'address present',
-								// 		c.contractAddress.toLowerCase() === schmint.target.toLowerCase()
-								// 	);
-								// });
-								// console.log('collection-v2', collection);
+								const collection = collections.find((collection) => {
+									if (collection?.contractAddress.toLowerCase() === nftContract.toLowerCase())
+										return schmint?.target?.toLowerCase() === seaDrop.toLowerCase();
+									else
+										return (
+											collection?.contractAddress.toLowerCase() === schmint?.target?.toLowerCase()
+										);
+								});
 								let quantity;
 								//here we added try catch because we cannot add optional chaining here it need to have collection
 								// and schmint at this point if it doesn't have then it will throw error
 								try {
 									quantity = getSchmintQuantity(collection.abi, schmint.data);
-									// console.log('quantity', quantity);
 								} catch (e) {
 									console.log('err', e); // eslint-disable-line no-console
 									throw e;
