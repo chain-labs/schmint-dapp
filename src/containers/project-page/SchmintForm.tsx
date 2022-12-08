@@ -108,47 +108,8 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 			if (!scheduler.schedulerAddress) {
 				const userInput = [user.address, ethers.constants.AddressZero];
 
-				switch (getABIType(collection.abi)) {
-					case 1: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							user.address,
-							nft,
-							{
-								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-							}
-						);
-						break;
-					}
-					case 2: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							nft,
-							user.address,
-							{
-								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-							}
-						);
-						break;
-					}
-					case 3: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](nft, {
-							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-						});
-						break;
-					}
-					case 4: {
-						const SeaDropInstance = new ethers.Contract(seaDrop, collection.abi, provider);
+				buyTx = await getBuyTx(collection, TargetInstance, user.address, nft, provider);
 
-						buyTx = await SeaDropInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							nftContract,
-							feeReceipient,
-							ethers.constants.AddressZero,
-							nft,
-							{
-								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-							}
-						);
-					}
-				}
 				const schmintInput = [
 					{
 						target: buyTx.to,
@@ -178,47 +139,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 					dispatch(replaceModal({ type: MODALS_LIST.SCHMINT_SUCCESFUL, props: {} }));
 				}
 			} else {
-				switch (getABIType(collection.abi)) {
-					case 1: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							userAddress,
-							nft,
-							{
-								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-							}
-						);
-						break;
-					}
-					case 2: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							nft,
-							userAddress,
-							{
-								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-							}
-						);
-						break;
-					}
-					case 3: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](nft, {
-							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-						});
-						break;
-					}
-					case 4: {
-						const SeaDropInstance = new ethers.Contract(seaDrop, collection.abi, provider);
-
-						buyTx = await SeaDropInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							nftContract,
-							feeReceipient,
-							ethers.constants.AddressZero,
-							nft,
-							{
-								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-							}
-						);
-					}
-				}
+				buyTx = await getBuyTx(collection, TargetInstance, userAddress, nft, provider);
 
 				const schmintInput = [
 					{
