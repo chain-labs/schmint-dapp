@@ -76,10 +76,6 @@ const MyApp = ({ Component, pageProps }) => {
 		}
 	}, []);
 
-	useEffect(() => {
-		console.log({ hostname, prod: process.env.NODE_ENV });
-	}, [hostname]);
-
 	return (
 		<>
 			<Head>
