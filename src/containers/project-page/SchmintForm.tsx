@@ -21,7 +21,7 @@ import { useContract, useFeeData, useProvider, useSigner } from 'wagmi';
 import CostComp from './components/CostComp';
 import InputBox from './components/InputBox';
 import useScheduler from './useScheduler';
-import { feeReceipient, getABIType, getBuyTx, getDefaultEstimatedGas, nftContract, seaDrop } from './utils';
+import { getBuyTx, getDefaultEstimatedGas } from './utils';
 
 const SchmintForm = ({ collection, setSchmintCreated }) => {
 	const [showOptions, setShowOptions] = useState(false);
