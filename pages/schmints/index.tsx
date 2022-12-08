@@ -10,6 +10,7 @@ import Loader from 'src/components/Loader';
 import Text from 'src/components/Text';
 import { ICollection } from 'src/containers/Explore/projectsStore';
 import NoSchmintComponent from 'src/containers/my-schmints/NoSchmintComponent';
+import { nftContract, seaDrop } from 'src/containers/project-page/utils';
 import SchmintPage from 'src/containers/schmint-page';
 import WrongNetworkAlert from 'src/containers/WrongNetworkAlert';
 import GET_SCHMINT from 'src/graphql/query/GetSchmint';
@@ -43,7 +44,11 @@ const Schmint = () => {
 
 	const getCollection = () => {
 		collections.map((collection) => {
-			if (collection?.contractAddress.toLowerCase() === schmint?.target.toLowerCase()) {
+			if (collection?.contractAddress.toLowerCase() === nftContract.toLowerCase()) {
+				if (schmint?.target?.toLowerCase() === seaDrop.toLowerCase()) {
+					setCollection(collection);
+				}
+			} else if (collection?.contractAddress.toLowerCase() === schmint?.target?.toLowerCase()) {
 				setCollection(collection);
 			}
 		});
