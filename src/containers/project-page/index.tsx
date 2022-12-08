@@ -41,7 +41,11 @@ const Projectpage = ({ collection }) => {
 					then={
 						<Info
 							title={collection?.mintTimestampNotDecided ? 'Coming Soon!!!' : 'Before you proceed....'}
-							body={collection?.info}
+							body={
+								collection?.mintTimestampNotDecided
+									? 'The minting details for this project are not yet available but rest assured that you will be able to schmint it soon.'
+									: 'We weren’t able to get the exact minting time for this project. So we request you to check the project website as you won’t be able to create a schmint if the mint is live.'
+							}
 						/>
 					}
 				/>

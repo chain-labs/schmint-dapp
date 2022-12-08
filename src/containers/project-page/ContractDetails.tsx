@@ -65,7 +65,7 @@ const ContractDetails = ({ collection, showDetails, schmintCreated }: props) => 
 									</ButtonComp>
 								</Link>
 								<a
-									href={`https://twitter.com/intent/tweet?text=I%20just%20schminted%20%40${projectTwitterHandle}%27s%20NFT%20using%20%40simplrhq%27s%20Schmint.%0AYou%20can%20schedule%20your%20mint%20on%20Schmint%3A%20https%3A//schmint.simplrhq.com/projects/${projectWebsiteUrl}%0A%23justSchmintIt%20%23NoMoreFomo`}
+									href={`https://twitter.com/intent/tweet?text=I%20just%20schminted%20%40${projectTwitterHandle}%27s%20NFT%20using%20%40simplrhq%27s%20Schmint.%0AYou%20can%20schedule%20your%20mint%20on%20Schmint%3A%20https%3A//schmint.simplrhq.com/projects/?id=${projectWebsiteUrl}%0A%23justSchmintIt%20%23NoMoreFomo`}
 									target="_blank"
 									rel="noreferrer"
 								>
@@ -222,9 +222,11 @@ const ContractItem = ({ text, subText, network }: { text?: string; subText?: str
 					then={
 						<Box position="relative" height="1.6rem" width="1.6rem" ml="mxxs">
 							<Image
-								src={`/static/images/svgs/${
-									network === 'Ethereum' || network === 'Goerli' ? 'eth' : 'polygon-color'
-								}.svg`}
+								src={
+									network === 'Ethereum' || network === 'Goerli'
+										? 'https://ik.imagekit.io/chainlabs/Schmint/eth_MhN722_5zH.svg'
+										: 'https://ik.imagekit.io/chainlabs/Schmint/polygon-color_NzzPwZ2jGX.svg'
+								}
 								layout="fill"
 							/>
 						</Box>

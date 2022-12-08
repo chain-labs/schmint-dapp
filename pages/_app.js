@@ -15,6 +15,7 @@ import If from 'components/If';
 import 'styleguide/globalStyles.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { sendLog } from 'src/utils/logging';
 
 Router.onRouteChangeStart = () => {
 	NProgress.start();
@@ -46,10 +47,24 @@ const MyApp = ({ Component, pageProps }) => {
 				document.documentElement.style.setProperty('--vh', `${vh}px`);
 			}, 150);
 
-			window.addEventListener('resize', handleResize);
+			try {
+				window.addEventListener('resize', handleResize);
+			} catch (err) {
+				console.log('Error adding resize listener', err); // eslint-disable-line no-console
+
+				// CODE: 101
+				sendLog(101, err);
+			}
 			return () => {
 				if (typeof window !== 'undefined') {
-					window.removeEventListener('resize', handleResize);
+					try {
+						window.removeEventListener('resize', handleResize);
+					} catch (err) {
+						console.log('Error removing resize listener', err); // eslint-disable-line no-console
+
+						// CODE: 102
+						sendLog(102, err);
+					}
 				}
 			};
 		}
@@ -103,21 +118,17 @@ const MyApp = ({ Component, pageProps }) => {
 				}
 				
 				`}</script>
-				<If
-					condition={process.env.NODE_ENV === 'production' && hostname === 'schmint.simplrhq.com'}
-					then={
-						<script
-							type="text/javascript"
-							dangerouslySetInnerHTML={{
-								__html: `(function(c,l,a,r,i,t,y){
+				<script
+					type="text/javascript"
+					dangerouslySetInnerHTML={{
+						__html: `(function(c,l,a,r,i,t,y){
 							c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
 							t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
 							y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 						})(window, document, "clarity", "script", "dn44p6y6mg");`,
-							}}
-						></script>
-					}
-				/>
+					}}
+				></script>
+				<script defer data-domain="schmint.simplrhq.com" src="https://plausible.io/js/script.js"></script>
 			</Head>
 			<ThemeProvider theme={theme}>
 				<Wagmi>

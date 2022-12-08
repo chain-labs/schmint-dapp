@@ -1,7 +1,8 @@
-import { useQuery } from '@apollo/client';
+import { ApolloClient, InMemoryCache, useQuery } from '@apollo/client';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { getEndpoint } from 'src/components/ApolloClient';
 import Box from 'src/components/Box';
 import ButtonComp from 'src/components/Button';
 import If from 'src/components/If';
@@ -18,30 +19,21 @@ import { schedulerSelector } from 'src/redux/scheduler';
 import { SchmintState } from 'src/redux/scheduler/types';
 import { userSelector } from 'src/redux/user';
 import { PROJECTS_DIR } from 'src/utils/constants';
-import { useNetwork } from 'wagmi';
+import { sendLog } from 'src/utils/logging';
 
 const illustration = 'https://ik.imagekit.io/chainlabs/Schmint/pablo-list-is-empty_1__1__Ux_bWTmMO.svg';
 
 const Schmint = () => {
 	const router = useRouter();
-	const { id } = router.query;
+	const { id, cid: chain } = router.query;
 	const [collections, setCollections] = useState([]);
 	const [collection, setCollection] = useState<ICollection>();
-	const { chain } = useNetwork();
 	const user = useAppSelector(userSelector);
 	const scheduler = useAppSelector(schedulerSelector);
 	const [schmint, setSchmint] = useState<SchmintState>();
 	const [wrongNetwork, setWrongNetwork] = useState(false);
 	const network = useAppSelector(networkSelector);
-	const { loading } = useQuery(GET_SCHMINT, {
-		variables: {
-			id: id,
-		},
-		pollInterval: 8000,
-		onCompleted: (data) => {
-			setSchmint(data.schmint);
-		},
-	});
+	const [loading, setLoading] = useState(true);
 
 	const getAllCollections = async () => {
 		const data = await fetch(PROJECTS_DIR);
@@ -58,7 +50,11 @@ const Schmint = () => {
 	};
 
 	useEffect(() => {
-		getAllCollections();
+		getAllCollections().catch((err) => {
+			console.log('Error getting All collections', err); // eslint-disable-line no-console
+			// CODE: 130
+			sendLog(130, err, { schmintId: id });
+		});
 	}, []);
 
 	useEffect(() => {
@@ -77,7 +73,16 @@ const Schmint = () => {
 			}
 			setWrongNetwork(false);
 		}
-	}, [collection, chain, user.exists]);
+	}, [collection, network.chainId, user.exists]);
+
+	useEffect(() => {
+		if (chain && id) {
+			getSchmint(id, chain).then((data) => {
+				setSchmint(data.schmint);
+				setLoading(false);
+			});
+		}
+	}, [id, chain]);
 
 	if (collection && schmint.id === id) {
 		return (
@@ -125,3 +130,19 @@ const Schmint = () => {
 };
 
 export default Schmint;
+
+const getSchmint = async (id, chain) => {
+	const subgraph_url = getEndpoint(parseInt(chain));
+
+	const client = new ApolloClient({
+		uri: subgraph_url,
+		cache: new InMemoryCache(),
+	});
+
+	const schmint = await client.query({ query: GET_SCHMINT, variables: { id } });
+
+	return {
+		loading: schmint.loading,
+		schmint: schmint.data.schmint,
+	};
+};

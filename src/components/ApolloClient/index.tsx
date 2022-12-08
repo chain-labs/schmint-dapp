@@ -9,8 +9,9 @@ import {
 	POLYGON_SUBGRAPH_ENDPOINT,
 	TEST_ENV,
 } from 'src/utils/constants';
+import { sendLog } from 'src/utils/logging';
 
-const getEndpoint = (chainId) => {
+export const getEndpoint = (chainId) => {
 	if (TEST_ENV) {
 		switch (chainId) {
 			case 5:
@@ -19,7 +20,7 @@ const getEndpoint = (chainId) => {
 				return MUMBAI_SUBGRAPH_ENDPOINT;
 
 			default:
-				return GOERLI_SUBGRAPH_ENDPOINT;
+				return '';
 		}
 	} else {
 		switch (chainId) {
@@ -45,13 +46,20 @@ const ApolloClientProvider = ({ children }) => {
 
 	useEffect(() => {
 		if (network.isOnline) {
-			const ENDPOINT = getEndpoint(network.chainId);
-			const client = new ApolloClient({
-				uri: ENDPOINT,
-				cache: new InMemoryCache(),
-			});
-			dispatch(setApolloClient({ apolloClient: client }));
-			setClient(client);
+			try {
+				const ENDPOINT = getEndpoint(network.chainId);
+				const client = new ApolloClient({
+					uri: ENDPOINT,
+					cache: new InMemoryCache(),
+				});
+				dispatch(setApolloClient({ apolloClient: client, subgraphUrl: ENDPOINT }));
+				setClient(client);
+			} catch (err) {
+				console.log('Error setting Apollo Client to redux', err); // eslint-disable-line no-console
+
+				// CODE: 106
+				sendLog(106, err, { network: network.chainId });
+			}
 		}
 	}, [network.chainId]);
 

@@ -1,4 +1,3 @@
-import InputDataDecoder from 'ethereum-input-data-decoder';
 import { ethers } from 'ethers';
 import { CaretDown, CaretUp } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
@@ -17,11 +16,12 @@ import { userSelector } from 'src/redux/user';
 import theme from 'src/styleguide/theme';
 import { getAbi, getContractAddress } from 'src/utils/contracts';
 import { getCoinPrice } from 'src/utils/gasPrices';
+import { sendLog } from 'src/utils/logging';
 import { useContract, useFeeData, useProvider, useSigner } from 'wagmi';
 import CostComp from './components/CostComp';
 import InputBox from './components/InputBox';
 import useScheduler from './useScheduler';
-import { getABIType } from './utils';
+import { feeReceipient, getABIType, getBuyTx, getDefaultEstimatedGas, nftContract, seaDrop } from './utils';
 
 const SchmintForm = ({ collection, setSchmintCreated }) => {
 	const [showOptions, setShowOptions] = useState(false);
@@ -29,20 +29,23 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 	const [gasPriceLimit, setGasPriceLimit] = useState('');
 	const [funds, setFunds] = useState('');
 	const [step, setStep] = useState(0);
-	const [estimatedGas] = useState(collection?.estimatedTransaction ?? 0.04);
+	const [estimatedGas] = useState(
+		collection?.estimatedTransaction ?? getDefaultEstimatedGas(collection.network.chainId)
+	);
 	const [wrongNetwork, setWrongNetwork] = useState(false);
 	const [schmintDisabled, setSchmintDisabled] = useState(false);
 	const [receiveInWallet, setReceiveInWallet] = useState(true);
 	const [txGas, setTxGas] = useState<string>('');
 	const [txPrice, setTxPrice] = useState<string>('');
 	const { data: signer } = useSigner();
+	const network = useAppSelector(networkSelector);
 	const provider = useProvider();
 	const [userAddress, setUserAddress] = useState<string>('');
 	const { data: gasFee } = useFeeData({
 		formatUnits: 'gwei',
 		watch: true,
+		enabled: network.isOnline,
 	});
-	const network = useAppSelector(networkSelector);
 	const user = useAppSelector(userSelector);
 	const scheduler = useAppSelector(schedulerSelector);
 
@@ -104,34 +107,9 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 
 			if (!scheduler.schedulerAddress) {
 				const userInput = [user.address, ethers.constants.AddressZero];
-				switch (getABIType(collection.abi)) {
-					case 1: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							user.address,
-							nft,
-							{
-								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-							}
-						);
-						break;
-					}
-					case 2: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							nft,
-							user.address,
-							{
-								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-							}
-						);
-						break;
-					}
-					case 3: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](nft, {
-							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-						});
-						break;
-					}
-				}
+
+				buyTx = await getBuyTx(collection, TargetInstance, user.address, nft, provider);
+
 				const schmintInput = [
 					{
 						target: buyTx.to,
@@ -161,47 +139,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 					dispatch(replaceModal({ type: MODALS_LIST.SCHMINT_SUCCESFUL, props: {} }));
 				}
 			} else {
-				switch (getABIType(collection.abi)) {
-					case 1: {
-						console.log(userAddress);
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							userAddress,
-							nft,
-							{
-								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-							}
-						);
-						const decoder = new InputDataDecoder(collection.abi);
-						const res = decoder.decodeData(buyTx.data);
-						console.log(buyTx.to, res, buyTx.value);
-						break;
-					}
-					case 2: {
-						console.log(userAddress);
-
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							nft,
-							userAddress,
-							{
-								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-							}
-						);
-						const decoder = new InputDataDecoder(collection.abi);
-						const res = decoder.decodeData(buyTx.data);
-						console.log(buyTx.to, res, buyTx.value);
-						break;
-					}
-					case 3: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](nft, {
-							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-						});
-						const decoder = new InputDataDecoder(collection.abi);
-						const res = decoder.decodeData(buyTx.data);
-						console.log(buyTx.to, res, buyTx.value);
-
-						break;
-					}
-				}
+				buyTx = await getBuyTx(collection, TargetInstance, userAddress, nft, provider);
 
 				const schmintInput = [
 					{
@@ -251,6 +189,13 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 					},
 				})
 			);
+
+			console.log('Error in creating schmint'); // eslint-disable-line no-console
+
+			if (err?.code !== 'ACTION_REJECTED') {
+				// CODE: 141
+				sendLog(141, err, { collectionID: collection.id, numberOfNFTs: nft, gasPriceLimit });
+			}
 		}
 	};
 
@@ -260,34 +205,8 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 
 			if (!scheduler.schedulerAddress) {
 				const userInput = [user.address, ethers.constants.AddressZero];
-				switch (getABIType(collection.abi)) {
-					case 1: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							user.address,
-							nft,
-							{
-								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-							}
-						);
-						break;
-					}
-					case 2: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							nft,
-							user.address,
-							{
-								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-							}
-						);
-						break;
-					}
-					case 3: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](nft, {
-							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-						});
-						break;
-					}
-				}
+				buyTx = await getBuyTx(collection, TargetInstance, userAddress, nft, provider);
+
 				const schmintInput = [
 					{
 						target: buyTx.to,
@@ -313,34 +232,7 @@ const SchmintForm = ({ collection, setSchmintCreated }) => {
 				});
 				setTxGas(totalEstimatedGasPrice);
 			} else {
-				switch (getABIType(collection.abi)) {
-					case 1: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							userAddress,
-							nft,
-							{
-								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-							}
-						);
-						break;
-					}
-					case 2: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](
-							nft,
-							userAddress,
-							{
-								value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-							}
-						);
-						break;
-					}
-					case 3: {
-						buyTx = await TargetInstance?.populateTransaction?.[collection.abi?.[0]?.name](nft, {
-							value: ethers.utils.parseUnits(`${collection.price * parseInt(nft)}`, 'ether'),
-						});
-						break;
-					}
-				}
+				buyTx = await getBuyTx(collection, TargetInstance, userAddress, nft, provider);
 
 				const schmintInput = [
 					{

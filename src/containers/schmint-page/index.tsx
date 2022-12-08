@@ -18,6 +18,7 @@ import Text from 'src/components/Text';
 import SchmintReceipt from './SchmintReceipt';
 import { ArrowLeft } from 'phosphor-react';
 import { useRouter } from 'next/router';
+import { sendLog } from 'src/utils/logging';
 
 const SchmintPage = ({ collection, schmint }) => {
 	const scheduler = useAppSelector(schedulerSelector);
@@ -50,7 +51,6 @@ const SchmintPage = ({ collection, schmint }) => {
 			setStatus('1');
 			return;
 		} else if (schmints.length > 0) {
-			console.log('status collection', collection);
 			//collection timestamp needs to be checked there can be change in starttimestamp
 			if (collection.startTimestamp > Math.floor(Date.now() / 1000)) {
 				setStatus('');
@@ -63,35 +63,38 @@ const SchmintPage = ({ collection, schmint }) => {
 	};
 
 	useEffect(() => {
-		const decoder = new InputDataDecoder(collection.abi);
-		const res = decoder.decodeData(schmint.data);
-		console.log(res);
-
 		if (scheduler?.schedulerAddress && abi && collection) {
-			const value = parseFloat(ethers.utils.formatUnits(schmint?.value, 'ether'));
-			const data = schmint?.data;
-			const decoder = new InputDataDecoder(abi);
-			const res = decoder.decodeData(data);
+			try {
+				const value = parseFloat(ethers.utils.formatUnits(schmint?.value, 'ether'));
+				const data = schmint?.data;
+				const decoder = new InputDataDecoder(abi);
+				const res = decoder.decodeData(data);
 
-			let quantity;
-			switch (getABIType(abi)) {
-				case 1: {
-					quantity = parseInt(res.inputs[1]);
-					setReciever('0x' + res.inputs[0]);
-					break;
+				let quantity;
+				switch (getABIType(abi)) {
+					case 1: {
+						quantity = parseInt(res.inputs[1]);
+						setReciever('0x' + res.inputs[0]);
+						break;
+					}
+					case 2: {
+						quantity = parseInt(res.inputs[0]);
+						break;
+					}
+					case 3: {
+						quantity = parseInt(res.inputs[0]);
+						break;
+					}
 				}
-				case 2: {
-					quantity = parseInt(res.inputs[0]);
-					break;
-				}
-				case 3: {
-					quantity = parseInt(res.inputs[0]);
-					break;
-				}
+				setQuantity(quantity);
+				setActionRequired(!(collection.price === value / quantity));
+				setPrevPrice(value / quantity);
+			} catch (err) {
+				console.log('Error while setting schmint details'); // eslint-disable-line no-console
+
+				// CODE: 142
+				sendLog(142, err, { collectionID: collection?.id, schmintID: schmint?.id });
 			}
-			setQuantity(quantity);
-			setActionRequired(!(collection.price === value / quantity));
-			setPrevPrice(value / quantity);
 		}
 	}, [abi, collection]);
 

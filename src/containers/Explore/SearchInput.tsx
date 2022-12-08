@@ -5,6 +5,7 @@ import Text from 'src/components/Text';
 import { addSearch, searchSelector } from 'src/redux/filter';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import theme from 'src/styleguide/theme';
+import { sendLog } from 'src/utils/logging';
 
 const SearchInput = () => {
 	const { query, count } = useAppSelector(searchSelector);
@@ -12,9 +13,16 @@ const SearchInput = () => {
 	const dispatch = useAppDispatch();
 
 	const handleChange = (e) => {
-		e.preventDefault();
-		setSearch(e.target.value);
-		dispatch(addSearch({ query: e.target.value, count }));
+		try {
+			e.preventDefault();
+			setSearch(e.target.value);
+			dispatch(addSearch({ query: e.target.value, count }));
+		} catch (err) {
+			console.log('Error changing search input', err); // eslint-disable-line no-console
+
+			// CODE: 112
+			sendLog(112, err);
+		}
 	};
 
 	return (

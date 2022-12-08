@@ -16,6 +16,7 @@ import ConnectWallet from './ConnectWallet';
 import Banners from './Banners';
 import { Toaster } from 'react-hot-toast';
 import Image from 'next/image';
+import { sendLog } from 'src/utils/logging';
 
 const DappNavbar = () => {
 	const dispatch = useAppDispatch();
@@ -33,9 +34,9 @@ const DappNavbar = () => {
 	});
 
 	useEffect(() => {
-		const { ethereum } = window;
-		if (account?.connector?.id === 'metaMask' && process.browser) {
-			if (ethereum) {
+		if (account?.connector?.id === 'metaMask' && typeof window !== 'undefined') {
+			try {
+				const { ethereum } = window;
 				ethereum?.on('accountsChanged', (accounts) => {
 					if (dispatch) {
 						dispatch(setUser(accounts[0]));
@@ -46,6 +47,11 @@ const DappNavbar = () => {
 					const chainId = parseInt(chain);
 					switchNetwork(chainId);
 				});
+			} catch (err) {
+				console.log('Error in metamask event listener', err); // eslint-disable-line no-console
+
+				// CODE: 107
+				sendLog(107, err, { connectorId: account?.connector?.id });
 			}
 		}
 	}, [account]);
@@ -60,18 +66,16 @@ const DappNavbar = () => {
 
 	useEffect(() => {
 		if (signer) {
-			try {
-				signer
-					.getAddress()
-					.then((address) => {
-						dispatch(setUser(address));
-					})
-					.catch((err) => {
-						console.log({ err });
-					});
-			} catch (err) {
-				console.log(err);
-			}
+			signer
+				.getAddress()
+				.then((address) => {
+					dispatch(setUser(address));
+				})
+				.catch((err) => {
+					console.log("Couldn't get address from signer", err); // eslint-disable-line no-console
+					// CODE: 108
+					sendLog(108, err, { isSigner: signer._isSigner });
+				});
 		}
 	}, [signer]);
 
