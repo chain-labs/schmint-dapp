@@ -45,7 +45,7 @@ export const FAQs = [
 	},
 	{
 		q: 'Can I create a project using Schmint?',
-		a: 'Schmint cannot be used to create collections or projects. Simplr Collection [https://simplrcollection.com] can be used to create collections and projects.',
+		a: 'Schmint cannot be used to create collections or projects. Simplr Collection [https://simplrhq.com] can be used to create collections and projects.',
 	},
 	{
 		q: 'How do I get a project listed on Schmint?',

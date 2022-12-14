@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Router, useRouter } from 'next/router';
-import { FOOTER_LINKS } from 'src/constants';
+import { FOOTER_LINKS, SIMPLR_URL } from 'src/constants';
 import theme from 'src/styleguide/theme';
 import scrollIntoView from 'src/utils/scrollIntoView';
 import Box from './Box';
@@ -26,7 +26,15 @@ const Footer = () => {
 					<Box position="relative" height="3rem" width="12rem">
 						<Image src={LOGO} layout="fill" quality={5} />
 					</Box>
-					<Box position="relative" height="1.2rem" width="4.4rem">
+					<Box
+						as="a"
+						href={SIMPLR_URL}
+						target="_blank"
+						cursor="pointer"
+						position="relative"
+						height="1.2rem"
+						width="4.4rem"
+					>
 						<Image src={TAG} layout="fill" quality={5} />
 					</Box>
 				</Box>
