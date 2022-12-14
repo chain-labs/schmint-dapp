@@ -4,7 +4,7 @@ export const TWITTER_URL = 'https://twitter.com/simplrhq';
 export const LINKEDIN_URL = 'https://www.linkedin.com/company/0xchainlabs';
 export const GITHUB_URL = 'https://github.com/chain-labs';
 export const CHAINLABS_URL = 'https://chainlabs.in ';
-export const SIMPLR_URL = 'https://simplrcollection.com';
+export const SIMPLR_URL = 'https://simplrhq.com';
 
 export const EMAIL_CONTACT = 'hello@chainlabs.in';
 
