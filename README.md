@@ -1,5 +1,7 @@
 # Schmint dApp
 ![Schmint Banner](https://ik.imagekit.io/chainlabs/Schmint/banner_schmint_ST25YFh_v.png?ik-sdk-version=javascript-1.4.3&updatedAt=1671475163073 "Schmint Banner")
+![Javascript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Typescript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
 ![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
