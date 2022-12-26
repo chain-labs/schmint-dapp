@@ -12,8 +12,29 @@ Schmint is an automation tool for collectors that will give them more control ov
 
 ![Schmint Pronounciation](https://miro.medium.com/max/500/1*chQsjnYXZScsODv1aBpckw.webp "Schmint Pronounciation")
 
-# Usage
+# Try it
 Visit the Schmint dApp website at: https://schmint.simplrhq.com/
+
+# Usage
+
+### 1. First, Install the dependencies:a
+```bash
+npm install
+# or
+yarn install
+```
+
+### 2. Complete the Environment Variables.
+
+### 3. Run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+### 4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 # Learn More
 
